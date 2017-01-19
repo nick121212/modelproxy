@@ -1,0 +1,31 @@
+{
+  "name": "modelproxy",
+  "version": "1.0.0",
+  "description": "接口配置建模框架",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nick121212/modelproxy.git"
+  },
+  "keywords": [
+    "nodejs",
+    "modelproxy",
+    "javascript",
+    "typescript",
+    "ajax"
+  ],
+  "author": "NICK121212@126.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nick121212/modelproxy/issues"
+  },
+  "homepage": "https://github.com/nick121212/modelproxy#readme",
+  "devDependencies": {
+    "ts-loader": "^1.3.3",
+    "typescript": "^2.1.5",
+    "webpack": "^1.14.0"
+  }
+}

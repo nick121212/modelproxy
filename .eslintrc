@@ -1,0 +1,25 @@
+{
+    "extends": "airbnb",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "impliedStrict": true,
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "env": {
+        "node": true,
+        "es6": true,
+        "commonjs": true
+    },
+    "plugins": [
+        "standard"
+    ],
+    "parser": "esprima",
+    "rules": {
+        "semi": ["error", "always"],
+        "quotes": ["error", "single"]
+    }
+}
