@@ -42,7 +42,7 @@ export class ModelProxy extends Compose {
      * @return {InterfaceFactory}
     */
     async loadConfig(config: IProxyConfig) {
-        let valid: tv4.SingleResult = tv4.validateResult(config, schemas.proxyConfigSchema);
+        let valid: tv4.SingleResult = tv4.validateResult(config, schemas.proxyConfigSchema as tv4.JsonSchema);
 
         if (!valid.valid) {
             throw valid.error;

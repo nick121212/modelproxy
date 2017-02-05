@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import * as tv4 from "tv4";
+// import * as tv4 from "tv4";
 
 // 关键字	描述
 // $schema	$schema 关键字状态，表示这个模式与 v4 规范草案书写一致。
@@ -19,8 +19,8 @@ import * as tv4 from "tv4";
 
 const _schema: string = "http://json-schema.org/draft-04/schema#";
 
-abstract class BaseTypeBuilder {
-    protected data: tv4.JsonSchema;
+export abstract class BaseTypeBuilder {
+    protected data: JsonSchema;
 
     constructor() { this.data = {}; }
 
@@ -34,7 +34,7 @@ abstract class BaseTypeBuilder {
         return this;
     };
 
-    properties(props: { [key: string]: tv4.JsonSchema; }): JsonSchemaBuilder {
+    properties(props: { [key: string]: JsonSchema; }): JsonSchemaBuilder {
         this.data = _.extend({
             properties: props,
         }, this.data || {});
@@ -42,7 +42,7 @@ abstract class BaseTypeBuilder {
         return this;
     }
 
-    items(items: tv4.JsonSchema | tv4.JsonSchema[]): JsonSchemaBuilder {
+    items(items: JsonSchema | JsonSchema[]): JsonSchemaBuilder {
         this.data = _.extend({
             items: items,
         }, this.data || {});
@@ -66,7 +66,7 @@ abstract class BaseTypeBuilder {
         return this;
     }
 
-    toValue(): tv4.JsonSchema {
+    toValue(): JsonSchema {
         return this.data;
     }
 }

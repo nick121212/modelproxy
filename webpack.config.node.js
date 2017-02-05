@@ -3,21 +3,21 @@ const webpack = require('webpack');
 module.exports = {
     context: __dirname + '/',
     cache: true,
-    target: "web",
+    target: "node",
     entry: {
-        // 'commons': ['lodash', 'bluebird', 'tv4'],
+        'commons': ['lodash', 'bluebird', 'tv4'],
         'index': __dirname + '/src/index.ts'
     },
     devtool: 'source-map',
-    // node: {
-    //     __filename: true,
-    //     __dirname: true
-    // },
+    node: {
+        __filename: true,
+        __dirname: true
+    },
     output: {
-        path: __dirname + '/built/web',
+        path: __dirname + '/built/node',
         filename: '[name].js',
         hash: true,
-        // libraryTarget: 'commonjs'
+        libraryTarget: 'commonjs'
     },
     stats: {
         colors: true,
@@ -35,7 +35,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'commons',
             filename: '[name].js',
-            minChunks: 2
+            minChunks: 3
         })
     ]
 }

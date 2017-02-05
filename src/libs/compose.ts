@@ -34,11 +34,11 @@ export class Compose {
             if (typeof fn !== "function") throw new TypeError("Middleware must be composed of functions!");
         }
 
-        return (context, next): Bluebird.Thenable<any> => {
+        return (context: any, next: Function): Bluebird.Thenable<any> => {
             return new Bluebird((resolve, reject) => {
                 let index = -1;
 
-                const dispatch = (i) => {
+                const dispatch = (i: number) => {
                     return new Bluebird((resolve1) => {
                         let fn = this.middlewares[i];
 
@@ -73,7 +73,7 @@ export class Compose {
      * @param ctx   {Object} 执行上下文
      * @param err   {Object} 错误数据
      */
-    errorHandle(ctx, err) {
+    errorHandle(ctx: any, err: Error) {
         ctx.isError = true;
         ctx.err = err;
         console.error("compose--", err);
@@ -92,9 +92,9 @@ export class Compose {
                 app: this
             });
 
-            return fn(ctx, async (ctx, next) => {
+            return fn(ctx, async (ctx:any, next:Function) => {
                 await next();
-            }).catch((err) => {
+            }).catch((err:Error) => {
                 this.errorHandle(ctx, err);
             }).finally(() => {
                 complete(ctx);

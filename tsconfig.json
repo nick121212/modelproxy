@@ -9,18 +9,13 @@
         "experimentalDecorators": true,
         "removeComments": true,
         "noImplicitAny": false,
+        "noLib": false,
         "lib": [
             "es5",
             "es2016"
+        ],
+        "typeRoots": [
+            "typings/index.d.ts"
         ]
-    },
-    "include": [
-        "typings/index.d.ts",
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules/**/*",
-        "built/**/*",
-        "test/**/*"
-    ]
+    }
 }

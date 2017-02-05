@@ -25,7 +25,8 @@ export class BaseFactory<T> {
     */
     use(name: string): T {
         if (!this.intances.hasOwnProperty(name)) {
-            throw new Error(`不存在name=【${name}】的engine！`);
+            
+            throw new Error(`不存在name=【${name}】的engine！当前engines：`);
         }
 
         return this.intances[name];

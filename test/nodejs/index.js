@@ -1,4 +1,4 @@
-var modelProxy = require("../../built/index.js").default;
+var modelProxy = require("../../built/node/src").default;
 var path = require("path");
 var expect = require("chai").expect;
 var config = require("../config/config.json");
