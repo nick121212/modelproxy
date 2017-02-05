@@ -1,7 +1,7 @@
 # modelproxy
 
 >## 1、解决了什么问题
- 通过配置文件，自动生成接口的调用方法。
+ 通过配置文件，自动生成接口的调用方法。参考[modelproxy](https://github.com/papertiger8848/modelproxy)。
  
 >## 2、安装和依赖
  npm install modelproxy     
