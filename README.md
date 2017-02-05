@@ -43,35 +43,35 @@
 > ```
 
 >## 5、使用配置
-```
-    var proxy = new modelProxy.ModelProxy();
-
-    proxy.loadConfig(config).then((result) => {
-        return result.getNs("test1");
-    }).then((result) => {
-        if (!result) {
-            return;
-        }
-        return result.login({ usename: "1", password: "111111" }, {}, { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") });
-    }).then((result) => {
-        console.info(JSON.stringify(result));
-    }).catch(console.error);
-```
+> ```
+>     var proxy = new modelProxy.ModelProxy();
+> 
+>     proxy.loadConfig(config).then((result) => {
+>         return result.getNs("test1");
+>     }).then((result) => {
+>         if (!result) {
+>             return;
+>         }
+>         return result.login({ usename: "1", password: "111111" }, {}, { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") });
+>     }).then((result) => {
+>         console.info(JSON.stringify(result));
+>     }).catch(console.error);
+> ```
 
 >## 6、默认的处理ENGINE
-     默认的engine只是返回了数据的内容，可自定义开发engine来处理接口的转发；例如（jquery,superagent,dubbo）等；     
-```
-    export class DefaultEngine implements IEngine {
-        constructor() {
-
-        }
-
-        validate(data: any): boolean {
-            return true;
-        }
-
-        async proxy( intance: IInterfaceModel, data: any, params: any) {
-            return data;
-        }
-    }
-```
+> 默认的engine只是返回了数据的内容，可自定义开发engine来处理接口的转发；例如（jquery,superagent,dubbo）等；     
+> ```
+>     export class DefaultEngine implements IEngine {
+>         constructor() {
+> 
+>         }
+> 
+>         validate(data: any): boolean {
+>             return true;
+>         }
+> 
+>         async proxy( intance: IInterfaceModel, data: any, params: any) {
+>             return data;
+>         }
+>     }
+> ```
