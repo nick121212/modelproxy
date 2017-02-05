@@ -1,4 +1,3 @@
-import { MethodType } from "./method";
 import { IInterfaceModel } from './interface';
 import { ICommon } from "./common";
 
@@ -6,6 +5,6 @@ import { ICommon } from "./common";
  * 接口模型
  */
 export interface IProxyConfig extends ICommon {
-    // mock规则目录
-    mockDir: string;
+    // 接口的配置数组
+    interfaces: Array<IInterfaceModel>;
 }

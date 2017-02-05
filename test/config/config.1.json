@@ -1,0 +1,22 @@
+{
+    "key": "test1",
+    "title": "p-uc",
+    "engine": "default",
+    "mockDir": "/mocks/",
+    "states": {
+        "prod": "http://www.baidu.com",
+        "test": "http://www.baidu.com",
+        "dev": "http://www.baidu.com",
+        "stag": "http://www.baidu.com"
+    },
+    "state": "dev",
+    "interfaces": [{
+        "key": "login",
+        "title": "登陆接口",
+        "method": "GET",
+        "path": "/passport/login",
+        "config": {
+            "test": "test-1"
+        }
+    }]
+}

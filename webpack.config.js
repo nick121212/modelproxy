@@ -3,33 +3,39 @@ const webpack = require('webpack');
 module.exports = {
     context: __dirname + '/',
     cache: true,
-    debug: false,
     target: "node",
-    node: {
-        console: true,
-        global: true,
-        process: true,
-        Buffer: true,
-        __filename: true,
-        __dirname: true,
-        setImmediate: true
-    },
     entry: {
-        // 'vendor': ['jquery', 'lodash', 'jquery-terminal', 'jquery-mousewheel'],
+        'commons': ['lodash', 'bluebird', 'tv4'],
         'index': __dirname + '/src/index.ts'
     },
-    devtool: "source-map",
+    devtool: 'source-map',
+    node: {
+        __filename: true,
+        __dirname: true
+    },
     output: {
         path: __dirname + '/built',
         filename: '[name].js',
-        hash: true
+        hash: true,
+        libraryTarget: 'commonjs'
+    },
+    stats: {
+        colors: true,
+        reasons: true
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.ts']
+        extensions: ['', '.webpack.js', '.js', '.ts', '.json']
     },
     module: {
         loaders: [
-            { test: /\.ts$/, loader: 'ts?module=commonjs' }
+            { test: /\.ts$/, loader: 'ts' }
         ]
-    }
+    },
+    plugins: [
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'commons',
+        //     filename: '[name].js',
+        //     minChunks: 3
+        // })
+    ]
 }

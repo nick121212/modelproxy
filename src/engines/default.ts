@@ -1,4 +1,5 @@
 import { IEngine } from "../models/engine";
+import { IInterfaceModel } from '../models/interface';
 
 export class DefaultEngine implements IEngine {
     constructor() {
@@ -9,9 +10,7 @@ export class DefaultEngine implements IEngine {
         return true;
     }
 
-    proxy(data) {
+    async proxy( intance: IInterfaceModel, data: any, params: any) {
         return data;
     }
 }
-
-console.log(1);

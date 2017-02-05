@@ -8,15 +8,19 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "lib": [
+            "es5",
+            "es2016"
+        ]
     },
     "include": [
         "typings/index.d.ts",
         "src/**/*"
     ],
     "exclude": [
-        "node_modules",
-        "built",
-        "test"
+        "node_modules/**/*",
+        "built/**/*",
+        "test/**/*"
     ]
 }
