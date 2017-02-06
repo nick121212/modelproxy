@@ -1,6 +1,6 @@
 declare module 'modelproxy' {
 
-    namespace ModelProxySchema {
+    export namespace ModelProxySchema {
         abstract class BaseTypeBuilder {
             protected data: JsonSchema;
             constructor();
@@ -13,26 +13,26 @@ declare module 'modelproxy' {
             required(...keys: any[]): this;
             toValue(): JsonSchema;
         }
-        class JsonSchemaBuilder extends BaseTypeBuilder {
+        export class JsonSchemaBuilder extends BaseTypeBuilder {
             constructor();
             static init(): JsonSchemaBuilder;
         }
 
-        interface _default {
+        export interface _default {
             proxyConfigSchema: JsonSchema;
             interfaceSchema: JsonSchema;
             JsonSchemaBuilder: JsonSchemaBuilder;
         }
     }
-    namespace ModelProxyEngine {
-        class DefaultEngine extends ModelProxy.Compose implements ModelProxy.IEngine {
+    export namespace ModelProxyEngine {
+        export class DefaultEngine extends ModelProxy.Compose implements ModelProxy.IEngine {
             constructor();
             validate(data: any): boolean;
             proxy(intance: ModelProxy.IInterfaceModel, data: any, params: any): Promise<any>;
         }
     }
-    namespace ModelProxy {
-        enum MethodType {
+    export namespace ModelProxy {
+        export enum MethodType {
             GET,
             POST,
             DELETE,
@@ -41,13 +41,13 @@ declare module 'modelproxy' {
             PATCH,
             OPTIONS
         }
-        interface IInterfaceModel extends ICommon {
+        export interface IInterfaceModel extends ICommon {
             ns?: string;
             method: MethodType;
             path: string;
             config?: Object;
         }
-        interface ICommon {
+        export interface ICommon {
             key: string;
             title: string;
             engine?: string;
@@ -56,14 +56,14 @@ declare module 'modelproxy' {
             version?: string;
             mockDir?: string;
         }
-        interface IProxyConfig extends ICommon {
+        export interface IProxyConfig extends ICommon {
             interfaces: Array<IInterfaceModel>;
         }
-        interface IEngine {
+        export interface IEngine {
             validate(data: any): boolean;
             proxy(intance: IInterfaceModel, data: any, params: any): any;
         }
-        class BaseFactory<T> {
+        export class BaseFactory<T> {
             protected intances: {
                 [id: string]: T;
             };
@@ -71,7 +71,7 @@ declare module 'modelproxy' {
             add(name: string, intance: T, override?: boolean): void;
             use(name: string): T;
         }
-        class Compose {
+        export class Compose {
             private middlewares;
             constructor();
             use(func: Function): void;
@@ -79,13 +79,12 @@ declare module 'modelproxy' {
             errorHandle(ctx: any, err: Error): void;
             callback(complete: Function): Function;
         }
-        const engineFactory: BaseFactory<IEngine>;
-        class InterfaceFactory extends BaseFactory<IInterfaceModel> {
+        export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
             constructor();
             add(name: string, intance: IInterfaceModel, override?: boolean): void;
             execute(intance: IInterfaceModel, data: any, params: any, intanceCover: IInterfaceModel): Promise<any>;
         }
-        class ModelProxy extends Compose {
+        export class ModelProxy extends Compose {
             private interfaces;
             constructor();
             private initInterfaces(config: IProxyConfig);
@@ -93,14 +92,15 @@ declare module 'modelproxy' {
             getNs(ns: string): InterfaceFactory;
         }
 
-        interface _default {
+        export interface _default {
             ModelProxy: ModelProxy;
             engineFactory: BaseFactory<IEngine>;
             Compose: Compose;
             modelProxySchemaUtils: ModelProxySchema._default;
+            methods: typeof MethodType;
         }
     }
+    var modelproxy: ModelProxy._default;
 
-    // var modelproxy: ModelProxy._default;
-    export = ModelProxy;
+    export default modelproxy;
 }
