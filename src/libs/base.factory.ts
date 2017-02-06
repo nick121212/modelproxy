@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 
 export namespace ModelProxy {
     /**
@@ -27,8 +28,10 @@ export namespace ModelProxy {
         */
         use(name: string): T {
             if (!this.intances.hasOwnProperty(name)) {
-
-                throw new Error(`不存在name=【${name}】的engine！当前engines：`);
+                let engines = _.map(this.intances, (val, key) => {
+                    return key;
+                });
+                throw new Error(`不存在name=【${name}】的engine！当前engines：【${engines.join(',')}】`);
             }
 
             return this.intances[name];

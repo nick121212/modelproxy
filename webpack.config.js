@@ -5,7 +5,7 @@ module.exports = {
     cache: true,
     target: "web",
     entry: {
-        // 'commons': ['lodash', 'bluebird', 'tv4'],
+        'commons': ['lodash', 'bluebird', 'tv4'],
         'index': __dirname + '/src/index.ts'
     },
     devtool: 'source-map',
@@ -35,7 +35,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'commons',
             filename: '[name].js',
-            minChunks: 2
+            minChunks: 3
         })
     ]
 }

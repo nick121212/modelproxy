@@ -56,6 +56,7 @@ describe('modelproxy', function() {
             proxy.getNs("test").login({ username: "nick", "password": "111111" }, {}).then(function(result) {
 
             }, function(err) {
+                console.log(err);
                 expect(err).to.be.an.instanceof(Error);
                 expect(err.message).to.contain('mockjs');
                 done();

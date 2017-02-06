@@ -1,4 +1,5 @@
 "use strict";
+var _ = require("lodash");
 var ModelProxy;
 (function (ModelProxy) {
     var BaseFactory = (function () {
@@ -14,7 +15,10 @@ var ModelProxy;
         };
         BaseFactory.prototype.use = function (name) {
             if (!this.intances.hasOwnProperty(name)) {
-                throw new Error("\u4E0D\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01\u5F53\u524Dengines\uFF1A");
+                var engines = _.map(this.intances, function (val, key) {
+                    return key;
+                });
+                throw new Error("\u4E0D\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01\u5F53\u524Dengines\uFF1A\u3010" + engines.join(',') + "\u3011");
             }
             return this.intances[name];
         };
