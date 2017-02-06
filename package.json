@@ -1,8 +1,9 @@
 {
     "name": "modelproxy",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "接口配置建模框架",
     "main": "built/node/index.js",
+    "types": "modelproxy.d.ts",
     "scripts": {
         "test": "mocha test/**/*.js",
         "test-list": "mocha --reporter list test/**/*.js",
