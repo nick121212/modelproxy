@@ -1,5 +1,4 @@
 import * as _ from "lodash";
-// import * as tv4 from "tv4";
 
 // 关键字	描述
 // $schema	$schema 关键字状态，表示这个模式与 v4 规范草案书写一致。
@@ -19,65 +18,67 @@ import * as _ from "lodash";
 
 const _schema: string = "http://json-schema.org/draft-04/schema#";
 
-export abstract class BaseTypeBuilder {
-    protected data: JsonSchema;
+export namespace ModleProxySchema {
+    export abstract class BaseTypeBuilder {
+        protected data: JsonSchema;
 
-    constructor() { this.data = {}; }
+        constructor() { this.data = {}; }
 
-    build(type: JsonSchemaTypes = "string", title?: string, description?: string): BaseTypeBuilder {
-        this.data = _.extend({
-            title: title || "",
-            description: description || "",
-            type: type
-        }, this.data || {});
+        build(type: JsonSchemaTypes = "string", title?: string, description?: string): BaseTypeBuilder {
+            this.data = _.extend({
+                title: title || "",
+                description: description || "",
+                type: type
+            }, this.data || {});
 
-        return this;
-    };
+            return this;
+        };
 
-    properties(props: { [key: string]: JsonSchema; }): JsonSchemaBuilder {
-        this.data = _.extend({
-            properties: props,
-        }, this.data || {});
+        properties(props: { [key: string]: JsonSchema; }): JsonSchemaBuilder {
+            this.data = _.extend({
+                properties: props,
+            }, this.data || {});
 
-        return this;
+            return this;
+        }
+
+        items(items: JsonSchema | JsonSchema[]): JsonSchemaBuilder {
+            this.data = _.extend({
+                items: items,
+            }, this.data || {});
+
+            return this;
+        }
+        schema(schema: string = _schema, id: string = _schema): BaseTypeBuilder {
+            this.data = _.extend({
+                "$schema": schema,
+                id: id
+            }, this.data || {});
+
+            return this;
+        }
+
+        required(...keys) {
+            this.data = _.extend({
+                required: keys
+            }, this.data || {});
+
+            return this;
+        }
+
+        toValue(): JsonSchema {
+            return this.data;
+        }
     }
 
-    items(items: JsonSchema | JsonSchema[]): JsonSchemaBuilder {
-        this.data = _.extend({
-            items: items,
-        }, this.data || {});
 
-        return this;
-    }
-    schema(schema: string = _schema, id: string = _schema): BaseTypeBuilder {
-        this.data = _.extend({
-            "$schema": schema,
-            id: id
-        }, this.data || {});
+    export class JsonSchemaBuilder extends BaseTypeBuilder {
+        constructor() {
+            super();
+        }
 
-        return this;
-    }
-
-    required(...keys) {
-        this.data = _.extend({
-            required: keys
-        }, this.data || {});
-
-        return this;
-    }
-
-    toValue(): JsonSchema {
-        return this.data;
-    }
-}
-
-
-export class JsonSchemaBuilder extends BaseTypeBuilder {
-    constructor() {
-        super();
-    }
-
-    static init(): JsonSchemaBuilder {
-        return new JsonSchemaBuilder();
+        static init(): JsonSchemaBuilder {
+            return new JsonSchemaBuilder();
+        }
     }
 }

@@ -1,104 +1,106 @@
 import * as _ from "lodash";
 import * as Bluebird from "bluebird";
 
-/**
- * koa中间件方法
- */
-export class Compose {
-    private middlewares: Array<Function>;
-
-    constructor() {
-        this.middlewares = [];
-    }
-
+export namespace ModelProxy {
     /**
-     * 添加中间件函数
-     * @param func    {Function} 中间件方法
-     * @return        {void}
+     * koa中间件方法
      */
-    use(func: Function): void {
-        if (!_.isFunction(func)) {
-            throw new TypeError("middleware must be a function！");
+    export class Compose {
+        private middlewares: Array<Function>;
+
+        constructor() {
+            this.middlewares = [];
         }
 
-        this.middlewares.push(func);
-    }
+        /**
+         * 添加中间件函数
+         * @param func    {Function} 中间件方法
+         * @return        {void}
+         */
+        use(func: Function): void {
+            if (!_.isFunction(func)) {
+                throw new TypeError("middleware must be a function！");
+            }
 
-    /**
-     * 生成中间件执行函数
-     * @return {Function}
-     */
-    compose(): Function {
-        if (!Array.isArray(this.middlewares)) throw new TypeError("Middleware stack must be an array!");
-        for (const fn of this.middlewares) {
-            if (typeof fn !== "function") throw new TypeError("Middleware must be composed of functions!");
+            this.middlewares.push(func);
         }
 
-        return (context: any, next: Function): Bluebird.Thenable<any> => {
-            return new Bluebird((resolve, reject) => {
-                let index = -1;
+        /**
+         * 生成中间件执行函数
+         * @return {Function}
+         */
+        compose(): Function {
+            if (!Array.isArray(this.middlewares)) throw new TypeError("Middleware stack must be an array!");
+            for (const fn of this.middlewares) {
+                if (typeof fn !== "function") throw new TypeError("Middleware must be composed of functions!");
+            }
 
-                const dispatch = (i: number) => {
-                    return new Bluebird((resolve1) => {
-                        let fn = this.middlewares[i];
+            return (context: any, next: Function): Bluebird.Thenable<any> => {
+                return new Bluebird((resolve, reject) => {
+                    let index = -1;
 
-                        if (i <= index) {
-                            return reject(new Error("next() called multiple times" + i + "-" + index));
-                        }
-                        index = i;
-                        if (i === this.middlewares.length) fn = next;
-                        if (!fn) {
-                            return resolve1(context);
-                        }
-                        try {
-                            fn(context, async () => {
-                                await dispatch(i + 1);
-                                // console.log("resolve", i, context.isError);
-                                resolve1();
-                            }).catch(reject);
-                        } catch (err) {
-                            console.log("compose error" + err);
-                            reject(err);
-                        }
-                    });
-                };
+                    const dispatch = (i: number) => {
+                        return new Bluebird((resolve1) => {
+                            let fn = this.middlewares[i];
 
-                return dispatch(0).then(resolve);
-            });
-        };
-    }
+                            if (i <= index) {
+                                return reject(new Error("next() called multiple times" + i + "-" + index));
+                            }
+                            index = i;
+                            if (i === this.middlewares.length) fn = next;
+                            if (!fn) {
+                                return resolve1(context);
+                            }
+                            try {
+                                fn(context, async () => {
+                                    await dispatch(i + 1);
+                                    // console.log("resolve", i, context.isError);
+                                    resolve1();
+                                }).catch(reject);
+                            } catch (err) {
+                                console.log("compose error" + err);
+                                reject(err);
+                            }
+                        });
+                    };
 
-    /**
-     * 错误的判断
-     * @param ctx   {Object} 执行上下文
-     * @param err   {Object} 错误数据
-     */
-    errorHandle(ctx: any, err: Error) {
-        ctx.isError = true;
-        ctx.err = err;
-        console.error("compose--", err);
-    }
+                    return dispatch(0).then(resolve);
+                });
+            };
+        }
 
-    /**
-     * 包装compose函数
-     * @param complete {Function} 执行完毕后回调函数
-     * @return  {Function}
-     */
-    callback(complete: Function): Function {
-        const fn = this.compose();
+        /**
+         * 错误的判断
+         * @param ctx   {Object} 执行上下文
+         * @param err   {Object} 错误数据
+         */
+        errorHandle(ctx: any, err: Error) {
+            ctx.isError = true;
+            ctx.err = err;
+            console.error("compose--", err);
+        }
 
-        return (options: Object): Bluebird.Thenable<any> => {
-            let ctx = _.extend({}, options || {}, {
-                app: this
-            });
+        /**
+         * 包装compose函数
+         * @param complete {Function} 执行完毕后回调函数
+         * @return  {Function}
+         */
+        callback(complete: Function): Function {
+            const fn = this.compose();
 
-            return fn(ctx, async (ctx:any, next:Function) => {
-                await next();
-            }).catch((err:Error) => {
-                this.errorHandle(ctx, err);
-            }).finally(() => {
-                complete(ctx);
-            });
-        };
+            return (options: Object): Bluebird.Thenable<any> => {
+                let ctx = _.extend({}, options || {}, {
+                    app: this
+                });
+
+                return fn(ctx, async (ctx: any, next: Function) => {
+                    await next();
+                }).catch((err: Error) => {
+                    this.errorHandle(ctx, err);
+                }).finally(() => {
+                    complete(ctx);
+                });
+            };
+        }
     }
 }

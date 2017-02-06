@@ -15,7 +15,8 @@
             "es2016"
         ],
         "typeRoots": [
-            "typings/index.d.ts"
+            "typings/index.d.ts",
+            "modelproxy.d.ts"
         ]
     }
 }

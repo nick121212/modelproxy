@@ -1,8 +1,8 @@
 {
     "name": "modelproxy",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "接口配置建模框架",
-    "main": "src/index.ts",
+    "main": "built/node/index.js",
     "scripts": {
         "test": "mocha test"
     },
@@ -39,7 +39,6 @@
     "dependencies": {
         "bluebird": "^3.4.7",
         "json-pointer": "^0.6.0",
-        "mockjs": "^1.0.1-beta3",
         "tv4": "^1.2.7"
     }
 }

@@ -1,5 +1,7 @@
-import { JsonSchemaBuilder } from "./builder";
 import interfaceSchema from "./interface.schema";
+import { ModleProxySchema } from "./builder";
+
+const { JsonSchemaBuilder } = ModleProxySchema;
 
 export default JsonSchemaBuilder.init().build("object", null, "modelProxy验证配置")
     .properties({

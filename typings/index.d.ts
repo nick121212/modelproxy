@@ -5,4 +5,3 @@
 /// <reference path="modules/bluebird/index.d.ts" />
 /// <reference path="modules/lodash/index.d.ts" />
 /// <reference path="modules/tv4/index.d.ts" />
-/// <reference path="mockjs.d.ts" />

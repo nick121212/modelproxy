@@ -1,4 +1,6 @@
-import { JsonSchemaBuilder } from "./builder";
+import { ModleProxySchema } from "./builder";
+
+const { JsonSchemaBuilder } = ModleProxySchema;
 
 export default JsonSchemaBuilder.init().build("object").properties({
     key: JsonSchemaBuilder.init().build().toValue(),

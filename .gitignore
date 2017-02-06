@@ -1,6 +1,1 @@
 node_modules
-built
-test
-!test/config
-!test/mocks
-!test/nodejs
