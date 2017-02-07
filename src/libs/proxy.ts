@@ -1,14 +1,13 @@
 import { IInterfaceModel } from "../models/interface";
-import * as interfaceFactory from "./interface.factory";
 import { IProxyConfig } from "../models/proxy.config";
-import schemas from "../schemas";
+import * as interfaceFactory from "./interface.factory";
+import schemas from "../schemas/index";
 import * as compose from "./compose";
-import * as Bluebird from "bluebird";
 import * as tv4 from "tv4";
 import * as _ from "lodash";
 
 export namespace ModelProxy {
-    export class ModelProxy extends compose.ModelProxy.Compose {
+    export class ModelProxy extends compose.ModelProxy.Compose<any> {
         private interfaces: { [id: string]: interfaceFactory.ModelProxy.InterfaceFactory; } = {};
 
         constructor() {
@@ -30,7 +29,7 @@ export namespace ModelProxy {
                     states: config.states,
                     state: config.state,
                     mockDir: config.mockDir
-                }, i));
+                }, i) as IInterfaceModel);
             });
 
             return ifFacory;

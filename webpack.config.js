@@ -5,8 +5,8 @@ module.exports = {
     cache: true,
     target: "web",
     entry: {
-        'commons': ['lodash', 'bluebird', 'tv4'],
-        'index': __dirname + '/src/index.ts'
+        'commons': ['lodash', 'tv4'],
+        'index': __dirname + '/built/node/index.js'
     },
     devtool: 'source-map',
     // node: {
@@ -14,10 +14,10 @@ module.exports = {
     //     __dirname: true
     // },
     output: {
-        path: __dirname + '/built/web',
+        path: __dirname + '/built/all',
         filename: '[name].js',
         hash: true,
-        // libraryTarget: 'commonjs'
+        libraryTarget: 'commonjs'
     },
     stats: {
         colors: true,

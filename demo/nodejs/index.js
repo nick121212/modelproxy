@@ -1,10 +1,10 @@
-var modelProxy = require("../../built/node").default;
+var modelProxy = require("../../dist").modelProxy;
 var path = require("path");
 var expect = require("chai").expect;
 var config = require("../config/config.json");
 var config1 = require("../config/config.1.json");
 
-var proxy = new modelProxy.ModelProxy();
+var proxy = new modelProxy.Proxy();
 
 proxy.loadConfig(config).then((result) => {
     return proxy.loadConfig(config1);

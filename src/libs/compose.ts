@@ -1,11 +1,12 @@
 import * as _ from "lodash";
-import * as Bluebird from "bluebird";
+import { IProxyCtx } from "../models/proxy.ctx";
+// import * as Bluebird from "bluebird";
 
 export namespace ModelProxy {
     /**
      * koa中间件方法
      */
-    export class Compose {
+    export class Compose<T extends IProxyCtx>  {
         private middlewares: Array<Function>;
 
         constructor() {
@@ -35,12 +36,12 @@ export namespace ModelProxy {
                 if (typeof fn !== "function") throw new TypeError("Middleware must be composed of functions!");
             }
 
-            return (context: any, next: Function): Bluebird.Thenable<any> => {
-                return new Bluebird((resolve, reject) => {
+            return (context: T, next: Function): Promise<any> => {
+                return new Promise((resolve, reject) => {
                     let index = -1;
 
                     const dispatch = (i: number) => {
-                        return new Bluebird((resolve1) => {
+                        return new Promise((resolve1) => {
                             let fn = this.middlewares[i];
 
                             if (i <= index) {
@@ -54,7 +55,6 @@ export namespace ModelProxy {
                             try {
                                 fn(context, async () => {
                                     await dispatch(i + 1);
-                                    // console.log("resolve", i, context.isError);
                                     resolve1();
                                 }).catch(reject);
                             } catch (err) {
@@ -74,7 +74,7 @@ export namespace ModelProxy {
          * @param ctx   {Object} 执行上下文
          * @param err   {Object} 错误数据
          */
-        errorHandle(ctx: any, err: Error) {
+        errorHandle(ctx: T, err: Error) {
             ctx.isError = true;
             ctx.err = err;
             console.error("compose--", err);
@@ -88,10 +88,9 @@ export namespace ModelProxy {
         callback(complete: Function): Function {
             const fn = this.compose();
 
-            return (options: Object): Bluebird.Thenable<any> => {
-                let ctx = _.extend({}, options || {}, {
-                    app: this
-                });
+            return (options: any): Promise<any> => {
+                let ctx: T;
+                _.extend(ctx || {}, options || {});
 
                 return fn(ctx, async (ctx: any, next: Function) => {
                     await next();

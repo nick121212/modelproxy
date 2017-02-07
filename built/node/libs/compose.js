@@ -35,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _ = require("lodash");
-var Bluebird = require("bluebird");
 var ModelProxy;
 (function (ModelProxy) {
     var Compose = (function () {
@@ -58,10 +57,10 @@ var ModelProxy;
                     throw new TypeError("Middleware must be composed of functions!");
             }
             return function (context, next) {
-                return new Bluebird(function (resolve, reject) {
+                return new Promise(function (resolve, reject) {
                     var index = -1;
                     var dispatch = function (i) {
-                        return new Bluebird(function (resolve1) {
+                        return new Promise(function (resolve1) {
                             var fn = _this.middlewares[i];
                             if (i <= index) {
                                 return reject(new Error("next() called multiple times" + i + "-" + index));
@@ -104,9 +103,8 @@ var ModelProxy;
             var _this = this;
             var fn = this.compose();
             return function (options) {
-                var ctx = _.extend({}, options || {}, {
-                    app: _this
-                });
+                var ctx;
+                _.extend(ctx || {}, options || {});
                 return fn(ctx, function (ctx, next) { return __awaiter(_this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {

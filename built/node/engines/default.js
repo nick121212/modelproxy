@@ -1,9 +1,14 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -39,7 +44,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var compose = require("../libs/compose");
+var base = require("./base");
 var ModelProxyEngine;
 (function (ModelProxyEngine) {
     var DefaultEngine = (function (_super) {
@@ -58,7 +63,7 @@ var ModelProxyEngine;
             });
         };
         return DefaultEngine;
-    }(compose.ModelProxy.Compose));
+    }(base.ModelProxyEngine.BaseEngine));
     ModelProxyEngine.DefaultEngine = DefaultEngine;
 })(ModelProxyEngine = exports.ModelProxyEngine || (exports.ModelProxyEngine = {}));
 //# sourceMappingURL=default.js.map

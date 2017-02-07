@@ -1,4 +1,5 @@
 import { IInterfaceModel } from "../models/interface";
+import { MethodType } from '../models/method';
 import * as _ from "lodash";
 import * as factory from "./base.factory";
 import * as engineFactory from "./engine.factory";
@@ -27,13 +28,14 @@ export namespace ModelProxy {
          * @param intanceCover   {IInterfaceModel}  接口的实例，覆盖配置中的数据
          * @return               {any}
          */
-        async execute(intance: IInterfaceModel, data: any, params: any, intanceCover: IInterfaceModel) {
+        async execute(instance: IInterfaceModel, data: any, params: any, intanceCover: IInterfaceModel) {
             let engine;
+            let iinstance: IInterfaceModel = { method: MethodType.GET, title: '', path: '', key: '' };
 
-            intance = _.extend({}, intance, intanceCover);
-            engine = engineFactory.ModelProxy.engineFactory.use(intance.engine);
+            _.extend(iinstance, instance, intanceCover);
+            engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
 
-            return engine.proxy(intance, data, params);
+            return engine.proxy(iinstance, data, params);
         }
     }
 }

@@ -1,0 +1,14 @@
+{
+    "tv4": {
+        "path": "node_modules/tv4/tv4.js",
+        "globalProperty": "tv4",
+        "exports": "tv4",
+        "require": ""
+    },
+    "lodash": {
+        "path": "node_modules/lodash/index.js",
+        "globalProperty": "_",
+        "exports": "_",
+        "require": ""
+    }
+}

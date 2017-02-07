@@ -1,4 +1,4 @@
-var modelProxy = require("../built/node").default;
+var modelProxy = require("../dist").modelProxy;
 var path = require("path");
 var expect = require("chai").expect;
 var assert = require("chai").assert;
@@ -7,7 +7,7 @@ describe('modelproxy', function() {
     var proxy;
 
     before(function(done) {
-        new modelProxy.ModelProxy()
+        new modelProxy.Proxy()
             .loadConfig({
                 "key": "test",
                 "title": "p-uc",
@@ -56,7 +56,6 @@ describe('modelproxy', function() {
             proxy.getNs("test").login({ username: "nick", "password": "111111" }, {}).then(function(result) {
 
             }, function(err) {
-                console.log(err);
                 expect(err).to.be.an.instanceof(Error);
                 expect(err.message).to.contain('mockjs');
                 done();

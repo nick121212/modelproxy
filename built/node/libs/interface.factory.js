@@ -1,9 +1,14 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -39,6 +44,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var method_1 = require("../models/method");
 var _ = require("lodash");
 var factory = require("./base.factory");
 var engineFactory = require("./engine.factory");
@@ -54,13 +60,14 @@ var ModelProxy;
             _super.prototype.add.call(this, name, intance, override);
             this[name] = this.execute.bind(this, intance);
         };
-        InterfaceFactory.prototype.execute = function (intance, data, params, intanceCover) {
+        InterfaceFactory.prototype.execute = function (instance, data, params, intanceCover) {
             return __awaiter(this, void 0, void 0, function () {
-                var engine;
+                var engine, iinstance;
                 return __generator(this, function (_a) {
-                    intance = _.extend({}, intance, intanceCover);
-                    engine = engineFactory.ModelProxy.engineFactory.use(intance.engine);
-                    return [2 /*return*/, engine.proxy(intance, data, params)];
+                    iinstance = { method: method_1.MethodType.GET, title: '', path: '', key: '' };
+                    _.extend(iinstance, instance, intanceCover);
+                    engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
+                    return [2 /*return*/, engine.proxy(iinstance, data, params)];
                 });
             });
         };

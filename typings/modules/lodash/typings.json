@@ -1,8 +1,10 @@
 {
   "resolution": "main",
   "tree": {
-    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/c3f226e92937df1eed453c3f4a3312d3306339bd/lodash/index.d.ts",
-    "raw": "registry:dt/lodash#4.14.0+20170112173920",
-    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/c3f226e92937df1eed453c3f4a3312d3306339bd/lodash/index.d.ts"
+    "src": "https://raw.githubusercontent.com/types/npm-lodash/6557c3cd628ef6b39abfdc826b27ea1f06d8af89/typings.json",
+    "raw": "registry:npm/lodash#4.0.0+20161015015725",
+    "main": "index.d.ts",
+    "version": "4.0.0",
+    "name": "lodash"
   }
 }

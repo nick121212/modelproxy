@@ -1,5 +1,4 @@
 declare module 'modelproxy' {
-
     export namespace ModelProxySchema {
         abstract class BaseTypeBuilder {
             protected data: JsonSchema;
@@ -21,17 +20,27 @@ declare module 'modelproxy' {
         export interface _default {
             proxyConfigSchema: JsonSchema;
             interfaceSchema: JsonSchema;
-            JsonSchemaBuilder: JsonSchemaBuilder;
+            JsonSchemaBuilder: typeof JsonSchemaBuilder;
         }
     }
     export namespace ModelProxyEngine {
-        export class DefaultEngine extends ModelProxy.Compose implements ModelProxy.IEngine {
+        abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> {
+            constructor();
+        }
+        class DefaultEngine extends BaseEngine implements ModelProxy.IEngine {
             constructor();
             validate(data: any): boolean;
             proxy(intance: ModelProxy.IInterfaceModel, data: any, params: any): Promise<any>;
         }
     }
     export namespace ModelProxy {
+        export interface IProxyCtx {
+            instance: IInterfaceModel;
+            data?: any;
+            params?: any;
+            isError?: boolean;
+            err?: Error;
+        }
         export enum MethodType {
             GET,
             POST,
@@ -71,12 +80,12 @@ declare module 'modelproxy' {
             add(name: string, intance: T, override?: boolean): void;
             use(name: string): T;
         }
-        export class Compose {
+        export class Compose<T extends IProxyCtx> {
             private middlewares;
             constructor();
             use(func: Function): void;
             compose(): Function;
-            errorHandle(ctx: any, err: Error): void;
+            errorHandle(ctx: T, err: Error): void;
             callback(complete: Function): Function;
         }
         export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
@@ -84,7 +93,7 @@ declare module 'modelproxy' {
             add(name: string, intance: IInterfaceModel, override?: boolean): void;
             execute(intance: IInterfaceModel, data: any, params: any, intanceCover: IInterfaceModel): Promise<any>;
         }
-        export class ModelProxy extends Compose {
+        export class ModelProxy extends Compose<any> {
             private interfaces;
             constructor();
             private initInterfaces(config: IProxyConfig);
@@ -93,14 +102,14 @@ declare module 'modelproxy' {
         }
 
         export interface _default {
-            ModelProxy: ModelProxy;
+            Proxy: typeof ModelProxy;
             engineFactory: BaseFactory<IEngine>;
-            Compose: Compose;
+            Compose: typeof Compose;
             modelProxySchemaUtils: ModelProxySchema._default;
             methods: typeof MethodType;
+            BaseEngine: typeof ModelProxyEngine.BaseEngine;
         }
     }
-    var modelproxy: ModelProxy._default;
 
-    export default modelproxy;
+    export var modelproxy: ModelProxy._default;
 }
