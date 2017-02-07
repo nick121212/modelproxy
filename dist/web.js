@@ -249,8 +249,7 @@ var ModelProxy;
             var _this = this;
             var fn = this.compose();
             return function (options) {
-                var ctx;
-                _.extend(ctx || {}, options || {});
+                var ctx = _.extend({}, options || {});
                 var promise = fn(ctx, function (ctx, next) { return __awaiter(_this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
@@ -260,19 +259,11 @@ var ModelProxy;
                                 return [2 /*return*/];
                         }
                     });
-                }); }).catch(function (err) {
+                }); }, function (err) {
                     _this.errorHandle(ctx, err);
+                }).finally(function () {
+                    complete(ctx);
                 });
-                if (promise.done) {
-                    promise.done(function () {
-                        complete(ctx);
-                    });
-                }
-                else if (promise.finally) {
-                    promise.finally(function () {
-                        complete(ctx);
-                    });
-                }
                 return promise;
             };
         };

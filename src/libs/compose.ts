@@ -89,24 +89,14 @@ export namespace ModelProxy {
             const fn = this.compose();
 
             return (options: any): Promise<any> => {
-                let ctx: T;
-                _.extend(ctx || {}, options || {});
-
+                let ctx: T = _.extend({}, options || {}) as T;
                 let promise = fn(ctx, async (ctx: any, next: Function) => {
                     await next();
-                }).catch((err: Error) => {
-                    this.errorHandle(ctx, err);
-                })
-
-                if (promise.done) {
-                    promise.done(() => {
-                        complete(ctx);
-                    });
-                } else if (promise.finally) {
-                    promise.finally(() => {
-                        complete(ctx);
-                    });
-                }
+                }, (err: Error) => {
+                    this.errorHandle(ctx, err)
+                }).finally(() => {
+                    complete(ctx);
+                });
 
                 return promise;
             };
