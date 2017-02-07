@@ -111,5 +111,5 @@ declare module 'modelproxy' {
         }
     }
 
-    export var modelproxy: ModelProxy._default;
+    export var modelProxy: ModelProxy._default;
 }

@@ -12,5 +12,5 @@ module.exports = function(grunt) {
     // grunt.registerTask('task-rename', ['rename']);
     // grunt.registerTask('task-replace', ['replace']);
 
-    grunt.registerTask('build', ['clean:node', 'ts:node', 'browserify:dist']);
+    grunt.registerTask('build', ['clean:node', 'ts:node', 'browserify']);
 };

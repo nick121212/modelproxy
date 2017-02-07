@@ -1,6 +1,6 @@
 {
     "name": "modelproxy",
-    "version": "0.1.9",
+    "version": "0.2.1",
     "description": "接口配置建模框架",
     "main": "dist/index.js",
     "types": "modelproxy.d.ts",
@@ -9,7 +9,7 @@
         "test": "mocha test/**/*.js",
         "test-list": "mocha --reporter list test/**/*.js",
         "demo": "node demo/nodejs",
-        "build-node": "grunt build-node"
+        "build": "grunt build"
     },
     "repository": {
         "type": "git",
@@ -24,12 +24,7 @@
     ],
     "browserify-shim": {
         "lodash": "global:_",
-        "tv4": "global:tv4",
-        "inview": {
-            "depends": [
-                "jquery"
-            ]
-        }
+        "tv4": "global:tv4"
     },
     "author": "NICK121212@126.com",
     "license": "MIT",

@@ -92,13 +92,23 @@ export namespace ModelProxy {
                 let ctx: T;
                 _.extend(ctx || {}, options || {});
 
-                return fn(ctx, async (ctx: any, next: Function) => {
+                let promise = fn(ctx, async (ctx: any, next: Function) => {
                     await next();
                 }).catch((err: Error) => {
                     this.errorHandle(ctx, err);
-                }).finally(() => {
-                    complete(ctx);
-                });
+                })
+
+                if (promise.done) {
+                    promise.done(() => {
+                        complete(ctx);
+                    });
+                } else if (promise.finally) {
+                    promise.finally(() => {
+                        complete(ctx);
+                    });
+                }
+
+                return promise;
             };
         }
     }

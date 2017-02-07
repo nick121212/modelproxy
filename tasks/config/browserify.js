@@ -8,8 +8,7 @@ module.exports = function(grunt) {
                 ignore: ["lodash"],
                 "transform": ["browserify-shim"],
                 browserifyOptions: {
-                    standalone: 'modelproxy',
-                    debug: true,
+                    standalone: 'modelProxy',
                     'no-bundle-external': ''
                 }
             }
@@ -21,8 +20,7 @@ module.exports = function(grunt) {
                 exclude: ["lodash", "tv4"],
                 ignore: ["lodash"],
                 browserifyOptions: {
-                    standalone: 'modelproxy',
-                    debug: true,
+                    standalone: 'modelProxy',
                     'no-bundle-external': ''
                 }
             }
