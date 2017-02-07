@@ -6,4 +6,5 @@ export interface IProxyCtx {
     params?: any;
     isError?: boolean;
     err?: Error;
+    result?: any;
 }

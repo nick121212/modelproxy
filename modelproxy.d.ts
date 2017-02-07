@@ -40,6 +40,7 @@ declare module 'modelproxy' {
             params?: any;
             isError?: boolean;
             err?: Error;
+            result?: any;
         }
         export enum MethodType {
             GET,
