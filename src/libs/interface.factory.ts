@@ -3,6 +3,7 @@ import { MethodType } from '../models/method';
 import * as _ from "lodash";
 import * as factory from "./base.factory";
 import * as engineFactory from "./engine.factory";
+import { IExeucte } from '../models/execute';
 
 export namespace ModelProxy {
     export class InterfaceFactory extends factory.ModelProxy.BaseFactory<IInterfaceModel> {
@@ -28,14 +29,14 @@ export namespace ModelProxy {
          * @param intanceCover   {IInterfaceModel}  接口的实例，覆盖配置中的数据
          * @return               {any}
          */
-        async execute(instance: IInterfaceModel, data: any, params: any, intanceCover: IInterfaceModel) {
+        async execute(instance: IInterfaceModel, options: IExeucte) {
             let engine;
             let iinstance: IInterfaceModel = { method: MethodType.GET, title: '', path: '', key: '' };
 
-            _.extend(iinstance, instance, intanceCover);
+            _.extend(iinstance, instance, options.instance || {});
             engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
 
-            return engine.proxy(iinstance, data, params);
+            return engine.proxy(iinstance, options);
         }
     }
 }

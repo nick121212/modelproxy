@@ -60,14 +60,14 @@ var ModelProxy;
             _super.prototype.add.call(this, name, intance, override);
             this[name] = this.execute.bind(this, intance);
         };
-        InterfaceFactory.prototype.execute = function (instance, data, params, intanceCover) {
+        InterfaceFactory.prototype.execute = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 var engine, iinstance;
                 return __generator(this, function (_a) {
                     iinstance = { method: method_1.MethodType.GET, title: '', path: '', key: '' };
-                    _.extend(iinstance, instance, intanceCover);
+                    _.extend(iinstance, instance, options.instance || {});
                     engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
-                    return [2 /*return*/, engine.proxy(iinstance, data, params)];
+                    return [2 /*return*/, engine.proxy(iinstance, options)];
                 });
             });
         };

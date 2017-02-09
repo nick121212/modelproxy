@@ -113,7 +113,7 @@ var ModelProxy;
                                 return [2 /*return*/];
                         }
                     });
-                }); }, function (err) {
+                }); }).catch(function (err) {
                     _this.errorHandle(ctx, err);
                 }).finally(function () {
                     complete(ctx);

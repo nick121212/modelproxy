@@ -14,7 +14,11 @@ proxy.loadConfig(config).then((result) => {
     if (!result) {
         return;
     }
-    return result.login({ usename: "1", password: "111111" }, {}, { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") });
+    return result.login({
+        data: { usename: "1", password: "111111" },
+        params: {},
+        instance: { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") }
+    });
 }).then((result) => {
     console.info(JSON.stringify(result));
 }).catch(console.error);

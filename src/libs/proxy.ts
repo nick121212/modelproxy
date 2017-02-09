@@ -1,6 +1,8 @@
+import { IEngine } from '../models/engine';
 import { IInterfaceModel } from "../models/interface";
 import { IProxyConfig } from "../models/proxy.config";
 import * as interfaceFactory from "./interface.factory";
+import * as engineFactory from "./engine.factory";
 import schemas from "../schemas/index";
 import * as compose from "./compose";
 import * as tv4 from "tv4";
@@ -12,6 +14,16 @@ export namespace ModelProxy {
 
         constructor() {
             super();
+        }
+
+        /**
+         * 添加engines
+         * @param engines { { [id: string]: IEngine; } }  引擎对象
+         */
+        addEngines(engines: { [id: string]: IEngine; }): void {
+            _.each(engines, (val, key) => {
+                engineFactory.ModelProxy.engineFactory.add(key, val, true);
+            });
         }
 
         /**
@@ -52,9 +64,18 @@ export namespace ModelProxy {
             return this;
         }
 
-        getNs(ns: string) {
+        /**
+         * 获取namespace
+         * @param ns    {string} 空间名
+         * @return { InterfaceFactory }
+         */
+        getNs(ns: string): interfaceFactory.ModelProxy.InterfaceFactory {
             if (!this.interfaces.hasOwnProperty(ns)) {
-                throw new Error(`没有找到${ns}空间`);
+                let nses = _.map(this.interfaces, (val, key) => {
+                    return key;
+                });
+
+                throw new Error(`没有找到${ns}空间;当前命名空间【${nses.join(',')}】`);
             }
 
             return this.interfaces[ns];

@@ -66,6 +66,12 @@ declare module 'modelproxy' {
             version?: string;
             mockDir?: string;
         }
+        export interface IExeucte {
+            instance: IInterfaceModel;
+            data?: any;
+            params?: any;
+            settings?: any;
+        }
         export interface IProxyConfig extends ICommon {
             interfaces: Array<IInterfaceModel>;
         }
@@ -100,6 +106,7 @@ declare module 'modelproxy' {
             private initInterfaces(config: IProxyConfig);
             loadConfig(config: IProxyConfig): Promise<this>;
             getNs(ns: string): InterfaceFactory;
+            addEngines(engines: { [id: string]: IEngine; });
         }
 
         export interface _default {

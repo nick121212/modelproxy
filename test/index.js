@@ -7,6 +7,7 @@ var modelProxy = require("../dist").modelProxy;
 
 describe('modelproxy', function() {
     var proxy;
+    var data = { username: "nick", "password": "111111" };
 
     before(function(done) {
         new modelProxy.Proxy()
@@ -55,18 +56,21 @@ describe('modelproxy', function() {
             expect(proxy.getNs("test").login).to.be.a("function")
         });
         it('测试login方法,抛出错误的engine', function(done) {
-            proxy.getNs("test").login({ username: "nick", "password": "111111" }, {}).then(function(result) {
-
-            }, function(err) {
+            proxy.getNs("test").login({ data: data, params: {} }).catch(function(err) {
                 expect(err).to.be.an.instanceof(Error);
                 expect(err.message).to.contain('mockjs');
                 done();
             });
         });
         it('测试login方法成功', function(done) {
-            var data = { username: "nick", "password": "111111" };
-            proxy.getNs("test").login(data, {}, { engine: "default" }).then(function(result) {
-                expect(result).to.be.deep.equal(data);
+            var test = proxy.getNs("test");
+
+            test.login({
+                data: data,
+                params: {},
+                instance: { engine: "default" }
+            }).then(function(result) {
+                expect(result.key).to.be.equal(test.get("login").key);
                 done();
             });
         });

@@ -5,7 +5,7 @@ export namespace ModelProxy {
      * 实例的工厂类
      */
     export class BaseFactory<T> {
-        protected intances: { [id: string]: T; } = {};
+        protected instances: { [id: string]: T; } = {};
 
         constructor() { }
         /**
@@ -16,10 +16,22 @@ export namespace ModelProxy {
          * @return         {void}
          */
         add(name: string, intance: T, override: boolean = false): void {
-            if (override && this.intances.hasOwnProperty(name)) {
+            if (override && this.instances.hasOwnProperty(name)) {
                 return console.error(`已经存在name=【${name}】的engine！`);
             }
-            this.intances[name] = intance;
+            this.instances[name] = intance;
+        }
+
+        /**
+         * 获取一个实例
+         * @param name    {String}  实例标志
+         */
+        get(name: string): T {
+            if (this.instances.hasOwnProperty(name)) {
+                return this.instances[name];
+            }
+
+            return null;
         }
         /**
         * 取出一个实例
@@ -27,14 +39,14 @@ export namespace ModelProxy {
         * @return         {IEngine}
         */
         use(name: string): T {
-            if (!this.intances.hasOwnProperty(name)) {
-                let engines = _.map(this.intances, (val, key) => {
+            if (!this.instances.hasOwnProperty(name)) {
+                let engines = _.map(this.instances, (val, key) => {
                     return key;
                 });
                 throw new Error(`不存在name=【${name}】的engine！当前engines：【${engines.join(',')}】`);
             }
 
-            return this.intances[name];
+            return this.instances[name];
         }
     }
 }

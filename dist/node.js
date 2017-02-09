@@ -81,10 +81,10 @@ var ModelProxyEngine;
         DefaultEngine.prototype.validate = function (data) {
             return true;
         };
-        DefaultEngine.prototype.proxy = function (intance, data, params) {
+        DefaultEngine.prototype.proxy = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                    return [2 /*return*/, data];
+                    return [2 /*return*/, instance];
                 });
             });
         };
@@ -117,23 +117,29 @@ var ModelProxy;
 (function (ModelProxy) {
     var BaseFactory = (function () {
         function BaseFactory() {
-            this.intances = {};
+            this.instances = {};
         }
         BaseFactory.prototype.add = function (name, intance, override) {
             if (override === void 0) { override = false; }
-            if (override && this.intances.hasOwnProperty(name)) {
+            if (override && this.instances.hasOwnProperty(name)) {
                 return console.error("\u5DF2\u7ECF\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01");
             }
-            this.intances[name] = intance;
+            this.instances[name] = intance;
+        };
+        BaseFactory.prototype.get = function (name) {
+            if (this.instances.hasOwnProperty(name)) {
+                return this.instances[name];
+            }
+            return null;
         };
         BaseFactory.prototype.use = function (name) {
-            if (!this.intances.hasOwnProperty(name)) {
-                var engines = _.map(this.intances, function (val, key) {
+            if (!this.instances.hasOwnProperty(name)) {
+                var engines = _.map(this.instances, function (val, key) {
                     return key;
                 });
                 throw new Error("\u4E0D\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01\u5F53\u524Dengines\uFF1A\u3010" + engines.join(',') + "\u3011");
             }
-            return this.intances[name];
+            return this.instances[name];
         };
         return BaseFactory;
     }());
@@ -256,7 +262,7 @@ var ModelProxy;
                                 return [2 /*return*/];
                         }
                     });
-                }); }, function (err) {
+                }); }).catch(function (err) {
                     _this.errorHandle(ctx, err);
                 }).finally(function () {
                     complete(ctx);
@@ -342,14 +348,14 @@ var ModelProxy;
             _super.prototype.add.call(this, name, intance, override);
             this[name] = this.execute.bind(this, intance);
         };
-        InterfaceFactory.prototype.execute = function (instance, data, params, intanceCover) {
+        InterfaceFactory.prototype.execute = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 var engine, iinstance;
                 return __generator(this, function (_a) {
                     iinstance = { method: method_1.MethodType.GET, title: '', path: '', key: '' };
-                    _.extend(iinstance, instance, intanceCover);
+                    _.extend(iinstance, instance, options.instance || {});
                     engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
-                    return [2 /*return*/, engine.proxy(iinstance, data, params)];
+                    return [2 /*return*/, engine.proxy(iinstance, options)];
                 });
             });
         };
@@ -406,6 +412,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var interfaceFactory = require("./interface.factory");
+var engineFactory = require("./engine.factory");
 var index_1 = require("../schemas/index");
 var compose = require("./compose");
 var tv4 = require("tv4");
@@ -419,6 +426,11 @@ var ModelProxy;
             _this.interfaces = {};
             return _this;
         }
+        ModelProxy.prototype.addEngines = function (engines) {
+            _.each(engines, function (val, key) {
+                engineFactory.ModelProxy.engineFactory.add(key, val, true);
+            });
+        };
         ModelProxy.prototype.initInterfaces = function (config) {
             var ifFacory = new interfaceFactory.ModelProxy.InterfaceFactory();
             _.each(config.interfaces, function (i) {
@@ -456,7 +468,7 @@ var ModelProxy;
     ModelProxy_1.ModelProxy = ModelProxy;
 })(ModelProxy = exports.ModelProxy || (exports.ModelProxy = {}));
 
-},{"../schemas/index":11,"./compose":5,"./interface.factory":7,"lodash":undefined,"tv4":undefined}],9:[function(require,module,exports){
+},{"../schemas/index":11,"./compose":5,"./engine.factory":6,"./interface.factory":7,"lodash":undefined,"tv4":undefined}],9:[function(require,module,exports){
 "use strict";
 var MethodType;
 (function (MethodType) {

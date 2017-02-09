@@ -45,6 +45,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var interfaceFactory = require("./interface.factory");
+var engineFactory = require("./engine.factory");
 var index_1 = require("../schemas/index");
 var compose = require("./compose");
 var tv4 = require("tv4");
@@ -58,6 +59,11 @@ var ModelProxy;
             _this.interfaces = {};
             return _this;
         }
+        ModelProxy.prototype.addEngines = function (engines) {
+            _.each(engines, function (val, key) {
+                engineFactory.ModelProxy.engineFactory.add(key, val, true);
+            });
+        };
         ModelProxy.prototype.initInterfaces = function (config) {
             var ifFacory = new interfaceFactory.ModelProxy.InterfaceFactory();
             _.each(config.interfaces, function (i) {

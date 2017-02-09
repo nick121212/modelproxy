@@ -55,10 +55,10 @@ var ModelProxyEngine;
         DefaultEngine.prototype.validate = function (data) {
             return true;
         };
-        DefaultEngine.prototype.proxy = function (intance, data, params) {
+        DefaultEngine.prototype.proxy = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                    return [2 /*return*/, data];
+                    return [2 /*return*/, instance];
                 });
             });
         };

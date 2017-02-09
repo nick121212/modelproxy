@@ -92,7 +92,7 @@ export namespace ModelProxy {
                 let ctx: T = _.extend({}, options || {}) as T;
                 let promise = fn(ctx, async (ctx: any, next: Function) => {
                     await next();
-                }, (err: Error) => {
+                }).catch((err: Error) => {
                     this.errorHandle(ctx, err)
                 }).finally(() => {
                     complete(ctx);
