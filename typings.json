@@ -2,7 +2,7 @@
     "name": "modelproxy",
     "dependencies": {
         "bluebird": "registry:dt/bluebird#3.0.0+20161229155504",
-        "lodash": "registry:npm/lodash#4.0.0+20161015015725",
+        "lodash": "registry:dt/lodash#4.14.0+20170130182125",
         "tv4": "registry:dt/tv4#1.2.5+20160620211513"
     },
     "globalDependencies": {

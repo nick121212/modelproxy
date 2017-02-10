@@ -5,6 +5,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('task-cmd', ['commonjs']);
     grunt.registerTask('task-browserify', ['browserify']);
+    grunt.registerTask('task-ts', ['ts:node']);
+    grunt.registerTask('task-wp', ['webpack']);
 
     // grunt.registerTask('task-concat', ['concat', 'cssmin']);
     // grunt.registerTask('task-require', ['html2js', 'requirejs']);
@@ -12,5 +14,5 @@ module.exports = function(grunt) {
     // grunt.registerTask('task-rename', ['rename']);
     // grunt.registerTask('task-replace', ['replace']);
 
-    grunt.registerTask('build', ['clean:node', 'ts:node', 'browserify']);
+    grunt.registerTask('build', ['clean:node', 'ts:node', 'browserify', 'webpack', 'clean:all']);
 };

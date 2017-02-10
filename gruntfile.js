@@ -14,7 +14,7 @@
 var includeAll = require('include-all');
 
 //noinspection JSUnresolvedVariable
-module.exports = function (grunt) {
+module.exports = function(grunt) {
     // Load the include-all library in order to require all of our grunt
     // configurations and task registrations dynamically.
 
@@ -26,9 +26,9 @@ module.exports = function (grunt) {
      */
     function loadTasks(relPath) {
         return includeAll({
-                dirname: require('path').resolve(__dirname, relPath),
-                filter: /(.+)\.js$/
-            }) || {};
+            dirname: require('path').resolve(__dirname, relPath),
+            filter: /(.+)\.js$/
+        }) || {};
     }
 
     /**
@@ -49,7 +49,7 @@ module.exports = function (grunt) {
 
     // (ensure that a default task exists)
     if (!registerDefinitions.default) {
-        registerDefinitions.default = function (grunt) {
+        registerDefinitions.default = function(grunt) {
             grunt.registerTask('default', []);
         };
     }

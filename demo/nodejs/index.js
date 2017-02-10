@@ -1,4 +1,4 @@
-var modelProxy = require("../../dist").modelProxy;
+var modelProxy = require("../../dist/node").modelProxy;
 var path = require("path");
 var expect = require("chai").expect;
 var config = require("../config/config.json");

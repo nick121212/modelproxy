@@ -18,6 +18,12 @@ var ModelProxyEngine;
         function BaseEngine() {
             return _super.call(this) || this;
         }
+        BaseEngine.prototype.getStatePath = function (instance) {
+            if (instance.states && instance.state) {
+                return instance.states[instance.state] || "";
+            }
+            return "";
+        };
         return BaseEngine;
     }(compose_1.ModelProxy.Compose));
     ModelProxyEngine.BaseEngine = BaseEngine;
@@ -78,12 +84,14 @@ var ModelProxyEngine;
         function DefaultEngine() {
             return _super.call(this) || this;
         }
-        DefaultEngine.prototype.validate = function (data) {
+        DefaultEngine.prototype.validate = function (instance, options) {
             return true;
         };
         DefaultEngine.prototype.proxy = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
+                    if (this.validate(instance, options)) {
+                    }
                     return [2 /*return*/, instance];
                 });
             });
@@ -346,7 +354,10 @@ var ModelProxy;
         InterfaceFactory.prototype.add = function (name, intance, override) {
             if (override === void 0) { override = false; }
             _super.prototype.add.call(this, name, intance, override);
-            this[name] = this.execute.bind(this, intance);
+            _.extend(this, (_a = {},
+                _a[name] = this.execute.bind(this, intance),
+                _a));
+            var _a;
         };
         InterfaceFactory.prototype.execute = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
@@ -430,11 +441,12 @@ var ModelProxy;
             _.each(engines, function (val, key) {
                 engineFactory.ModelProxy.engineFactory.add(key, val, true);
             });
+            return this;
         };
         ModelProxy.prototype.initInterfaces = function (config) {
-            var ifFacory = new interfaceFactory.ModelProxy.InterfaceFactory();
+            var ifFactory = new interfaceFactory.ModelProxy.InterfaceFactory();
             _.each(config.interfaces, function (i) {
-                ifFacory.add(i.key, _.extend({}, {
+                ifFactory.add(i.key, _.extend({}, {
                     ns: config.key,
                     engine: config.engine,
                     states: config.states,
@@ -442,7 +454,7 @@ var ModelProxy;
                     mockDir: config.mockDir
                 }, i));
             });
-            return ifFacory;
+            return ifFactory;
         };
         ModelProxy.prototype.loadConfig = function (config) {
             return __awaiter(this, void 0, void 0, function () {
@@ -459,7 +471,10 @@ var ModelProxy;
         };
         ModelProxy.prototype.getNs = function (ns) {
             if (!this.interfaces.hasOwnProperty(ns)) {
-                throw new Error("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4");
+                var nses = _.map(this.interfaces, function (val, key) {
+                    return key;
+                });
+                throw new Error("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;\u5F53\u524D\u547D\u540D\u7A7A\u95F4\u3010" + nses.join(',') + "\u3011");
             }
             return this.interfaces[ns];
         };

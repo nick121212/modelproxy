@@ -29,8 +29,8 @@ declare module 'modelproxy' {
         }
         class DefaultEngine extends BaseEngine implements ModelProxy.IEngine {
             constructor();
-            validate(data: any): boolean;
-            proxy(intance: ModelProxy.IInterfaceModel, data: any, params: any): Promise<any>;
+            validate(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): boolean;
+            proxy(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): Promise<any>;
         }
     }
     export namespace ModelProxy {
@@ -76,8 +76,8 @@ declare module 'modelproxy' {
             interfaces: Array<IInterfaceModel>;
         }
         export interface IEngine {
-            validate(data: any): boolean;
-            proxy(intance: IInterfaceModel, data: any, params: any): any;
+            validate(intance: IInterfaceModel, options: IExeucte): boolean;
+            proxy(intance: IInterfaceModel, options: IExeucte): Promise<any>;
         }
         export class BaseFactory<T> {
             protected intances: {
@@ -106,7 +106,7 @@ declare module 'modelproxy' {
             private initInterfaces(config: IProxyConfig);
             loadConfig(config: IProxyConfig): Promise<this>;
             getNs(ns: string): InterfaceFactory;
-            addEngines(engines: { [id: string]: IEngine; });
+            addEngines(engines: { [id: string]: IEngine; }): ModelProxy;
         }
 
         export interface _default {

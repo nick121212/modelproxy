@@ -20,10 +20,12 @@ export namespace ModelProxy {
          * 添加engines
          * @param engines { { [id: string]: IEngine; } }  引擎对象
          */
-        addEngines(engines: { [id: string]: IEngine; }): void {
+        addEngines(engines: { [id: string]: IEngine; }): ModelProxy {
             _.each(engines, (val, key) => {
                 engineFactory.ModelProxy.engineFactory.add(key, val, true);
             });
+
+            return this;
         }
 
         /**
@@ -32,10 +34,10 @@ export namespace ModelProxy {
          * @return {InterfaceFactory}
          */
         private initInterfaces(config: IProxyConfig): interfaceFactory.ModelProxy.InterfaceFactory {
-            let ifFacory = new interfaceFactory.ModelProxy.InterfaceFactory();
+            let ifFactory = new interfaceFactory.ModelProxy.InterfaceFactory();
 
             _.each(config.interfaces, (i: IInterfaceModel) => {
-                ifFacory.add(i.key, _.extend({}, {
+                ifFactory.add(i.key, _.extend({}, {
                     ns: config.key,
                     engine: config.engine,
                     states: config.states,
@@ -44,7 +46,7 @@ export namespace ModelProxy {
                 }, i) as IInterfaceModel);
             });
 
-            return ifFacory;
+            return ifFactory;
         }
 
         /** 

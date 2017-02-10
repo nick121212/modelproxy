@@ -5,8 +5,8 @@ module.exports = {
     cache: true,
     target: "web",
     entry: {
-        'commons': ['lodash', 'tv4'],
-        'index': __dirname + '/built/node/index.js'
+        // 'vendor': ['lodash', 'tv4'],
+        'index': __dirname + '/src/index.ts'
     },
     devtool: 'source-map',
     // node: {
@@ -14,28 +14,41 @@ module.exports = {
     //     __dirname: true
     // },
     output: {
-        path: __dirname + '/built/all',
-        filename: '[name].js',
+        path: __dirname + '/dist/',
+        filename: 'web.js',
         hash: true,
-        libraryTarget: 'commonjs'
+        library: "modelProxy",
+        libraryTarget: 'umd'
     },
     stats: {
         colors: true,
         reasons: true
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.js', '.ts', '.json']
+        extensions: ['', '.ts']
     },
     module: {
         loaders: [
             { test: /\.ts$/, loader: 'ts' }
         ]
     },
+    externals: [
+        "tv4",
+        {
+            "lodash": {
+                root: "_",
+                commonjs2: "lodash",
+                commonjs: ["lodash"],
+                amd: "lodash"
+            }
+        }
+    ],
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'commons',
-            filename: '[name].js',
-            minChunks: 3
-        })
+        // new webpack.IgnorePlugin(/tv4|lodash/i),
+        // new webpack.ProvidePlugin({
+        //     "tv4": "tv4",
+        //     "_": "lodash"
+        // }),
+        // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
     ]
 }

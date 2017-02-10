@@ -58,7 +58,7 @@ export namespace ModleProxySchema {
             return this;
         }
 
-        required(...keys) {
+        required(...keys: string[]) {
             this.data = _.extend({
                 required: keys
             }, this.data || {});

@@ -9,11 +9,15 @@ export namespace ModelProxyEngine {
             super();
         }
 
-        validate(data: any): boolean {
+        validate(instance: IInterfaceModel, options: IExeucte): boolean {
             return true;
         }
 
-        async proxy(instance: IInterfaceModel, options: IExeucte) {
+        async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
+            if (this.validate(instance, options)) {
+
+            }
+
             return instance;
         }
     }

@@ -3,7 +3,7 @@ var _ = require("lodash");
 var tv4 = require("tv4");
 var expect = require("chai").expect;
 var assert = require("chai").assert;
-var modelProxy = require("../dist").modelProxy;
+var modelProxy = require("../dist/node").modelProxy;
 
 describe('modelproxy', function() {
     var proxy;

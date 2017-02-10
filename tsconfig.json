@@ -3,20 +3,18 @@
         "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
-        "sourceMap": true,
         "preserveConstEnums": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
         "removeComments": true,
         "noImplicitAny": false,
-        "noLib": false,
+        "inlineSourceMap": true,
+        "pretty": true,
+        "outDir": "built/node/",
         "lib": [
             "es5",
             "es2016"
         ],
         "typeRoots": [
-            "typings/index.d.ts",
-            "modelproxy.d.ts"
+            "typings/index.d.ts"
         ]
     }
 }

@@ -18,18 +18,19 @@ export namespace ModelProxy {
         */
         add(name: string, intance: IInterfaceModel, override: boolean = false): void {
             super.add(name, intance, override);
-            this[name] = this.execute.bind(this, intance);
+
+            _.extend(this, {
+                [name]: this.execute.bind(this, intance)
+            });
         }
 
         /**
          * 执行函数
          * @param intance        {IInterfaceModel}  接口的具体实例
-         * @param data           {any}              调用接口所需的data
-         * @param params         {any}              调用接口所需的querystring
-         * @param intanceCover   {IInterfaceModel}  接口的实例，覆盖配置中的数据
-         * @return               {any}
+         * @param options        {IExeucte}              调用接口所需的data
+         * @return               {Promise<any>}
          */
-        async execute(instance: IInterfaceModel, options: IExeucte) {
+        async execute(instance: IInterfaceModel, options: IExeucte): Promise<any> {
             let engine;
             let iinstance: IInterfaceModel = { method: MethodType.GET, title: '', path: '', key: '' };
 

@@ -14,16 +14,6 @@ module.exports = function(grunt) {
             src: ["src/index.ts"],
             outDir: "built/node/",
             // out: 'built/node/index.js',
-        },
-        'web': {
-            tsconfig: true,
-            options: {
-                moduleResolution: "classic",
-                module: "amd"
-            },
-            src: ["src/index.ts"],
-            // outDir: "built/web/",
-            out: 'built/all/index.js',
         }
     });
 

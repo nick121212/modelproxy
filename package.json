@@ -1,8 +1,8 @@
 {
     "name": "modelproxy",
-    "version": "0.2.2",
+    "version": "0.2.4",
     "description": "接口配置建模框架",
-    "main": "dist/index.js",
+    "main": "dist/node.js",
     "types": "modelproxy.d.ts",
     "typings": "modelproxy.d.ts",
     "scripts": {
@@ -41,7 +41,7 @@
         "grunt-contrib-copy": "^1.0.0",
         "grunt-madge": "^1.0.3",
         "grunt-ts": "^6.0.0-beta.11",
-        "grunt-wrap-commonjs": "^0.4.4",
+        "grunt-webpack": "^2.0.1",
         "include-all": "^3.0.0",
         "mocha": "~2.3.4",
         "mochawesome": "~1.2.1",
