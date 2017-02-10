@@ -26,6 +26,7 @@ declare module 'modelproxy' {
     export namespace ModelProxyEngine {
         abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> {
             constructor();
+            getStatePath(instance: ModelProxy.IInterfaceModel): string;
         }
         class DefaultEngine extends BaseEngine implements ModelProxy.IEngine {
             constructor();
@@ -36,8 +37,7 @@ declare module 'modelproxy' {
     export namespace ModelProxy {
         export interface IProxyCtx {
             instance: IInterfaceModel;
-            data?: any;
-            params?: any;
+            executeInfo: IExeucte,
             isError?: boolean;
             err?: Error;
             result?: any;

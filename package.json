@@ -1,6 +1,6 @@
 {
     "name": "modelproxy",
-    "version": "0.2.4",
+    "version": "0.2.6",
     "description": "接口配置建模框架",
     "main": "dist/node.js",
     "types": "modelproxy.d.ts",
@@ -22,10 +22,6 @@
         "typescript",
         "ajax"
     ],
-    "browserify-shim": {
-        "lodash": "global:_",
-        "tv4": "global:tv4"
-    },
     "author": "NICK121212@126.com",
     "license": "MIT",
     "bugs": {
@@ -33,10 +29,8 @@
     },
     "homepage": "https://github.com/nick121212/modelproxy#readme",
     "devDependencies": {
-        "browserify-shim": "^3.8.13",
         "chai": "~3.4.1",
         "grunt": "^1.0.1",
-        "grunt-browserify": "^5.0.0",
         "grunt-contrib-clean": "^1.0.0",
         "grunt-contrib-copy": "^1.0.0",
         "grunt-madge": "^1.0.3",

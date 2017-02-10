@@ -14,8 +14,8 @@ export namespace ModelProxyEngine {
         }
 
         async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
-            if (this.validate(instance, options)) {
-
+            if (!this.validate(instance, options)) {
+                return null;
             }
 
             return instance;
