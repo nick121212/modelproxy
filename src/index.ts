@@ -9,11 +9,16 @@ import * as baseFactory from "./libs/base.factory";
 import * as schemas from "./schemas/builder";
 import * as methodtype from "./models/method";
 
+import * as errors from "./libs/errors";
+
+console.log(errors);
+
 export const modelProxy = {
     Proxy: ModelProxy.ModelProxy,
     engineFactory: engineFactory.ModelProxy.engineFactory,
     Compose: compose.ModelProxy.Compose,
     modelProxySchemaUtils: modelProxySchemaUtils,
     methods: methodtype.MethodType,
-    BaseEngine: base.ModelProxyEngine.BaseEngine
+    BaseEngine: base.ModelProxyEngine.BaseEngine,
+    errors: errors
 };

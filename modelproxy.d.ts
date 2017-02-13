@@ -24,23 +24,32 @@ declare module 'modelproxy' {
         }
     }
     export namespace ModelProxyEngine {
-        abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> {
+        abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> implements ModelProxy.IEngine {
             constructor();
             getStatePath(instance: ModelProxy.IInterfaceModel): string;
+            protected validateTv4(obj: JSON, schema: JsonSchema): boolean;
+            validate(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): boolean;
+            proxy(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): Promise<any>;
         }
-        class DefaultEngine extends BaseEngine implements ModelProxy.IEngine {
+        class DefaultEngine extends BaseEngine {
             constructor();
-            validate(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): boolean;
-            proxy(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): Promise<any>;
+            validate(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExecute): boolean;
+            proxy(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExecute): Promise<any>;
         }
     }
     export namespace ModelProxy {
         export interface IProxyCtx {
             instance: IInterfaceModel;
-            executeInfo: IExeucte,
+            executeInfo: IExecute,
             isError?: boolean;
             err?: Error;
             result?: any;
+        }
+        export interface IExeucte {
+            instance: IInterfaceModel;
+            data?: any;
+            params?: any;
+            settings?: any;
         }
         export enum MethodType {
             GET,
@@ -56,6 +65,8 @@ declare module 'modelproxy' {
             method: MethodType;
             path: string;
             config?: Object;
+            dataSchema?: JsonSchema;
+            paramsSchema?: JsonSchema;
         }
         export interface ICommon {
             key: string;
@@ -66,7 +77,7 @@ declare module 'modelproxy' {
             version?: string;
             mockDir?: string;
         }
-        export interface IExeucte {
+        export interface IExecute {
             instance: IInterfaceModel;
             data?: any;
             params?: any;
@@ -76,8 +87,8 @@ declare module 'modelproxy' {
             interfaces: Array<IInterfaceModel>;
         }
         export interface IEngine {
-            validate(intance: IInterfaceModel, options: IExeucte): boolean;
-            proxy(intance: IInterfaceModel, options: IExeucte): Promise<any>;
+            validate(intance: IInterfaceModel, options: IExecute): boolean;
+            proxy(intance: IInterfaceModel, options: IExecute): Promise<any>;
         }
         export class BaseFactory<T> {
             protected intances: {
@@ -98,7 +109,8 @@ declare module 'modelproxy' {
         export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
             constructor();
             add(name: string, intance: IInterfaceModel, override?: boolean): void;
-            execute(intance: IInterfaceModel, data: any, params: any, intanceCover: IInterfaceModel): Promise<any>;
+            execute(intance: IInterfaceModel, options: IExecute): Promise<any>;
+            private validate(obj: JSON, schema: JsonSchema): void;
         }
         export class ModelProxy extends Compose<any> {
             private interfaces;
@@ -107,6 +119,26 @@ declare module 'modelproxy' {
             loadConfig(config: IProxyConfig): Promise<this>;
             getNs(ns: string): InterfaceFactory;
             addEngines(engines: { [id: string]: IEngine; }): ModelProxy;
+            execute(path: string, options: IExecute): Promise<any>;
+        }
+        export class BaseError implements Error {
+            public name: string;
+            public message: string;
+            constructor(message?: string);
+        }
+        export class ModelProxyValidaterError extends BaseError {
+            error: Array<any> | any;
+            missing: Array<any>;
+            constructor(message: string, error: Array<any> | any, missing?: Array<any>);
+        }
+
+        export class ModelProxyMissingError extends BaseError {
+            constructor(message: string);
+        }
+
+        export interface errors {
+            ModelProxyMissingError: typeof ModelProxyMissingError;
+            ModelProxyValidaterError: typeof ModelProxyValidaterError;
         }
 
         export interface _default {
@@ -116,6 +148,7 @@ declare module 'modelproxy' {
             modelProxySchemaUtils: ModelProxySchema._default;
             methods: typeof MethodType;
             BaseEngine: typeof ModelProxyEngine.BaseEngine;
+            errors: errors;
         }
     }
 

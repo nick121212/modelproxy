@@ -2,5 +2,6 @@
 /// <reference path="globals/json-schema/index.d.ts" />
 /// <reference path="globals/node/index.d.ts" />
 /// <reference path="modules/bluebird/index.d.ts" />
+/// <reference path="modules/json-pointer/index.d.ts" />
 /// <reference path="modules/lodash/index.d.ts" />
 /// <reference path="modules/tv4/index.d.ts" />

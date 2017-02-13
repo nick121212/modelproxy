@@ -4,14 +4,14 @@ import * as base from './base';
 import { IExeucte } from '../models/execute';
 
 export namespace ModelProxyEngine {
-    export class DefaultEngine extends base.ModelProxyEngine.BaseEngine implements IEngine {
+    export class DefaultEngine extends base.ModelProxyEngine.BaseEngine {
         constructor() {
             super();
         }
 
-        validate(instance: IInterfaceModel, options: IExeucte): boolean {
-            return true;
-        }
+        // validate(instance: IInterfaceModel, options: IExeucte): boolean {
+        //     return true;
+        // }
 
         async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
             if (!this.validate(instance, options)) {

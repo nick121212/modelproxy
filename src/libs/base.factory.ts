@@ -1,4 +1,5 @@
 import * as _ from "lodash";
+import { ModelProxyMissingError } from "./errors";
 
 export namespace ModelProxy {
     /**
@@ -39,11 +40,11 @@ export namespace ModelProxy {
         * @return         {IEngine}
         */
         use(name: string): T {
-            if (!this.instances.hasOwnProperty(name)) {
+            if (!name || !this.instances.hasOwnProperty(name)) {
                 let engines = _.map(this.instances, (val, key) => {
                     return key;
                 });
-                throw new Error(`不存在name=【${name}】的engine！当前engines：【${engines.join(',')}】`);
+                throw new ModelProxyMissingError(`不存在name=【${name}】的engine！当前engines：【${engines.join(',')}】`);
             }
 
             return this.instances[name];

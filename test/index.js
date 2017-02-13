@@ -7,15 +7,15 @@ var modelProxy = require("../dist/node").modelProxy;
 
 describe('modelproxy', function() {
     var proxy;
-    var data = { username: "nick", "password": "111111" };
+    var data = { "username": "nick", "password": "111111" };
 
     before(function(done) {
         new modelProxy.Proxy()
             .loadConfig({
                 "key": "test",
                 "title": "p-uc",
-                "engine": "mockjs",
-                "mockDir": "./mocks/",
+                "engine": "default",
+                "mockDir": "/mocks/",
                 "states": {
                     "prod": "http://www.baidu.com",
                     "test": "http://www.baidu.com",
@@ -28,6 +28,19 @@ describe('modelproxy', function() {
                     "title": "登陆接口",
                     "method": "GET",
                     "path": "/passport/login",
+                    "engine": "default",
+                    "dataSchema": {
+                        "type": "object",
+                        "required": ["username", "password"],
+                        "properties": {
+                            "username": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        }
+                    },
                     "config": {
                         "test": "test-1"
                     }
@@ -38,9 +51,9 @@ describe('modelproxy', function() {
             });
     });
 
-    after(function() {
-        proxy = null;
-    });
+    // after(function() {
+    //     proxy = null;
+    // });
 
     describe("命名空间", function() {
         it('测试命名空间test', function() {
@@ -56,11 +69,23 @@ describe('modelproxy', function() {
             expect(proxy.getNs("test").login).to.be.a("function")
         });
         it('测试login方法,抛出错误的engine', function(done) {
-            proxy.getNs("test").login({ data: data, params: {} }).catch(function(err) {
+            proxy.getNs("test").login({ data: data, instance: { engine: "mockjs" } }).catch(function(err) {
                 expect(err).to.be.an.instanceof(Error);
                 expect(err.message).to.contain('mockjs');
                 done();
             });
+        });
+        it('测试login方法,抛出验证错误', function(done) {
+            var data1 = { password: "111111" };
+            try {
+                proxy.getNs("test").login({ data: data1, params: {} }).catch(function(err) {
+                    expect(err).to.be.an.instanceof(Error);
+                    expect(err.error[0].code).to.equal(302);
+                    done();
+                });
+            } catch (e) {
+                console.log(e);
+            }
         });
         it('测试login方法成功', function(done) {
             var test = proxy.getNs("test");
@@ -71,6 +96,16 @@ describe('modelproxy', function() {
                 instance: { engine: "default" }
             }).then(function(result) {
                 expect(result.key).to.be.equal(test.get("login").key);
+                done();
+            });
+        });
+        it('测试login方法成功,使用json path', function(done) {
+            proxy.execute("/test/login", {
+                data: data,
+                params: {},
+                instance: { engine: "default" }
+            }).then(function(result) {
+                expect(result.key).to.be.equal("login");
                 done();
             });
         });

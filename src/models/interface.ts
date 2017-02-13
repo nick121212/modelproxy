@@ -21,4 +21,12 @@ export interface IInterfaceModel extends ICommon {
      * 接口地址
      */
     config?: Object;
+    /**
+     * data字段 JSONSCHEMA，用于验证data的数据准确性
+     */
+    dataSchema?: JsonSchema;
+    /**
+     * params字段 JSONSCHEMA，用于验证params的数据准确性
+     */
+    paramsSchema?: JsonSchema;
 }

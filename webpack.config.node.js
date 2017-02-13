@@ -16,7 +16,6 @@ module.exports = {
     output: {
         path: __dirname + '/dist/',
         filename: 'node.js',
-        hash: true,
         // library: "modelProxy",
         libraryTarget: 'commonjs'
     },
@@ -25,11 +24,11 @@ module.exports = {
         reasons: true
     },
     resolve: {
-        extensions: ['', '.ts']
+        extensions: ['.js', '.ts']
     },
     module: {
         loaders: [
-            { test: /\.ts$/, loader: 'ts' }
+            { test: /\.ts$/, loader: 'ts-loader' }
         ]
     },
     externals: [

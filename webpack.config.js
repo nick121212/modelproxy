@@ -16,7 +16,6 @@ module.exports = {
     output: {
         path: __dirname + '/dist/',
         filename: 'web.js',
-        hash: true,
         library: "modelProxy",
         libraryTarget: 'umd'
     },
@@ -25,11 +24,11 @@ module.exports = {
         reasons: true
     },
     resolve: {
-        extensions: ['', '.ts']
+        extensions: ['.js', '.ts']
     },
     module: {
         loaders: [
-            { test: /\.ts$/, loader: 'ts' }
+            { test: /\.ts$/, loader: 'ts-loader' }
         ]
     },
     externals: [
@@ -40,6 +39,14 @@ module.exports = {
                 commonjs2: "lodash",
                 commonjs: ["lodash"],
                 amd: "lodash"
+            }
+        },
+        {
+            "json-pointer": {
+                root: "jsonPointer",
+                commonjs2: "json-pointer",
+                commonjs: ["json-pointer"],
+                amd: "json-pointer"
             }
         }
     ],

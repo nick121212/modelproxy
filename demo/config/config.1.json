@@ -15,6 +15,19 @@
         "title": "登陆接口",
         "method": "GET",
         "path": "/passport/login",
+        "dataSchema": {
+            "type": "object",
+            "required": ["username", "password"],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "minLength": 4
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "config": {
             "test": "test-1"
         }
