@@ -64,7 +64,7 @@ export namespace ModelProxy {
                         });
                     };
 
-                    return dispatch(0).then(resolve);
+                    return dispatch(0).then(resolve.bind(context));
                 });
             };
         }
@@ -89,7 +89,7 @@ export namespace ModelProxy {
             const fn = this.compose();
 
             return (options: any): Promise<any> => {
-                let ctx: T = _.extend({}, options || {}) as T;
+                let ctx: T = _.extend(options || {}, {}) as T;
                 let promise = fn(ctx, async (ctx: any, next: Function) => {
                     await next();
                 }).catch((err: Error) => {
