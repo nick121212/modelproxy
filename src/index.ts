@@ -11,8 +11,6 @@ import * as methodtype from "./models/method";
 
 import * as errors from "./libs/errors";
 
-console.log(errors);
-
 export const modelProxy = {
     Proxy: ModelProxy.ModelProxy,
     engineFactory: engineFactory.ModelProxy.engineFactory,

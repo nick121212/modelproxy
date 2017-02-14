@@ -11,7 +11,9 @@
  2. [bluebird](https://github.com/petkaantonov/bluebird) Bluebird is a fully featured promise library with focus on innovative features and performance
  3. [json-pointer](https://github.com/manuelstofer/json-pointer) Some utilities for JSON pointers described by RFC 6901
  4. [mockjs](https://github.com/nuysoft/Mock/wiki/Getting-Started) 生成mock数据
-
+ 5. [node-serialize](https://github.com/luin/serialize) Serialize a object including it's function into a JSON.
+ 6. [lodash](https://github.com/lodash/lodash) 工具库
+ 
 >## 3、编译
  1. 进入根目录执行 npm install
  2. grunt build-node生成built目录
@@ -36,9 +38,9 @@
 >            "title": "登陆接口",
 >            "method": "GET",
 >            "path": "/passport/login",
->            "config": {
->                "test": "test-1"
->            }
+>            "dataSchema":{}, // 用于验证data
+>            "paramsSchema":{},// 用于验证params
+>            
 >        }]
 >    } 
 > ```
@@ -53,25 +55,29 @@
 >         if (!result) {
 >             return;
 >         }
->         return result.login({ usename: "1", password: "111111" }, {}, { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") });
+>         return result.login({
+>             data:{ usename: "1", password: "111111" }, 
+>             params:{},
+>             instance: { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") }
+>         });
 >     }).then((result) => {
 >         console.info(JSON.stringify(result));
 >     }).catch(console.error);
 > ```
 
 >## 6、默认的处理ENGINE
-> 默认的engine只是返回了数据的内容，可自定义开发engine来处理接口的转发；例如（jquery,superagent,dubbo）等；     
+> 默认的engine只是返回了数据的内容，可自定义开发engine来处理接口的转发；例如（jquery,superagent,dubbo,mockjs）等；     
 > ```
->     export class DefaultEngine implements IEngine {
+>     export class DefaultEngine extends BaseEngine {
 >         constructor() {
-> 
+>              super();
 >         }
 > 
->         validate(data: any): boolean {
+>         validate(intance: IInterfaceModel, options:IExecute): boolean {
 >             return true;
 >         }
 > 
->         async proxy( intance: IInterfaceModel, data: any, params: any) {
+>         async proxy(intance: IInterfaceModel, options:IExecute) {
 >             return data;
 >         }
 >     }
