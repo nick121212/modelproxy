@@ -41,7 +41,7 @@ export namespace ModelProxy {
                     let index = -1;
 
                     const dispatch = (i: number) => {
-                        return new Promise((resolve1) => {
+                        return new Promise(async(resolve1) => {
                             let fn = this.middlewares[i];
 
                             if (i <= index) {
@@ -53,10 +53,10 @@ export namespace ModelProxy {
                                 return resolve1(context);
                             }
                             try {
-                                fn(context, async () => {
+                                await fn(context, async () => {
                                     await dispatch(i + 1);
                                     resolve1();
-                                }).catch(reject);
+                                });
                             } catch (err) {
                                 console.log("compose error" + err);
                                 reject(err);

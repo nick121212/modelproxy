@@ -7,18 +7,22 @@ export namespace ModelProxyEngine {
     export class DefaultEngine extends base.ModelProxyEngine.BaseEngine {
         constructor() {
             super();
+
+            this.use((ctx, next) => {
+                next();
+
+                return new Promise((resolve) => {
+                    resolve();
+                });
+            });
         }
 
-        // validate(instance: IInterfaceModel, options: IExeucte): boolean {
-        //     return true;
-        // }
-
         async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
-            if (!this.validate(instance, options)) {
-                return null;
-            }
+            var fn = this.callback(()=>{});
 
-            return instance;
+            await fn({});
+
+            return {};
         }
     }
 }

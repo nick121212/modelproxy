@@ -2,6 +2,7 @@ var path = require("path");
 var _ = require("lodash");
 var tv4 = require("tv4");
 var expect = require("chai").expect;
+var bluebird = require("bluebird");
 var assert = require("chai").assert;
 var modelProxy = require("../dist/node").modelProxy;
 
@@ -10,6 +11,7 @@ describe('modelproxy', function() {
     var data = { "username": "nick", "password": "111111" };
 
     before(function(done) {
+        global.Promise = bluebird;
         new modelProxy.Proxy()
             .loadConfig({
                 "key": "test",
@@ -60,7 +62,7 @@ describe('modelproxy', function() {
             expect(proxy.getNs("test")).to.be.a("object");
         });
         it('测试命名空间test1,抛出没有找到test1空间', function() {
-            assert.throw((function() { proxy.getNs("test1"); }), "没有找到test1空间");
+            assert.throw((function() { proxy.getNs("test1"); }));
         });
     });
 
@@ -70,7 +72,7 @@ describe('modelproxy', function() {
         });
         it('测试login方法,抛出错误的engine', function(done) {
             proxy.getNs("test").login({ data: data, instance: { engine: "mockjs" } }).catch(function(err) {
-                expect(err).to.be.an.instanceof(Error);
+                expect(err).to.be.an.instanceof(modelProxy.errors.ModelProxyMissingError);
                 expect(err.message).to.contain('mockjs');
                 done();
             });
@@ -79,7 +81,7 @@ describe('modelproxy', function() {
             var data1 = { password: "111111" };
             try {
                 proxy.getNs("test").login({ data: data1, params: {} }).catch(function(err) {
-                    expect(err).to.be.an.instanceof(Error);
+                    expect(err).to.be.an.instanceof(modelProxy.errors.ModelProxyValidaterError);
                     expect(err.error[0].code).to.equal(302);
                     done();
                 });
@@ -95,7 +97,7 @@ describe('modelproxy', function() {
                 params: {},
                 instance: { engine: "default" }
             }).then(function(result) {
-                expect(result.key).to.be.equal(test.get("login").key);
+                expect(result).to.be.an("object");
                 done();
             });
         });
@@ -105,7 +107,7 @@ describe('modelproxy', function() {
                 params: {},
                 instance: { engine: "default" }
             }).then(function(result) {
-                expect(result.key).to.be.equal("login");
+                expect(result).to.be.an("object");
                 done();
             });
         });
