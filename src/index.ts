@@ -8,7 +8,6 @@ import * as base from './engines/base';
 import * as baseFactory from "./libs/base.factory";
 import * as schemas from "./schemas/builder";
 import * as methodtype from "./models/method";
-
 import * as errors from "./libs/errors";
 
 export const modelProxy = {
@@ -18,5 +17,6 @@ export const modelProxy = {
     modelProxySchemaUtils: modelProxySchemaUtils,
     methods: methodtype.MethodType,
     BaseEngine: base.ModelProxyEngine.BaseEngine,
+    BaseFactory: baseFactory.ModelProxy.BaseFactory,
     errors: errors
 };

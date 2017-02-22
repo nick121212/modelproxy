@@ -148,6 +148,7 @@ declare module 'modelproxy' {
             modelProxySchemaUtils: ModelProxySchema._default;
             methods: typeof MethodType;
             BaseEngine: typeof ModelProxyEngine.BaseEngine;
+            BaseFactory: typeof BaseFactory;
             errors: errors;
         }
     }

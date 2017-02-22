@@ -24,7 +24,10 @@ module.exports = {
         reasons: true
     },
     resolve: {
-        extensions: ['.js', '.ts']
+        extensions: ['.js', '.ts'],
+        alias: {
+
+        }
     },
     module: {
         loaders: [

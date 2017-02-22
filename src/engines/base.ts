@@ -12,7 +12,13 @@ export namespace ModelProxyEngine {
             super();
         }
 
-        protected validateTv4(obj: JSON, schema: JsonSchema):boolean {
+        /**
+         * 验证数据的准确性
+         * @param obj         {JSON}        数据
+         * @param schema      {JSONSCHEMA}  JSONSCHEMA
+         * @return            {Boolean}
+         */
+        protected validateTv4(obj: JSON, schema: JsonSchema): boolean {
             let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
 
             if (!valid.valid) {
@@ -22,6 +28,12 @@ export namespace ModelProxyEngine {
             return true;
         }
 
+        /**
+         * 验证数据的准确性
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         * @return           {boolean}
+         */
         validate(instance: IInterfaceModel, options: IExeucte): boolean {
             instance.dataSchema && this.validateTv4(options.data, instance.dataSchema);
             instance.paramsSchema && this.validateTv4(options.params, instance.paramsSchema);
@@ -29,6 +41,12 @@ export namespace ModelProxyEngine {
             return true;
         }
 
+        /**
+         * 代理接口
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         * @return           {Promise<any>}
+         */
         async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
             return {};
         }
@@ -36,7 +54,7 @@ export namespace ModelProxyEngine {
         /**
          * 取得state所对应的环境
          * @param instance  {IInterfaceModel}   接口实例
-         * @return  {String}
+         * @return          {String}
          */
         getStatePath(instance: IInterfaceModel): String {
             if (instance.states && instance.state) {

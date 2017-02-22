@@ -26,15 +26,6 @@ export namespace ModelProxy {
             });
         }
 
-        private validate(obj: JSON, schema: JsonSchema): void {
-            let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
-
-            if (!valid.valid) {
-                // console.error(valid);
-                throw valid.errors;
-            }
-        }
-
         /**
          * 执行函数
          * @param intance        {IInterfaceModel}  接口的具体实例
