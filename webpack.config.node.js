@@ -17,7 +17,7 @@ module.exports = {
         path: __dirname + '/dist/',
         filename: 'node.js',
         // library: "modelProxy",
-        libraryTarget: 'commonjs'
+        libraryTarget: 'commonjs2'
     },
     stats: {
         colors: true,

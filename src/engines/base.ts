@@ -1,9 +1,10 @@
+import * as tv4 from "tv4";
+
 import { IEngine } from '../models/engine';
 import { IExeucte } from '../models/execute';
 import { ModelProxy } from '../libs/compose';
 import { IProxyCtx } from '../models/proxy.ctx';
 import { IInterfaceModel } from '../models/interface';
-import * as tv4 from "tv4";
 import { ModelProxyMissingError, ModelProxyValidaterError } from '../libs/errors';
 
 export namespace ModelProxyEngine {
@@ -18,7 +19,7 @@ export namespace ModelProxyEngine {
          * @param schema      {JSONSCHEMA}  JSONSCHEMA
          * @return            {Boolean}
          */
-        protected validateTv4(obj: JSON, schema: JsonSchema): boolean {
+        protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
             let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
 
             if (!valid.valid) {
@@ -56,7 +57,7 @@ export namespace ModelProxyEngine {
          * @param instance  {IInterfaceModel}   接口实例
          * @return          {String}
          */
-        getStatePath(instance: IInterfaceModel): String {
+        getStatePath(instance: IInterfaceModel): string {
             if (instance.states && instance.state) {
                 return instance.states[instance.state] || "";
             }

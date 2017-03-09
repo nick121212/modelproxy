@@ -12,11 +12,11 @@ export interface IInterfaceModel extends ICommon {
     /**
      * 调用方法
      */
-    method: MethodType;
+    method?: MethodType;
     /**
      * 接口地址
      */
-    path: string;
+    path?: string;
     /**
      * 接口地址
      */
@@ -24,9 +24,9 @@ export interface IInterfaceModel extends ICommon {
     /**
      * data字段 JSONSCHEMA，用于验证data的数据准确性
      */
-    dataSchema?: JsonSchema;
+    dataSchema?: tv4.JsonSchema;
     /**
      * params字段 JSONSCHEMA，用于验证params的数据准确性
      */
-    paramsSchema?: JsonSchema;
+    paramsSchema?: tv4.JsonSchema;
 }

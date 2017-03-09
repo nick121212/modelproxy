@@ -1,13 +1,12 @@
 import { IExeucte } from '../models/execute';
 import { IEngine } from '../models/engine';
-import { IInterfaceModel } from "../models/interface";
+import { IInterfaceModel } from '../models/interface';
 import { IProxyConfig } from "../models/proxy.config";
 import * as interfaceFactory from "./interface.factory";
 import * as engineFactory from "./engine.factory";
 import schemas from "../schemas/index";
 import * as compose from "./compose";
 import * as tv4 from "tv4";
-import * as _ from "lodash";
 import * as jsonPointer from "json-pointer";
 import { ModelProxyMissingError } from './errors';
 
@@ -24,9 +23,9 @@ export namespace ModelProxy {
          * @param engines { { [id: string]: IEngine; } }  引擎对象
          */
         addEngines(engines: { [id: string]: IEngine; }): ModelProxy {
-            _.each(engines, (val, key) => {
-                engineFactory.ModelProxy.engineFactory.add(key, val, true);
-            });
+            for (var key in engines) {
+                engineFactory.ModelProxy.engineFactory.add(key, engines[key], true);
+            }
 
             return this;
         }
@@ -36,18 +35,28 @@ export namespace ModelProxy {
          * @param config {IProxyConfig} 配置信息
          * @return {InterfaceFactory}
          */
-        private initInterfaces(config: IProxyConfig): interfaceFactory.ModelProxy.InterfaceFactory {
+        private initInterfaces(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel = {}): interfaceFactory.ModelProxy.InterfaceFactory {
             let ifFactory = new interfaceFactory.ModelProxy.InterfaceFactory();
 
-            _.each(config.interfaces, (i: IInterfaceModel) => {
-                ifFactory.add(i.key, _.extend({}, {
+            config.interfaces.forEach((i: IInterfaceModel) => {
+                ifFactory.add(i.key, Object.assign({}, {
                     ns: config.key,
                     engine: config.engine,
                     states: config.states,
                     state: config.state,
                     mockDir: config.mockDir
-                }, i) as IInterfaceModel);
+                }, i, overrideInterfaceConfig || {}) as IInterfaceModel);
             });
+
+            // _.each(config.interfaces, (i: IInterfaceModel) => {
+            //     ifFactory.add(i.key, _.extend({}, {
+            //         ns: config.key,
+            //         engine: config.engine,
+            //         states: config.states,
+            //         state: config.state,
+            //         mockDir: config.mockDir
+            //     }, i, overrideInterfaceConfig || {}) as IInterfaceModel);
+            // });
 
             return ifFactory;
         }
@@ -57,14 +66,14 @@ export namespace ModelProxy {
          * @param config {IProxyConfig} 配置信息
          * @return {InterfaceFactory}   
         */
-        async loadConfig(config: IProxyConfig) {
+        async loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel = {}) {
             let valid: tv4.SingleResult = tv4.validateResult(config, schemas.proxyConfigSchema as tv4.JsonSchema);
 
             if (!valid.valid) {
                 throw valid.error;
             }
 
-            this.interfaces[config.key] = this.initInterfaces(config);
+            this.interfaces[config.key] = this.initInterfaces(config, overrideInterfaceConfig);
 
             return this;
         }
@@ -84,11 +93,23 @@ export namespace ModelProxy {
 
             interfaceInstance = jsonPointer.get(this.interfaces, path);
 
-            if (!_.isFunction(interfaceInstance)) {
-                throw new TypeError(`${path}不是一个方法！`);
-            }
+            // if (!_.isFunction(interfaceInstance)) {
+            //     throw new TypeError(`${path}不是一个方法！`);
+            // }
 
             return interfaceInstance(options);
+        }
+
+        getHref(path: string, instance: IInterfaceModel) {
+            let interfaceInstance: Function = null;
+
+            if (!jsonPointer.has(this.interfaces, path)) {
+                throw new ModelProxyMissingError(`没有发现${path}的接口方法！`);
+            }
+
+            interfaceInstance = jsonPointer.get(this.interfaces, path);
+
+            return interfaceInstance["getPath"](instance);
         }
 
         /**
@@ -98,9 +119,14 @@ export namespace ModelProxy {
          */
         getNs(ns: string): interfaceFactory.ModelProxy.InterfaceFactory {
             if (!this.interfaces.hasOwnProperty(ns)) {
-                let nses = _.map(this.interfaces, (val, key) => {
-                    return key;
-                });
+                let nses = [];
+
+                for (let key in this.interfaces) {
+                    nses.push(key);
+                }
+                // let nses = _.map(this.interfaces, (val, key) => {
+                //     return key;
+                // });
 
                 throw new ModelProxyMissingError(`没有找到${ns}空间;当前命名空间【${nses.join(',')}】`);
             }

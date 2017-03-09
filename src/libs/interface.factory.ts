@@ -1,7 +1,6 @@
 import { IEngine } from '../models/engine';
 import { IInterfaceModel } from "../models/interface";
 import { MethodType } from '../models/method';
-import * as _ from "lodash";
 import * as factory from "./base.factory";
 import * as engineFactory from "./engine.factory";
 import { IExeucte } from '../models/execute';
@@ -18,12 +17,31 @@ export namespace ModelProxy {
         * @param override {boolean}   是否覆盖
         * @return {void}
         */
-        add(name: string, intance: IInterfaceModel, override: boolean = false): void {
-            super.add(name, intance, override);
+        add(name: string, instance: IInterfaceModel, override: boolean = false): void {
+            super.add(name, instance, override);
 
-            _.extend(this, {
-                [name]: this.execute.bind(this, intance)
+            let func = this.execute.bind(this, instance);
+
+            func.getPath = this.getPath.bind(this, instance)
+
+            Object.assign(this, {
+                [name]: func
             });
+        }
+
+        private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModel): IInterfaceModel {
+            return Object.assign({}, instance, extendInstance);
+        }
+
+        private getPath(instance: IInterfaceModel, extendInstance: IInterfaceModel): string {
+            let engine: IEngine;
+            let iinstance: IInterfaceModel = {};
+
+            iinstance = this.megreInstance(instance, extendInstance || {});
+
+            engine = engineFactory.ModelProxy.engineFactory.use("default");
+
+            return engine.getStatePath(iinstance) + iinstance.path;
         }
 
         /**
@@ -34,9 +52,10 @@ export namespace ModelProxy {
          */
         async execute(instance: IInterfaceModel, options: IExeucte): Promise<any> {
             let engine: IEngine;
-            let iinstance: IInterfaceModel = { method: MethodType.GET, title: '', path: '', key: '' };
+            let iinstance: IInterfaceModel = {};
 
-            _.extend(iinstance, instance, options.instance || {});
+            iinstance = this.megreInstance(instance, options.instance || {});
+
             engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
 
             // 验证数据的准确性

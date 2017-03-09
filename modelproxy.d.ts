@@ -1,16 +1,16 @@
 declare module 'modelproxy' {
     export namespace ModelProxySchema {
         abstract class BaseTypeBuilder {
-            protected data: JsonSchema;
+            protected data: tv4.JsonSchema;
             constructor();
-            build(type?: JsonSchemaTypes, title?: string, description?: string): BaseTypeBuilder;
+            build(type?: any, title?: string, description?: string): BaseTypeBuilder;
             properties(props: {
-                [key: string]: JsonSchema;
+                [key: string]: tv4.JsonSchema;
             }): JsonSchemaBuilder;
-            items(items: JsonSchema | JsonSchema[]): JsonSchemaBuilder;
+            items(items: tv4.JsonSchema | tv4.JsonSchema[]): JsonSchemaBuilder;
             schema(schema?: string, id?: string): BaseTypeBuilder;
             required(...keys: any[]): this;
-            toValue(): JsonSchema;
+            toValue(): tv4.JsonSchema;
         }
         export class JsonSchemaBuilder extends BaseTypeBuilder {
             constructor();
@@ -18,8 +18,8 @@ declare module 'modelproxy' {
         }
 
         export interface _default {
-            proxyConfigSchema: JsonSchema;
-            interfaceSchema: JsonSchema;
+            proxyConfigSchema: tv4.JsonSchema;
+            interfaceSchema: tv4.JsonSchema;
             JsonSchemaBuilder: typeof JsonSchemaBuilder;
         }
     }
@@ -27,7 +27,7 @@ declare module 'modelproxy' {
         abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> implements ModelProxy.IEngine {
             constructor();
             getStatePath(instance: ModelProxy.IInterfaceModel): string;
-            protected validateTv4(obj: JSON, schema: JsonSchema): boolean;
+            protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean;
             validate(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): boolean;
             proxy(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): Promise<any>;
         }
@@ -46,7 +46,7 @@ declare module 'modelproxy' {
             result?: any;
         }
         export interface IExeucte {
-            instance: IInterfaceModel;
+            instance?: IInterfaceModel;
             data?: any;
             params?: any;
             settings?: any;
@@ -62,15 +62,15 @@ declare module 'modelproxy' {
         }
         export interface IInterfaceModel extends ICommon {
             ns?: string;
-            method: MethodType;
-            path: string;
+            method?: MethodType;
+            path?: string;
             config?: Object;
-            dataSchema?: JsonSchema;
-            paramsSchema?: JsonSchema;
+            dataSchema?: tv4.JsonSchema;
+            paramsSchema?: tv4.JsonSchema;
         }
         export interface ICommon {
-            key: string;
-            title: string;
+            key?: string;
+            title?: string;
             engine?: string;
             states?: { [id: string]: string; };
             state?: string;
@@ -78,7 +78,7 @@ declare module 'modelproxy' {
             mockDir?: string;
         }
         export interface IExecute {
-            instance: IInterfaceModel;
+            instance?: IInterfaceModel;
             data?: any;
             params?: any;
             settings?: any;
@@ -95,6 +95,7 @@ declare module 'modelproxy' {
                 [id: string]: T;
             };
             constructor();
+            get(name: string): T;
             add(name: string, intance: T, override?: boolean): void;
             use(name: string): T;
         }
@@ -102,6 +103,7 @@ declare module 'modelproxy' {
             private middlewares;
             constructor();
             use(func: Function): void;
+            clear(): void;
             compose(): Function;
             errorHandle(ctx: T, err: Error): void;
             callback(complete: Function): Function;
@@ -110,14 +112,15 @@ declare module 'modelproxy' {
             constructor();
             add(name: string, intance: IInterfaceModel, override?: boolean): void;
             execute(intance: IInterfaceModel, options: IExecute): Promise<any>;
-            private validate(obj: JSON, schema: JsonSchema): void;
+            private validate(obj: JSON, schema: tv4.JsonSchema): void;
         }
         export class ModelProxy extends Compose<any> {
             private interfaces;
             constructor();
-            private initInterfaces(config: IProxyConfig);
-            loadConfig(config: IProxyConfig): Promise<this>;
+            private initInterfaces(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel);
+            loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel): Promise<this>;
             getNs(ns: string): InterfaceFactory;
+            getHref(path: string, instance?: IInterfaceModel): string;
             addEngines(engines: { [id: string]: IEngine; }): ModelProxy;
             execute(path: string, options: IExecute): Promise<any>;
         }

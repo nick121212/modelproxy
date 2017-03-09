@@ -27,6 +27,13 @@ export namespace ModelProxy {
         }
 
         /**
+         * 清除中间件方法
+         */
+        clear() {
+            this.middlewares.length = 0;
+        }
+
+        /**
          * 生成中间件执行函数
          * @return {Function}
          */
@@ -41,7 +48,7 @@ export namespace ModelProxy {
                     let index = -1;
 
                     const dispatch = (i: number) => {
-                        return new Promise(async(resolve1) => {
+                        return new Promise(async (resolve1) => {
                             let fn = this.middlewares[i];
 
                             if (i <= index) {
@@ -89,13 +96,13 @@ export namespace ModelProxy {
             const fn = this.compose();
 
             return (options: any): Promise<any> => {
-                let ctx: T = _.extend(options || {}, {}) as T;
+                let ctx: T = Object.assign(options || {}, {}) as T;
                 let promise = fn(ctx, async (ctx: any, next: Function) => {
                     await next();
+                }).then(() => {
+                    complete(ctx);
                 }).catch((err: Error) => {
                     this.errorHandle(ctx, err)
-                }).finally(() => {
-                    complete(ctx);
                 });
 
                 return promise;

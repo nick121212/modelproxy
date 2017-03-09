@@ -2,11 +2,11 @@ export interface ICommon {
     /**
      * 唯一字符串
      */
-    key: string;
+    key?: string;
     /**
      * 接口说明
      */
-    title: string;
+    title?: string;
     /**
      * 当前配置引擎
      */

@@ -1,5 +1,3 @@
-import * as _ from "lodash";
-
 // 关键字	描述
 // $schema	$schema 关键字状态，表示这个模式与 v4 规范草案书写一致。
 // title	用它给我们的模式提供了标题。
@@ -20,12 +18,12 @@ const _schema: string = "http://json-schema.org/draft-04/schema#";
 
 export namespace ModleProxySchema {
     export abstract class BaseTypeBuilder {
-        protected data: JsonSchema;
+        protected data: tv4.JsonSchema;
 
         constructor() { this.data = {}; }
 
-        build(type: JsonSchemaTypes = "string", title?: string, description?: string): BaseTypeBuilder {
-            this.data = _.extend({
+        build(type: string = "string", title?: string, description?: string): BaseTypeBuilder {
+            this.data = Object.assign({
                 title: title || "",
                 description: description || "",
                 type: type
@@ -34,23 +32,23 @@ export namespace ModleProxySchema {
             return this;
         };
 
-        properties(props: { [key: string]: JsonSchema; }): JsonSchemaBuilder {
-            this.data = _.extend({
+        properties(props: { [key: string]: tv4.JsonSchema; }): JsonSchemaBuilder {
+            this.data = Object.assign({
                 properties: props,
             }, this.data || {});
 
             return this;
         }
 
-        items(items: JsonSchema | JsonSchema[]): JsonSchemaBuilder {
-            this.data = _.extend({
+        items(items: tv4.JsonSchema | tv4.JsonSchema[]): JsonSchemaBuilder {
+            this.data = Object.assign({
                 items: items,
             }, this.data || {});
 
             return this;
         }
         schema(schema: string = _schema, id: string = _schema): BaseTypeBuilder {
-            this.data = _.extend({
+            this.data = Object.assign({
                 "$schema": schema,
                 id: id
             }, this.data || {});
@@ -59,14 +57,14 @@ export namespace ModleProxySchema {
         }
 
         required(...keys: string[]) {
-            this.data = _.extend({
+            this.data = Object.assign({
                 required: keys
             }, this.data || {});
 
             return this;
         }
 
-        toValue(): JsonSchema {
+        toValue(): tv4.JsonSchema {
             return this.data;
         }
     }
