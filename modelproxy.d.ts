@@ -24,14 +24,14 @@ declare module 'modelproxy' {
         }
     }
     export namespace ModelProxyEngine {
-        abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> implements ModelProxy.IEngine {
+        export abstract class BaseEngine extends ModelProxy.Compose<ModelProxy.IProxyCtx> implements ModelProxy.IEngine {
             constructor();
             getStatePath(instance: ModelProxy.IInterfaceModel): string;
             protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean;
             validate(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): boolean;
             proxy(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): Promise<any>;
         }
-        class DefaultEngine extends BaseEngine {
+        export class DefaultEngine extends BaseEngine {
             constructor();
             validate(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExecute): boolean;
             proxy(intance: ModelProxy.IInterfaceModel, options: ModelProxy.IExecute): Promise<any>;
@@ -120,7 +120,7 @@ declare module 'modelproxy' {
             private initInterfaces(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel);
             loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel): Promise<this>;
             getNs(ns: string): InterfaceFactory;
-            getHref(path: string, instance?: IInterfaceModel): string;
+            getHost(path: string, instance?: IInterfaceModel): string;
             addEngines(engines: { [id: string]: IEngine; }): ModelProxy;
             execute(path: string, options: IExecute): Promise<any>;
         }

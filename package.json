@@ -1,6 +1,6 @@
 {
     "name": "modelproxy",
-    "version": "0.4.4",
+    "version": "0.4.7",
     "description": "接口配置建模框架",
     "main": "libs/index.js",
     "types": "modelproxy.d.ts",

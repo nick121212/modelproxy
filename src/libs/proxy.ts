@@ -100,7 +100,13 @@ export namespace ModelProxy {
             return interfaceInstance(options);
         }
 
-        getHref(path: string, instance: IInterfaceModel) {
+        /**
+         * 获取接口的host
+         * @param {String}            path 
+         * @param {IInterfaceModel}   instance 
+         * @return {String}
+         */
+        getHost(path: string, instance: IInterfaceModel):string {
             let interfaceInstance: Function = null;
 
             if (!jsonPointer.has(this.interfaces, path)) {
