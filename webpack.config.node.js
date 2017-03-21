@@ -33,14 +33,14 @@ module.exports = {
     },
     externals: [
         "tv4",
-        {
-            "lodash": {
-                root: "_",
-                commonjs2: "lodash",
-                commonjs: ["lodash"],
-                amd: "lodash"
-            }
-        }
+        // {
+        //     "lodash": {
+        //         root: "_",
+        //         commonjs2: "lodash",
+        //         commonjs: ["lodash"],
+        //         amd: "lodash"
+        //     }
+        // }
     ],
     plugins: [
         // new webpack.IgnorePlugin(/tv4|lodash/i),

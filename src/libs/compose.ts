@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { IProxyCtx } from "../models/proxy.ctx";
 // import * as Bluebird from "bluebird";
 
@@ -19,7 +18,7 @@ export namespace ModelProxy {
          * @return        {void}
          */
         use(func: Function): void {
-            if (!_.isFunction(func)) {
+            if (typeof func !== "function") {
                 throw new TypeError("middleware must be a function！");
             }
 
@@ -65,7 +64,7 @@ export namespace ModelProxy {
                                     resolve1();
                                 });
                             } catch (err) {
-                                console.log("compose error" + err);
+                                // console.log("compose error" + err);
                                 reject(err);
                             }
                         });
@@ -84,7 +83,7 @@ export namespace ModelProxy {
         errorHandle(ctx: T, err: Error) {
             ctx.isError = true;
             ctx.err = err;
-            console.error("compose--", err);
+            // console.error("compose--", err);
         }
 
         /**

@@ -1,4 +1,5 @@
 import * as tv4 from "tv4";
+import * as jpp from "json-pointer";
 
 import { IEngine } from '../models/engine';
 import { IExeucte } from '../models/execute';
@@ -6,6 +7,7 @@ import { ModelProxy } from '../libs/compose';
 import { IProxyCtx } from '../models/proxy.ctx';
 import { IInterfaceModel } from '../models/interface';
 import { ModelProxyMissingError, ModelProxyValidaterError } from '../libs/errors';
+
 
 export namespace ModelProxyEngine {
     export abstract class BaseEngine extends ModelProxy.Compose<IProxyCtx> implements IEngine {
@@ -36,8 +38,8 @@ export namespace ModelProxyEngine {
          * @return           {boolean}
          */
         validate(instance: IInterfaceModel, options: IExeucte): boolean {
-            instance.dataSchema && this.validateTv4(options.data, instance.dataSchema);
-            instance.paramsSchema && this.validateTv4(options.params, instance.paramsSchema);
+            instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
+            instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 
             return true;
         }
@@ -63,6 +65,50 @@ export namespace ModelProxyEngine {
             }
 
             return "";
+        }
+
+        /**
+         * 替换path中的变量
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         */
+        replacePath(instance: IInterfaceModel, options: IExeucte): string {
+            const pathRegexp = /{[^}]*}/g;
+            const matchs = instance.path.match(pathRegexp);
+
+            for (let key in matchs) {
+                if (matchs.hasOwnProperty(key)) {
+                    let match = matchs[key];
+                    let field = match.match(/[^{}]/g).join('');
+
+                    // console.log(jpp.escape("/login/username")); console.log(jpp.unescape(field));
+
+                    if (jpp(options).has(field)) {
+                        instance.path = instance.path.replace(match, jpp(options).get(field))
+                    } else {
+                        throw new Error(`替换Path出错，没有找到字段${field}！`);
+                    }
+                }
+            }
+
+            return instance.path;
+        }
+
+        /**
+         * 获取接口的全路径
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         */
+        getFullPath(instance: IInterfaceModel, options: IExeucte): string {
+            let url = `${this.getStatePath(instance)}` + this.replacePath(instance, options);
+
+            if (options.params) {
+                Object.keys(options.params).forEach((key) => {
+                    url["searchParams"].append(key, options.params[key]);
+                });
+            }
+
+            return url;
         }
     }
 }

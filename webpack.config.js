@@ -36,14 +36,14 @@ module.exports = {
     },
     externals: [
         "tv4",
-        {
-            "lodash": {
-                root: "_",
-                commonjs2: "lodash",
-                commonjs: ["lodash"],
-                amd: "lodash"
-            }
-        },
+        // {
+        //     "lodash": {
+        //         root: "_",
+        //         commonjs2: "lodash",
+        //         commonjs: ["lodash"],
+        //         amd: "lodash"
+        //     }
+        // },
         {
             "json-pointer": {
                 root: "jsonPointer",

@@ -18,9 +18,11 @@ export namespace ModelProxyEngine {
         }
 
         async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
-            var fn = this.callback(()=>{});
+            var fn = this.callback(() => { });
 
             await fn({});
+
+            console.log(this.getFullPath(instance, options));
 
             return {};
         }

@@ -1,18 +1,24 @@
+import * as tv4 from "tv4";
+import * as jsonPointer from "json-pointer";
+
 import { IExeucte } from '../models/execute';
 import { IEngine } from '../models/engine';
 import { IInterfaceModel } from '../models/interface';
 import { IProxyConfig } from "../models/proxy.config";
 import * as interfaceFactory from "./interface.factory";
 import * as engineFactory from "./engine.factory";
+import * as composeFactory from "./compose.factory";
 import schemas from "../schemas/index";
 import * as compose from "./compose";
-import * as tv4 from "tv4";
-import * as jsonPointer from "json-pointer";
 import { ModelProxyMissingError } from './errors';
+
+import * as cproxy from "./cproxy";
 
 export namespace ModelProxy {
     export class ModelProxy extends compose.ModelProxy.Compose<any> {
         private interfaces: { [id: string]: interfaceFactory.ModelProxy.InterfaceFactory; } = {};
+        // private cproxy: cproxy.ModelProxy.ComposeProxy = new cproxy.ModelProxy.ComposeProxy();
+        private composes: { [id: string]: composeFactory.ModelProxy.ComposeFactory; } = {};
 
         constructor() {
             super();
@@ -23,12 +29,24 @@ export namespace ModelProxy {
          * @param engines { { [id: string]: IEngine; } }  引擎对象
          */
         addEngines(engines: { [id: string]: IEngine; }): ModelProxy {
-            for (var key in engines) {
+            for (let key in engines) {
                 engineFactory.ModelProxy.engineFactory.add(key, engines[key], true);
             }
 
             return this;
         }
+
+        // /**
+        //  * 添加组合方法类
+        //  * @param composes 一个组合类
+        //  */
+        // addCompose(composes: { [id: string]: compose.ModelProxy.Compose<any>; }) {
+        //     for (let key in composes) {
+        //         this.composes.
+        //     }
+
+        //     return this;
+        // }
 
         /**
          * 初始化配置文件中的接口信息
@@ -47,16 +65,6 @@ export namespace ModelProxy {
                     mockDir: config.mockDir
                 }, i, overrideInterfaceConfig || {}) as IInterfaceModel);
             });
-
-            // _.each(config.interfaces, (i: IInterfaceModel) => {
-            //     ifFactory.add(i.key, _.extend({}, {
-            //         ns: config.key,
-            //         engine: config.engine,
-            //         states: config.states,
-            //         state: config.state,
-            //         mockDir: config.mockDir
-            //     }, i, overrideInterfaceConfig || {}) as IInterfaceModel);
-            // });
 
             return ifFactory;
         }
@@ -93,10 +101,6 @@ export namespace ModelProxy {
 
             interfaceInstance = jsonPointer.get(this.interfaces, path);
 
-            // if (!_.isFunction(interfaceInstance)) {
-            //     throw new TypeError(`${path}不是一个方法！`);
-            // }
-
             return interfaceInstance(options);
         }
 
@@ -106,7 +110,7 @@ export namespace ModelProxy {
          * @param {IInterfaceModel}   instance 
          * @return {String}
          */
-        getHost(path: string, instance: IInterfaceModel):string {
+        getHost(path: string, instance: IInterfaceModel): string {
             let interfaceInstance: Function = null;
 
             if (!jsonPointer.has(this.interfaces, path)) {

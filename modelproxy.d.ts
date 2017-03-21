@@ -30,6 +30,8 @@ declare module 'modelproxy' {
             protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean;
             validate(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): boolean;
             proxy(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): Promise<any>;
+            replacePath(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): string;
+            getFullPath(instance: ModelProxy.IInterfaceModel, options: ModelProxy.IExeucte): string;
         }
         export class DefaultEngine extends BaseEngine {
             constructor();

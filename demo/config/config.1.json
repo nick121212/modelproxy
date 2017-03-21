@@ -14,7 +14,7 @@
         "key": "login",
         "title": "登陆接口",
         "method": "GET",
-        "path": "/passport/login",
+        "path": "/passport/login/{/data/username}",
         "dataSchema": {
             "type": "object",
             "required": ["username", "password"],
@@ -31,5 +31,11 @@
         "config": {
             "test": "test-1"
         }
+    }, {
+
+        "key": "logout",
+        "title": "登出接口",
+        "method": "GET",
+        "path": "/passport/logout"
     }]
 }

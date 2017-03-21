@@ -2,7 +2,7 @@
 
 >## 1、解决了什么问题
  通过配置文件，自动生成接口的调用方法，参考[modelproxy](https://github.com/papertiger8848/modelproxy)。   
- 在具体的实践过程中，总觉得很多的不满意，修改一下使得满足更逗的场景。
+ 在具体的实践过程中，总觉得很多的不满意，修改一下使得满足更多的场景。
  
 >## 2、安装和依赖
  npm install modelproxy     
@@ -17,7 +17,8 @@
 >## 3、编译
  1. 进入根目录执行 npm install
  2. grunt build-node生成built目录
- 3. 执行 node test/nodejs
+ 3. 执行 npm run demo
+ 4. 测试 npm run test
 
 >## 4、接口配置文件
 > ```

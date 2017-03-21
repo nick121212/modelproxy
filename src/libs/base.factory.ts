@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import { ModelProxyMissingError } from "./errors";
 
 export namespace ModelProxy {
@@ -41,9 +40,10 @@ export namespace ModelProxy {
         */
         use(name: string): T {
             if (!name || !this.instances.hasOwnProperty(name)) {
-                let engines = _.map(this.instances, (val, key) => {
-                    return key;
-                });
+                let engines = Object.keys(this.instances);
+                // let engines = _.map(this.instances, (val, key) => {
+                //     return key;
+                // });
                 throw new ModelProxyMissingError(`不存在name=【${name}】的engine！当前engines：【${engines.join(',')}】`);
             }
 

@@ -28,11 +28,20 @@ export namespace ModelProxy {
                 [name]: func
             });
         }
-
+        /**
+         * 合并两个实例
+         * @param instance       实例名称
+         * @param extendInstance 需要合并的实例 
+         */
         private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModel): IInterfaceModel {
             return Object.assign({}, instance, extendInstance);
         }
 
+        /**
+         * 获取接口的路径
+         * @param instance       实例名称
+         * @param extendInstance 需要合并的实例 
+         */
         private getPath(instance: IInterfaceModel, extendInstance: IInterfaceModel): string {
             let engine: IEngine;
             let iinstance: IInterfaceModel = {};

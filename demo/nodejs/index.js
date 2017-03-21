@@ -14,10 +14,10 @@ global.Promise = bluebird;
 proxy.loadConfig(config).then((result) => {
     return proxy.loadConfig(config1);
 }).then((result) => {
-    console.log(proxy.getHost("/test1/login", { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") }));
+    // console.log(proxy.getHost("/test1/login", { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") }));
 
     return proxy.execute("/test1/login", {
-        data: { username: "3331", password: "111111" },
+        data: { username: "nick", password: "111111" },
         params: {},
         instance: { engine: "default", mockDir: path.resolve(__dirname, "../mocks/") }
     }).then(result => console.info(JSON.stringify(result))).catch(console.error);
