@@ -22,7 +22,7 @@ export namespace ModelProxyEngine {
 
             await fn({});
 
-            console.log(this.getFullPath(instance, options));
+            console.log("接口的路径：", this.getFullPath(instance, options));
 
             return {};
         }
