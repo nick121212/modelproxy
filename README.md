@@ -5,7 +5,9 @@
  在具体的实践过程中，总觉得很多的不满意，修改一下使得满足更多的场景。
  
 >## 2、安装和依赖
+```
  npm install modelproxy     
+ ```
  ### 依赖列表
  1. [tv4](https://github.com/geraintluff/tv4) Tiny Validator (for v4 JSON Schema)
  2. [bluebird](https://github.com/petkaantonov/bluebird) Bluebird is a fully featured promise library with focus on innovative features and performance
@@ -16,9 +18,9 @@
  
 >## 3、编译
  1. 进入根目录执行 npm install
- 2. grunt build-node生成built目录
- 3. 执行 npm run demo
- 4. 测试 npm run test
+ 2. ```grunt build-node```生成built目录
+ 3. 执行 ```npm run demo```
+ 4. 测试 ```npm run test```
 
 >## 4、接口配置文件
 > ```
