@@ -1,10 +1,15 @@
 {
     "name": "modelproxy",
-    "version": "0.4.9",
+    "version": "0.5.0",
     "description": "接口配置建模框架",
     "main": "libs/index.js",
     "types": "modelproxy.d.ts",
     "typings": "modelproxy.d.ts",
+    "files": [
+        "libs",
+        "demo",
+        "test"
+    ],
     "scripts": {
         "test": "mocha test/**/*.js",
         "test-list": "mocha --reporter list test/**/*.js",

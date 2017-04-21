@@ -101,12 +101,13 @@ export namespace ModelProxyEngine {
          */
         getFullPath(instance: IInterfaceModel, options: IExeucte): string {
             let url = `${this.getStatePath(instance)}` + this.replacePath(instance, options);
+            // let searchParams = new URLSearchParams();
 
-            if (options.params) {
-                Object.keys(options.params).forEach((key) => {
-                    url["searchParams"].append(key, options.params[key]);
-                });
-            }
+            // if (options.params) {
+            //     Object.keys(options.params).forEach((key) => {
+            //         searchParams.append(key, options.params[key]);
+            //     });
+            // }
 
             return url;
         }

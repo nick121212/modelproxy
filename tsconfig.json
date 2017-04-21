@@ -9,6 +9,6 @@
         "inlineSourceMap": true,
         "pretty": true,
         "outDir": "libs",
-        "lib": ["es5", "dom", "es2017", "es2015"]
+        "lib": ["es5", "es6", "es7", "es2017", "es2015", "es2016", "scripthost"]
     }
 }
