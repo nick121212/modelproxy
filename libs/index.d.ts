@@ -7,6 +7,9 @@ import * as baseFactory from "./libs/base.factory";
 import * as schemas from "./schemas/builder";
 import * as methodtype from "./models/method";
 import * as errors from "./libs/errors";
+import { IInterfaceModel } from './models/interface';
+import { IExecute } from './models/execute';
+import { IProxyCtx } from "./models/proxyctx";
 export declare const modelProxy: {
     Proxy: typeof ModelProxy.ModelProxy;
     engineFactory: baseFactory.ModelProxy.BaseFactory<IEngine>;
@@ -21,3 +24,4 @@ export declare const modelProxy: {
     BaseFactory: typeof baseFactory.ModelProxy.BaseFactory;
     errors: typeof errors;
 };
+export { IEngine, IInterfaceModel, IExecute, IProxyCtx };

@@ -3,7 +3,7 @@ import { IInterfaceModel } from "../models/interface";
 import { MethodType } from '../models/method';
 import * as factory from "./base.factory";
 import * as engineFactory from "./engine.factory";
-import { IExeucte } from '../models/execute';
+import { IExecute } from '../models/execute';
 import * as tv4 from "tv4";
 
 export namespace ModelProxy {
@@ -59,7 +59,7 @@ export namespace ModelProxy {
          * @param options        {IExeucte}         调用接口所需的data
          * @return               {Promise<any>}
          */
-        async execute(instance: IInterfaceModel, options: IExeucte): Promise<any> {
+        async execute(instance: IInterfaceModel, options: IExecute): Promise<any> {
             let engine: IEngine;
             let iinstance: IInterfaceModel = {};
 

@@ -1,7 +1,7 @@
 import { IInterfaceModel } from './interface';
-import { IExeucte } from '../models/execute';
+import { IExecute } from '../models/execute';
 export interface IEngine {
-    validate(intance: IInterfaceModel, options: IExeucte): boolean;
-    proxy(intance: IInterfaceModel, options: IExeucte): Promise<any>;
+    validate(intance: IInterfaceModel, options: IExecute): boolean;
+    proxy(intance: IInterfaceModel, options: IExecute): Promise<any>;
     getStatePath(instance: IInterfaceModel): string;
 }

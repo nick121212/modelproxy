@@ -1,3 +1,6 @@
+/**
+ * 操作类型
+ */
 export declare enum MethodType {
     GET = 0,
     POST = 1,

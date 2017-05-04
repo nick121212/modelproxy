@@ -2,9 +2,9 @@ import * as tv4 from "tv4";
 import * as jpp from "json-pointer";
 
 import { IEngine } from '../models/engine';
-import { IExeucte } from '../models/execute';
+import { IExecute } from '../models/execute';
 import { ModelProxy } from '../libs/compose';
-import { IProxyCtx } from '../models/proxy.ctx';
+import { IProxyCtx } from '../models/proxyctx';
 import { IInterfaceModel } from '../models/interface';
 import { ModelProxyMissingError, ModelProxyValidaterError } from '../libs/errors';
 
@@ -37,7 +37,7 @@ export namespace ModelProxyEngine {
          * @param options    {IExecute}         参数
          * @return           {boolean}
          */
-        validate(instance: IInterfaceModel, options: IExeucte): boolean {
+        validate(instance: IInterfaceModel, options: IExecute): boolean {
             instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
             instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 
@@ -50,7 +50,7 @@ export namespace ModelProxyEngine {
          * @param options    {IExecute}         参数
          * @return           {Promise<any>}
          */
-        async proxy(instance: IInterfaceModel, options: IExeucte): Promise<any> {
+        async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
             return {};
         }
 
@@ -72,7 +72,7 @@ export namespace ModelProxyEngine {
          * @param instance   {IInterfaceModel}  接口模型
          * @param options    {IExecute}         参数
          */
-        replacePath(instance: IInterfaceModel, options: IExeucte): string {
+        replacePath(instance: IInterfaceModel, options: IExecute): string {
             const pathRegexp = /{[^}]*}/g;
             const matchs = instance.path.match(pathRegexp);
 
@@ -99,7 +99,7 @@ export namespace ModelProxyEngine {
          * @param instance   {IInterfaceModel}  接口模型
          * @param options    {IExecute}         参数
          */
-        getFullPath(instance: IInterfaceModel, options: IExeucte): string {
+        getFullPath(instance: IInterfaceModel, options: IExecute): string {
             let url = `${this.getStatePath(instance)}` + this.replacePath(instance, options);
             // let searchParams = new URLSearchParams();
 

@@ -1,4 +1,4 @@
-import { IExeucte } from '../models/execute';
+import { IExecute } from '../models/execute';
 import { IEngine } from '../models/engine';
 import { IInterfaceModel } from '../models/interface';
 import { IProxyConfig } from "../models/proxy.config";

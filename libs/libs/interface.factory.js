@@ -48,6 +48,13 @@ var ModelProxy;
         function InterfaceFactory() {
             return _super.call(this) || this;
         }
+        /**
+        * 添加一个实例
+        * @param name     {string}    实例的名称
+        * @param engine   {IEngine}   实例
+        * @param override {boolean}   是否覆盖
+        * @return {void}
+        */
         InterfaceFactory.prototype.add = function (name, instance, override) {
             if (override === void 0) { override = false; }
             _super.prototype.add.call(this, name, instance, override);
@@ -58,9 +65,19 @@ var ModelProxy;
                 _a));
             var _a;
         };
+        /**
+         * 合并两个实例
+         * @param instance       实例名称
+         * @param extendInstance 需要合并的实例
+         */
         InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
             return Object.assign({}, instance, extendInstance);
         };
+        /**
+         * 获取接口的路径
+         * @param instance       实例名称
+         * @param extendInstance 需要合并的实例
+         */
         InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
             var engine;
             var iinstance = {};
@@ -68,6 +85,12 @@ var ModelProxy;
             engine = engineFactory.ModelProxy.engineFactory.use("default");
             return engine.getStatePath(iinstance) + iinstance.path;
         };
+        /**
+         * 执行函数
+         * @param intance        {IInterfaceModel}  接口的具体实例
+         * @param options        {IExeucte}         调用接口所需的data
+         * @return               {Promise<any>}
+         */
         InterfaceFactory.prototype.execute = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 var engine, iinstance;
@@ -75,6 +98,7 @@ var ModelProxy;
                     iinstance = {};
                     iinstance = this.megreInstance(instance, options.instance || {});
                     engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
+                    // 验证数据的准确性
                     engine.validate(iinstance, options);
                     return [2 /*return*/, engine.proxy(iinstance, options)];
                 });
@@ -84,4 +108,4 @@ var ModelProxy;
     }(factory.ModelProxy.BaseFactory));
     ModelProxy.InterfaceFactory = InterfaceFactory;
 })(ModelProxy = exports.ModelProxy || (exports.ModelProxy = {}));
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW50ZXJmYWNlLmZhY3RvcnkuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvbGlicy9pbnRlcmZhY2UuZmFjdG9yeS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUdBLHdDQUEwQztBQUMxQyxnREFBa0Q7QUFJbEQsSUFBaUIsVUFBVSxDQW1FMUI7QUFuRUQsV0FBaUIsVUFBVTtJQUN2QjtRQUFzQyxvQ0FBK0M7UUFDakY7bUJBQWdCLGlCQUFPO1FBQUUsQ0FBQztRQVMxQiw4QkFBRyxHQUFILFVBQUksSUFBWSxFQUFFLFFBQXlCLEVBQUUsUUFBeUI7WUFBekIseUJBQUEsRUFBQSxnQkFBeUI7WUFDbEUsaUJBQU0sR0FBRyxZQUFDLElBQUksRUFBRSxRQUFRLEVBQUUsUUFBUSxDQUFDLENBQUM7WUFFcEMsSUFBSSxJQUFJLEdBQUcsSUFBSSxDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFLFFBQVEsQ0FBQyxDQUFDO1lBRTdDLElBQUksQ0FBQyxPQUFPLEdBQUcsSUFBSSxDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFLFFBQVEsQ0FBQyxDQUFBO1lBRWhELE1BQU0sQ0FBQyxNQUFNLENBQUMsSUFBSTtnQkFDZCxHQUFDLElBQUksSUFBRyxJQUFJO29CQUNkLENBQUM7O1FBQ1AsQ0FBQztRQU1PLHdDQUFhLEdBQXJCLFVBQXNCLFFBQXlCLEVBQUUsY0FBK0I7WUFDNUUsTUFBTSxDQUFDLE1BQU0sQ0FBQyxNQUFNLENBQUMsRUFBRSxFQUFFLFFBQVEsRUFBRSxjQUFjLENBQUMsQ0FBQztRQUN2RCxDQUFDO1FBT08sa0NBQU8sR0FBZixVQUFnQixRQUF5QixFQUFFLGNBQStCO1lBQ3RFLElBQUksTUFBZSxDQUFDO1lBQ3BCLElBQUksU0FBUyxHQUFvQixFQUFFLENBQUM7WUFFcEMsU0FBUyxHQUFHLElBQUksQ0FBQyxhQUFhLENBQUMsUUFBUSxFQUFFLGNBQWMsSUFBSSxFQUFFLENBQUMsQ0FBQztZQUUvRCxNQUFNLEdBQUcsYUFBYSxDQUFDLFVBQVUsQ0FBQyxhQUFhLENBQUMsR0FBRyxDQUFDLFNBQVMsQ0FBQyxDQUFDO1lBRS9ELE1BQU0sQ0FBQyxNQUFNLENBQUMsWUFBWSxDQUFDLFNBQVMsQ0FBQyxHQUFHLFNBQVMsQ0FBQyxJQUFJLENBQUM7UUFDM0QsQ0FBQztRQVFLLGtDQUFPLEdBQWIsVUFBYyxRQUF5QixFQUFFLE9BQWlCOztvQkFDbEQsTUFBTSxFQUNOLFNBQVM7O2dDQUFvQixFQUFFO29CQUVuQyxTQUFTLEdBQUcsSUFBSSxDQUFDLGFBQWEsQ0FBQyxRQUFRLEVBQUUsT0FBTyxDQUFDLFFBQVEsSUFBSSxFQUFFLENBQUMsQ0FBQztvQkFFakUsTUFBTSxHQUFHLGFBQWEsQ0FBQyxVQUFVLENBQUMsYUFBYSxDQUFDLEdBQUcsQ0FBQyxTQUFTLENBQUMsTUFBTSxDQUFDLENBQUM7b0JBR3RFLE1BQU0sQ0FBQyxRQUFRLENBQUMsU0FBUyxFQUFFLE9BQU8sQ0FBQyxDQUFDO29CQUVwQyxzQkFBTyxNQUFNLENBQUMsS0FBSyxDQUFDLFNBQVMsRUFBRSxPQUFPLENBQUMsRUFBQzs7O1NBQzNDO1FBQ0wsdUJBQUM7SUFBRCxDQUFDLEFBakVELENBQXNDLE9BQU8sQ0FBQyxVQUFVLENBQUMsV0FBVyxHQWlFbkU7SUFqRVksMkJBQWdCLG1CQWlFNUIsQ0FBQTtBQUNMLENBQUMsRUFuRWdCLFVBQVUsR0FBVixrQkFBVSxLQUFWLGtCQUFVLFFBbUUxQiJ9
+//# sourceMappingURL=interface.factory.js.map

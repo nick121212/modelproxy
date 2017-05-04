@@ -1,7 +1,7 @@
 import { IInterfaceModel } from './interface';
 
-export interface IExeucte {
-    instance: IInterfaceModel;
+export interface IExecute {
+    instance?: IInterfaceModel;
     data?: any;
     params?: any;
     settings?: any;

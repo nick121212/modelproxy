@@ -9,6 +9,9 @@ import * as baseFactory from "./libs/base.factory";
 import * as schemas from "./schemas/builder";
 import * as methodtype from "./models/method";
 import * as errors from "./libs/errors";
+import { IInterfaceModel } from './models/interface';
+import { IExecute } from './models/execute';
+import { IProxyCtx } from "./models/proxyctx";
 
 export const modelProxy = {
     Proxy: ModelProxy.ModelProxy,
@@ -19,4 +22,11 @@ export const modelProxy = {
     BaseEngine: base.ModelProxyEngine.BaseEngine,
     BaseFactory: baseFactory.ModelProxy.BaseFactory,
     errors: errors
+};
+
+export {
+    IEngine,
+    IInterfaceModel,
+    IExecute,
+    IProxyCtx
 };

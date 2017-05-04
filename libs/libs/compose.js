@@ -34,21 +34,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+// import * as Bluebird from "bluebird";
 var ModelProxy;
 (function (ModelProxy) {
+    /**
+     * koa中间件方法
+     */
     var Compose = (function () {
         function Compose() {
             this.middlewares = [];
         }
+        /**
+         * 添加中间件函数
+         * @param func    {Function} 中间件方法
+         * @return        {void}
+         */
         Compose.prototype.use = function (func) {
             if (typeof func !== "function") {
                 throw new TypeError("middleware must be a function！");
             }
             this.middlewares.push(func);
         };
+        /**
+         * 清除中间件方法
+         */
         Compose.prototype.clear = function () {
             this.middlewares.length = 0;
         };
+        /**
+         * 生成中间件执行函数
+         * @return {Function}
+         */
         Compose.prototype.compose = function () {
             var _this = this;
             if (!Array.isArray(this.middlewares))
@@ -97,6 +113,7 @@ var ModelProxy;
                                         return [3 /*break*/, 4];
                                     case 3:
                                         err_1 = _a.sent();
+                                        // console.log("compose error" + err);
                                         reject(err_1);
                                         return [3 /*break*/, 4];
                                     case 4: return [2 /*return*/];
@@ -108,10 +125,21 @@ var ModelProxy;
                 });
             };
         };
+        /**
+         * 错误的判断
+         * @param ctx   {Object} 执行上下文
+         * @param err   {Object} 错误数据
+         */
         Compose.prototype.errorHandle = function (ctx, err) {
             ctx.isError = true;
             ctx.err = err;
+            // console.error("compose--", err);
         };
+        /**
+         * 包装compose函数
+         * @param complete {Function} 执行完毕后回调函数
+         * @return  {Function}
+         */
         Compose.prototype.callback = function (complete) {
             var _this = this;
             var fn = this.compose();
@@ -138,4 +166,4 @@ var ModelProxy;
     }());
     ModelProxy.Compose = Compose;
 })(ModelProxy = exports.ModelProxy || (exports.ModelProxy = {}));
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tcG9zZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9saWJzL2NvbXBvc2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBR0EsSUFBaUIsVUFBVSxDQTJHMUI7QUEzR0QsV0FBaUIsVUFBVTtJQUl2QjtRQUdJO1lBQ0ksSUFBSSxDQUFDLFdBQVcsR0FBRyxFQUFFLENBQUM7UUFDMUIsQ0FBQztRQU9ELHFCQUFHLEdBQUgsVUFBSSxJQUFjO1lBQ2QsRUFBRSxDQUFDLENBQUMsT0FBTyxJQUFJLEtBQUssVUFBVSxDQUFDLENBQUMsQ0FBQztnQkFDN0IsTUFBTSxJQUFJLFNBQVMsQ0FBQyxnQ0FBZ0MsQ0FBQyxDQUFDO1lBQzFELENBQUM7WUFFRCxJQUFJLENBQUMsV0FBVyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUNoQyxDQUFDO1FBS0QsdUJBQUssR0FBTDtZQUNJLElBQUksQ0FBQyxXQUFXLENBQUMsTUFBTSxHQUFHLENBQUMsQ0FBQztRQUNoQyxDQUFDO1FBTUQseUJBQU8sR0FBUDtZQUFBLGlCQXFDQztZQXBDRyxFQUFFLENBQUMsQ0FBQyxDQUFDLEtBQUssQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLFdBQVcsQ0FBQyxDQUFDO2dCQUFDLE1BQU0sSUFBSSxTQUFTLENBQUMsb0NBQW9DLENBQUMsQ0FBQztZQUNoRyxHQUFHLENBQUMsQ0FBYSxVQUFnQixFQUFoQixLQUFBLElBQUksQ0FBQyxXQUFXLEVBQWhCLGNBQWdCLEVBQWhCLElBQWdCO2dCQUE1QixJQUFNLEVBQUUsU0FBQTtnQkFDVCxFQUFFLENBQUMsQ0FBQyxPQUFPLEVBQUUsS0FBSyxVQUFVLENBQUM7b0JBQUMsTUFBTSxJQUFJLFNBQVMsQ0FBQywyQ0FBMkMsQ0FBQyxDQUFDO2FBQ2xHO1lBRUQsTUFBTSxDQUFDLFVBQUMsT0FBVSxFQUFFLElBQWM7Z0JBQzlCLE1BQU0sQ0FB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
+//# sourceMappingURL=compose.js.map

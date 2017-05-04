@@ -1,14 +1,29 @@
 {
     "compilerOptions": {
-        "target": "es5",
         "module": "commonjs",
+        "target": "es5",
         "moduleResolution": "node",
-        "preserveConstEnums": true,
-        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "noImplicitAny": false,
-        "inlineSourceMap": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "noEmitHelpers": false,
         "pretty": true,
-        "outDir": "libs",
-        "lib": ["es5", "es6", "es7", "es2017", "es2015", "es2016", "scripthost"]
-    }
+        "declaration": true,
+        "preserveConstEnums": true,
+        "allowSyntheticDefaultImports": true,
+        "outDir": "./libs",
+        "lib": ["es5", "dom", "es2017", "es6", "es2015"]
+    },
+    "awesomeTypescriptLoaderOptions": {
+        "useBabel": false,
+        "useCache": false,
+        "emitRequireType": false
+    },
+    "exclude": [
+        "node_modules",
+        "libs",
+        "dist"
+    ]
 }

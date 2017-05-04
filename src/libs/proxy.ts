@@ -1,7 +1,7 @@
 import * as tv4 from "tv4";
 import * as jsonPointer from "json-pointer";
 
-import { IExeucte } from '../models/execute';
+import { IExecute } from '../models/execute';
 import { IEngine } from '../models/engine';
 import { IInterfaceModel } from '../models/interface';
 import { IProxyConfig } from "../models/proxy.config";
@@ -92,7 +92,7 @@ export namespace ModelProxy {
          * @param options  {IExecute} 调用接口所需的data
          * @return {Promise<any>}
          */
-        async execute(path: string, options: IExeucte) {
+        async execute(path: string, options: IExecute) {
             let interfaceInstance: Function = null;
 
             if (!jsonPointer.has(this.interfaces, path)) {
@@ -110,7 +110,7 @@ export namespace ModelProxy {
          * @param {IInterfaceModel}   instance 
          * @return {String}
          */
-        getHost(path: string, instance: IInterfaceModel): string {
+        getHost(path: string, instance?: IInterfaceModel): string {
             let interfaceInstance: Function = null;
 
             if (!jsonPointer.has(this.interfaces, path)) {

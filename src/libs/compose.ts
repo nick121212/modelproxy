@@ -1,4 +1,4 @@
-import { IProxyCtx } from "../models/proxy.ctx";
+import { IProxyCtx } from "../models/proxyctx";
 // import * as Bluebird from "bluebird";
 
 export namespace ModelProxy {

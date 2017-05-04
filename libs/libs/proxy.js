@@ -53,15 +53,35 @@ var ModelProxy;
         function ModelProxy() {
             var _this = _super.call(this) || this;
             _this.interfaces = {};
+            // private cproxy: cproxy.ModelProxy.ComposeProxy = new cproxy.ModelProxy.ComposeProxy();
             _this.composes = {};
             return _this;
         }
+        /**
+         * 添加engines
+         * @param engines { { [id: string]: IEngine; } }  引擎对象
+         */
         ModelProxy.prototype.addEngines = function (engines) {
             for (var key in engines) {
                 engineFactory.ModelProxy.engineFactory.add(key, engines[key], true);
             }
             return this;
         };
+        // /**
+        //  * 添加组合方法类
+        //  * @param composes 一个组合类
+        //  */
+        // addCompose(composes: { [id: string]: compose.ModelProxy.Compose<any>; }) {
+        //     for (let key in composes) {
+        //         this.composes.
+        //     }
+        //     return this;
+        // }
+        /**
+         * 初始化配置文件中的接口信息
+         * @param config {IProxyConfig} 配置信息
+         * @return {InterfaceFactory}
+         */
         ModelProxy.prototype.initInterfaces = function (config, overrideInterfaceConfig) {
             if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
             var ifFactory = new interfaceFactory.ModelProxy.InterfaceFactory();
@@ -76,6 +96,11 @@ var ModelProxy;
             });
             return ifFactory;
         };
+        /**
+         * 导入配置
+         * @param config {IProxyConfig} 配置信息
+         * @return {InterfaceFactory}
+        */
         ModelProxy.prototype.loadConfig = function (config, overrideInterfaceConfig) {
             if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
             return __awaiter(this, void 0, void 0, function () {
@@ -90,6 +115,12 @@ var ModelProxy;
                 });
             });
         };
+        /**
+         * 执行一个接口方法
+         * @param path     {String}   执行的方法路径;格式：/${ns}/${key}；example: /localhost/login
+         * @param options  {IExecute} 调用接口所需的data
+         * @return {Promise<any>}
+         */
         ModelProxy.prototype.execute = function (path, options) {
             return __awaiter(this, void 0, void 0, function () {
                 var interfaceInstance;
@@ -103,6 +134,12 @@ var ModelProxy;
                 });
             });
         };
+        /**
+         * 获取接口的host
+         * @param {String}            path
+         * @param {IInterfaceModel}   instance
+         * @return {String}
+         */
         ModelProxy.prototype.getHost = function (path, instance) {
             var interfaceInstance = null;
             if (!jsonPointer.has(this.interfaces, path)) {
@@ -111,12 +148,20 @@ var ModelProxy;
             interfaceInstance = jsonPointer.get(this.interfaces, path);
             return interfaceInstance["getPath"](instance);
         };
+        /**
+         * 获取namespace
+         * @param ns    {string} 空间名
+         * @return { InterfaceFactory }
+         */
         ModelProxy.prototype.getNs = function (ns) {
             if (!this.interfaces.hasOwnProperty(ns)) {
                 var nses = [];
                 for (var key in this.interfaces) {
                     nses.push(key);
                 }
+                // let nses = _.map(this.interfaces, (val, key) => {
+                //     return key;
+                // });
                 throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;\u5F53\u524D\u547D\u540D\u7A7A\u95F4\u3010" + nses.join(',') + "\u3011");
             }
             return this.interfaces[ns];
@@ -125,4 +170,4 @@ var ModelProxy;
     }(compose.ModelProxy.Compose));
     ModelProxy_1.ModelProxy = ModelProxy;
 })(ModelProxy = exports.ModelProxy || (exports.ModelProxy = {}));
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJveHkuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvbGlicy9wcm94eS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHlCQUEyQjtBQUMzQiwwQ0FBNEM7QUFNNUMsc0RBQXdEO0FBQ3hELGdEQUFrRDtBQUVsRCwwQ0FBdUM7QUFDdkMsbUNBQXFDO0FBQ3JDLG1DQUFrRDtBQUlsRCxJQUFpQixVQUFVLENBa0kxQjtBQWxJRCxXQUFpQixZQUFVO0lBQ3ZCO1FBQWdDLDhCQUErQjtRQUszRDtZQUFBLFlBQ0ksaUJBQU8sU0FDVjtZQU5PLGdCQUFVLEdBQW9FLEVBQUUsQ0FBQztZQUVqRixjQUFRLEdBQWdFLEVBQUUsQ0FBQzs7UUFJbkYsQ0FBQztRQU1ELCtCQUFVLEdBQVYsVUFBVyxPQUFtQztZQUMxQyxHQUFHLENBQUMsQ0FBQyxJQUFJLEdBQUcsSUFBSSxPQUFPLENBQUMsQ0FBQyxDQUFDO2dCQUN0QixhQUFhLENBQUMsVUFBVSxDQUFDLGFBQWEsQ0FBQyxHQUFHLENBQUMsR0FBRyxFQUFFLE9BQU8sQ0FBQyxHQUFHLENBQUMsRUFBRSxJQUFJLENBQUMsQ0FBQztZQUN4RSxDQUFDO1lBRUQsTUFBTSxDQUFDLElBQUksQ0FBQztRQUNoQixDQUFDO1FBbUJPLG1DQUFjLEdBQXRCLFVBQXVCLE1BQW9CLEVBQUUsdUJBQTZDO1lBQTdDLHdDQUFBLEVBQUEsNEJBQTZDO1lBQ3RGLElBQUksU0FBUyxHQUFHLElBQUksZ0JBQWdCLENBQUMsVUFBVSxDQUFDLGdCQUFnQixFQUFFLENBQUM7WUFFbkUsTUFBTSxDQUFDLFVBQVUsQ0FBQyxPQUFPLENBQUMsVUFBQyxDQUFrQjtnQkFDekMsU0FBUyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsR0FBRyxFQUFFLE1BQU0sQ0FBQyxNQUFNLENBQUMsRUFBRSxFQUFFO29CQUNuQyxFQUFFLEVBQUUsTUFBTSxDQUFD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
+//# sourceMappingURL=proxy.js.map

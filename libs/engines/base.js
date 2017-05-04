@@ -50,6 +50,12 @@ var ModelProxyEngine;
         function BaseEngine() {
             return _super.call(this) || this;
         }
+        /**
+         * 验证数据的准确性
+         * @param obj         {JSON}        数据
+         * @param schema      {JSONSCHEMA}  JSONSCHEMA
+         * @return            {Boolean}
+         */
         BaseEngine.prototype.validateTv4 = function (obj, schema) {
             var valid = tv4.validateMultiple(obj, schema);
             if (!valid.valid) {
@@ -57,11 +63,23 @@ var ModelProxyEngine;
             }
             return true;
         };
+        /**
+         * 验证数据的准确性
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         * @return           {boolean}
+         */
         BaseEngine.prototype.validate = function (instance, options) {
             instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
             instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
             return true;
         };
+        /**
+         * 代理接口
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         * @return           {Promise<any>}
+         */
         BaseEngine.prototype.proxy = function (instance, options) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
@@ -69,12 +87,22 @@ var ModelProxyEngine;
                 });
             });
         };
+        /**
+         * 取得state所对应的环境
+         * @param instance  {IInterfaceModel}   接口实例
+         * @return          {String}
+         */
         BaseEngine.prototype.getStatePath = function (instance) {
             if (instance.states && instance.state) {
                 return instance.states[instance.state] || "";
             }
             return "";
         };
+        /**
+         * 替换path中的变量
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         */
         BaseEngine.prototype.replacePath = function (instance, options) {
             var pathRegexp = /{[^}]*}/g;
             var matchs = instance.path.match(pathRegexp);
@@ -82,6 +110,7 @@ var ModelProxyEngine;
                 if (matchs.hasOwnProperty(key)) {
                     var match = matchs[key];
                     var field = match.match(/[^{}]/g).join('');
+                    // console.log(jpp.escape("/login/username")); console.log(jpp.unescape(field));
                     if (jpp(options).has(field)) {
                         instance.path = instance.path.replace(match, jpp(options).get(field));
                     }
@@ -92,12 +121,23 @@ var ModelProxyEngine;
             }
             return instance.path;
         };
+        /**
+         * 获取接口的全路径
+         * @param instance   {IInterfaceModel}  接口模型
+         * @param options    {IExecute}         参数
+         */
         BaseEngine.prototype.getFullPath = function (instance, options) {
             var url = "" + this.getStatePath(instance) + this.replacePath(instance, options);
+            // let searchParams = new URLSearchParams();
+            // if (options.params) {
+            //     Object.keys(options.params).forEach((key) => {
+            //         searchParams.append(key, options.params[key]);
+            //     });
+            // }
             return url;
         };
         return BaseEngine;
     }(compose_1.ModelProxy.Compose));
     ModelProxyEngine.BaseEngine = BaseEngine;
 })(ModelProxyEngine = exports.ModelProxyEngine || (exports.ModelProxyEngine = {}));
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYmFzZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9lbmdpbmVzL2Jhc2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSx5QkFBMkI7QUFDM0Isa0NBQW9DO0FBSXBDLDJDQUE2QztBQUc3Qyx5Q0FBa0Y7QUFHbEYsSUFBaUIsZ0JBQWdCLENBdUdoQztBQXZHRCxXQUFpQixnQkFBZ0I7SUFDN0I7UUFBeUMsOEJBQTZCO1FBQ2xFO21CQUNJLGlCQUFPO1FBQ1gsQ0FBQztRQVFTLGdDQUFXLEdBQXJCLFVBQXNCLEdBQVMsRUFBRSxNQUFzQjtZQUNuRCxJQUFJLEtBQUssR0FBb0IsR0FBRyxDQUFDLGdCQUFnQixDQUFDLEdBQUcsRUFBRSxNQUF3QixDQUFDLENBQUM7WUFFakYsRUFBRSxDQUFDLENBQUMsQ0FBQyxLQUFLLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQztnQkFDZixNQUFNLElBQUksaUNBQXdCLENBQUMsU0FBUyxFQUFFLEtBQUssQ0FBQyxNQUFNLEVBQUUsS0FBSyxDQUFDLE9BQU8sQ0FBQyxDQUFDO1lBQy9FLENBQUM7WUFFRCxNQUFNLENBQUMsSUFBSSxDQUFDO1FBQ2hCLENBQUM7UUFRRCw2QkFBUSxHQUFSLFVBQVMsUUFBeUIsRUFBRSxPQUFpQjtZQUNqRCxRQUFRLENBQUMsVUFBVSxJQUFJLElBQUksQ0FBQyxXQUFXLENBQUMsT0FBTyxDQUFDLElBQUksSUFBSSxFQUFFLEVBQUUsUUFBUSxDQUFDLFVBQVUsQ0FBQyxDQUFDO1lBQ2pGLFFBQVEsQ0FBQyxZQUFZLElBQUksSUFBSSxDQUFDLFdBQVcsQ0FBQyxPQUFPLENBQUMsTUFBTSxJQUFJLEVBQUUsRUFBRSxRQUFRLENBQUMsWUFBWSxDQUFDLENBQUM7WUFFdkYsTUFBTSxDQUFDLElBQUksQ0FBQztRQUNoQixDQUFDO1FBUUssMEJBQUssR0FBWCxVQUFZLFFBQXlCLEVBQUUsT0FBaUI7OztvQkFDcEQsc0JBQU8sRUFBRSxFQUFDOzs7U0FDYjtRQU9ELGlDQUFZLEdBQVosVUFBYSxRQUF5QjtZQUNsQyxFQUFFLENBQUMsQ0FBQyxRQUFRLENBQUMsTUFBTSxJQUFJLFFBQVEsQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDO2dCQUNwQyxNQUFNLENBQUMsUUFBUSxDQUFDLE1BQU0sQ0FBQyxRQUFRLENBQUMsS0FBSyxDQUFDLElBQUksRUFBRSxDQUFDO1lBQ2pELENBQUM7WUFFRCxNQUFNLENBQUMsRUFBRSxDQUFDO1FBQ2QsQ0FBQztRQU9ELGdDQUFXLEdBQVgsVUFBWSxRQUF5QixFQUFFLE9BQWlCO1lBQ3BELElBQU0sVUFBVSxHQUFHLFVBQVUsQ0FBQztZQUM5QixJQUFNLE1BQU0sR0FBRyxRQUFRLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxVQUFVLENBQUMsQ0FBQztZQUUvQyxHQUFHLENBQUMsQ0FBQyxJQUFJLEdBQUcsSUFBSSxNQUFNLENBQUMsQ0FBQyxDQUFDO2dCQUNyQixFQUFFLENBQUMsQ0FBQyxNQUFNLENBQUMsY0FBYyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQztvQkFDN0IsSUFBSSxLQUFLLEdBQUcsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDO29CQUN4QixJQUFJLEtBQUssR0FBRyxLQUFLLENBQUMsS0FBSyxDQUFDLFFBQVEsQ0FBQyxDQUFDLElBQUksQ0FBQyxFQUFFLENBQUMsQ0FBQztvQkFJM0MsRUFBRSxDQUFDLENBQUMsR0FBRyxDQUFDLE9BQU8sQ0FBQyxDQUFDLEdBQUcsQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLENBQUM7d0JBQzFCLFFBQVEsQ0FBQyxJQUFJLEdBQUcsUUFBUSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsS0FBSyxFQUFFLEdBQUcsQ0FBQyxPQUFPLENBQUMsQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQTtvQkFDekUsQ0FBQztvQkFBQyxJQUFJLENBQUMsQ0FBQzt3QkFDSixNQUFNLElBQUksS0FBSyxDQUFDLDJFQUFrQixLQUFLLFdBQUcsQ0FBQyxDQUFDO29CQUNoRCxDQUFDO2dCQUNMLENBQUM7WUFDTCxDQUFDO1lBRUQsTUFBTSxDQUFDLFFBQVEsQ0FBQyxJQUFJLENBQUM7UUFDekIsQ0FBQztRQU9ELGdDQUFXLEdBQVgsVUFBWSxRQUF5QixFQUFFLE9BQWlCO1lBQ3BELElBQUksR0FBRyxHQUFHLEtBQUcsSUFBSSxDQUFDLFlBQVksQ0FBQyxRQUFRLENBQUcsR0FBRyxJQUFJLENBQUMsV0FBVyxDQUFDLFFBQVEsRUFBRSxPQUFPLENBQUMsQ0FBQztZQVNqRixNQUFNLENBQUMsR0FBRyxDQUFDO1FBQ2YsQ0FBQztRQUNMLGlCQUFDO0lBQUQsQ0FBQyxBQXJHRCxDQUF5QyxvQkFBVSxDQUFDLE9BQU8sR0FxRzFEO0lBckdxQiwyQkFBVSxhQXFHL0IsQ0FBQTtBQUNMLENBQUMsRUF2R2dCLGdCQUFnQixHQUFoQix3QkFBZ0IsS0FBaEIsd0JBQWdCLFFBdUdoQyJ9
+//# sourceMappingURL=base.js.map

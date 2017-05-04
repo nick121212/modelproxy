@@ -1,9 +1,7 @@
-import { IInterfaceModel } from './interface';
+import { IExecute } from './execute';
 export interface IProxyCtx {
-    instance: IInterfaceModel;
-    data?: any;
-    params?: any;
     isError?: boolean;
     err?: Error;
     result?: any;
+    executeInfo?: IExecute;
 }
