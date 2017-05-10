@@ -14,7 +14,6 @@
  3. [json-pointer](https://github.com/manuelstofer/json-pointer) Some utilities for JSON pointers described by RFC 6901
  4. [mockjs](https://github.com/nuysoft/Mock/wiki/Getting-Started) 生成mock数据
  5. [node-serialize](https://github.com/luin/serialize) Serialize a object including it's function into a JSON.
- 6. [lodash](https://github.com/lodash/lodash) 工具库
  
 >## 3、编译
  1. 进入根目录执行 npm install
