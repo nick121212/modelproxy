@@ -1,5 +1,4 @@
 /// <reference types="tv4" />
-import * as tv4 from "tv4";
 import { IEngine } from '../models/engine';
 import { IExecute } from '../models/execute';
 import { ModelProxy } from '../libs/compose';

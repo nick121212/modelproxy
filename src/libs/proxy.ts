@@ -1,4 +1,4 @@
-import * as tv4 from "tv4";
+// import * as tv4 from "tv4";
 import * as jsonPointer from "json-pointer";
 
 import { IExecute } from '../models/execute';
@@ -75,11 +75,11 @@ export namespace ModelProxy {
          * @return {InterfaceFactory}   
         */
         async loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModel = {}) {
-            let valid: tv4.SingleResult = tv4.validateResult(config, schemas.proxyConfigSchema as tv4.JsonSchema);
+            // let valid: tv4.SingleResult = tv4.validateResult(config, schemas.proxyConfigSchema as tv4.JsonSchema);
 
-            if (!valid.valid) {
-                throw valid.error;
-            }
+            // if (!valid.valid) {
+            //     throw valid.error;
+            // }
 
             this.interfaces[config.key] = this.initInterfaces(config, overrideInterfaceConfig);
 

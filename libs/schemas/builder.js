@@ -1,3 +1,4 @@
+"use strict";
 // 关键字	描述
 // $schema	$schema 关键字状态，表示这个模式与 v4 规范草案书写一致。
 // title	用它给我们的模式提供了标题。
@@ -13,12 +14,17 @@
 // maxLength	字符串实例字符的最大长度数值。
 // minLength	字符串实例字符的最小长度数值。
 // pattern	如果正则表达式匹配实例成功则字符串实例被认为是有效的
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _schema = "http://json-schema.org/draft-04/schema#";
 var ModleProxySchema;
 (function (ModleProxySchema) {

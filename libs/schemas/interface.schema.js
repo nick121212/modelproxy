@@ -1,7 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var builder_1 = require("./builder");
 var JsonSchemaBuilder = builder_1.ModleProxySchema.JsonSchemaBuilder;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = JsonSchemaBuilder.init().build("object").properties({
     key: JsonSchemaBuilder.init().build().toValue(),
     title: JsonSchemaBuilder.init().build().toValue(),

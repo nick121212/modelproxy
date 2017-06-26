@@ -1,4 +1,4 @@
-import * as tv4 from "tv4";
+// import * as tv4 from "tv4";
 import * as jpp from "json-pointer";
 
 import { IEngine } from '../models/engine';
@@ -22,11 +22,11 @@ export namespace ModelProxyEngine {
          * @return            {Boolean}
          */
         protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
-            let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
+            // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
 
-            if (!valid.valid) {
-                throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
-            }
+            // if (!valid.valid) {
+            //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
+            // }
 
             return true;
         }

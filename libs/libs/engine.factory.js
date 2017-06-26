@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var factory = require("./base.factory");
 var engines = require("../engines/default");
 var ModelProxy;

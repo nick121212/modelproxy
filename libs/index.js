@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var engineFactory = require("./libs/engine.factory");
 var proxy_1 = require("./libs/proxy");
 var compose = require("./libs/compose");

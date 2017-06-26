@@ -12,7 +12,7 @@ export interface IInterfaceModel extends ICommon {
     /**
      * 调用方法
      */
-    method?: MethodType;
+    method?: MethodType | string;
     /**
      * 接口地址
      */

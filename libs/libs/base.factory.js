@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var errors_1 = require("./errors");
 var ModelProxy;
 (function (ModelProxy) {

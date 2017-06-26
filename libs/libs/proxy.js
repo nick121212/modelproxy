@@ -1,9 +1,14 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -13,8 +18,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
-    return { next: verb(0), "throw": verb(1), "return": verb(2) };
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -39,11 +44,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var tv4 = require("tv4");
+Object.defineProperty(exports, "__esModule", { value: true });
+// import * as tv4 from "tv4";
 var jsonPointer = require("json-pointer");
 var interfaceFactory = require("./interface.factory");
 var engineFactory = require("./engine.factory");
-var index_1 = require("../schemas/index");
 var compose = require("./compose");
 var errors_1 = require("./errors");
 var ModelProxy;
@@ -104,12 +109,11 @@ var ModelProxy;
         ModelProxy.prototype.loadConfig = function (config, overrideInterfaceConfig) {
             if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
             return __awaiter(this, void 0, void 0, function () {
-                var valid;
                 return __generator(this, function (_a) {
-                    valid = tv4.validateResult(config, index_1.default.proxyConfigSchema);
-                    if (!valid.valid) {
-                        throw valid.error;
-                    }
+                    // let valid: tv4.SingleResult = tv4.validateResult(config, schemas.proxyConfigSchema as tv4.JsonSchema);
+                    // if (!valid.valid) {
+                    //     throw valid.error;
+                    // }
                     this.interfaces[config.key] = this.initInterfaces(config, overrideInterfaceConfig);
                     return [2 /*return*/, this];
                 });
