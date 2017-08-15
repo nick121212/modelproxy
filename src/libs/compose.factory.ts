@@ -1,13 +1,7 @@
 import { IEngine } from '../models/engine';
-import { IInterfaceModel } from "../models/interface";
-import { MethodType } from '../models/method';
-import * as factory from "./base.factory";
-import * as compose from "./compose";
+import { BaseFactory } from "./base.factory";
+import { Compose } from "./compose";
 
-export namespace ModelProxy {
-    export class ComposeFactory extends factory.ModelProxy.BaseFactory<compose.ModelProxy.Compose<any>> {
-        constructor() { super(); }
-
-       
-    }
+export class ComposeFactory extends BaseFactory<Compose<any>> {
+    constructor() { super(); }
 }

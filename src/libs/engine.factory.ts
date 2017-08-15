@@ -1,10 +1,7 @@
 import { IEngine } from "../models/engine";
-import * as factory from "./base.factory";
-import * as engines from "../engines/default";
+import { BaseFactory } from "./base.factory";
+import { DefaultEngine } from "../engines/engine.def";
 
-export namespace ModelProxy {
-    export const engineFactory = new factory.ModelProxy.BaseFactory<IEngine>();
+export const engineFactory = new BaseFactory<IEngine>();
 
-    engineFactory.add("default", new engines.ModelProxyEngine.DefaultEngine());
-}
-
+engineFactory.add("default", new DefaultEngine());

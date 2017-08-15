@@ -1,7 +1,7 @@
+/// <reference types="tv4" />
 import { MethodType } from "./method";
 import { ICommon } from "./common";
 import { IExecute } from "./execute";
-
 /**
  * 接口模型
  */
@@ -31,7 +31,6 @@ export interface IInterfaceModelCommon extends ICommon {
      */
     paramsSchema?: tv4.JsonSchema;
 }
-
 export interface IInterfaceModel extends IInterfaceModelCommon {
     /**
      * 执行接口

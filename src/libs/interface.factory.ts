@@ -1,77 +1,90 @@
-// import * as tv4 from "tv4";
-
 import { IEngine } from '../models/engine';
-import { IInterfaceModel } from "../models/interface";
+import { IInterfaceModel, IInterfaceModelCommon } from "../models/interface";
 import { MethodType } from '../models/method';
-import * as factory from "./base.factory";
-import * as engineFactory from "./engine.factory";
+import { BaseFactory } from "./base.factory";
+import { engineFactory } from "./engine.factory";
 import { IExecute } from '../models/execute';
 
-export namespace ModelProxy {
-    export class InterfaceFactory extends factory.ModelProxy.BaseFactory<IInterfaceModel> {
-        constructor() { super(); }
+export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
+    constructor() { super(); }
 
-        /**
-        * 添加一个实例
-        * @param name     {string}    实例的名称
-        * @param engine   {IEngine}   实例
-        * @param override {boolean}   是否覆盖
-        * @return {void}
-        */
-        add(name: string, instance: IInterfaceModel, override: boolean = false): void {
-            super.add(name, instance, override);
+    /**
+    * 添加一个实例
+    * @param name     {string}    实例的名称
+    * @param engine   {IEngine}   实例
+    * @param override {boolean}   是否覆盖
+    * @return {void}
+    */
+    add(name: string, instance: IInterfaceModel, override: boolean = false): void {
+        super.add(name, instance, override);
 
-            let func = this.execute.bind(this, instance);
+        Object.assign(instance, {
+            execute: this.execute.bind(this, instance),
+            getPath: this.getPath.bind(this, instance),
+            get: this.custom.bind(this, instance, "GET"),
+            post: this.custom.bind(this, instance, "POST", null),
+            put: this.custom.bind(this, instance, "PUT"),
+            delete: this.custom.bind(this, instance, "DELETE")
+            // patch: this.custom.bind(this, instance, "GET"),
+        });
+    }
+    /**
+     * 合并两个实例
+     * @param instance       实例名称
+     * @param extendInstance 需要合并的实例 
+     */
+    private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon): IInterfaceModel {
+        return Object.assign({}, instance, extendInstance);
+    }
 
-            func.getPath = this.getPath.bind(this, instance)
+    /**
+     * 获取接口的路径
+     * @param instance       实例名称
+     * @param extendInstance 需要合并的实例 
+     */
+    private getPath(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon = {}): string {
+        let engine: IEngine;
+        let iinstance: IInterfaceModel;
 
-            Object.assign(this, {
-                [name]: func
-            });
+        iinstance = this.megreInstance(instance, extendInstance);
+
+        engine = engineFactory.use("default");
+
+        return engine.getStatePath(iinstance) + iinstance.path;
+    }
+
+    /**
+     * 执行函数
+     * @param intance        {IInterfaceModel}  接口的具体实例
+     * @param options        {IExeucte}         调用接口所需的data
+     * @return               {Promise<any>}
+     */
+    async execute(instance: IInterfaceModel, options: IExecute): Promise<any> {
+        let engine: IEngine;
+        let iinstance: IInterfaceModel;
+        let { instance: extraInstance = {} } = options;
+
+        iinstance = this.megreInstance(instance, extraInstance);
+        engine = engineFactory.use(iinstance.engine as string);
+
+        // 验证数据的准确性
+        engine.validate(iinstance, options);
+
+        return engine.proxy(iinstance, options);
+    }
+
+    async custom(instance: IInterfaceModel, type: string, id?: string | number | null, options: IExecute = {}) {
+        let { instance: extraInstance = {}, params = {} } = options;
+
+        extraInstance.method = type;
+        if (id) {
+            extraInstance.path = instance.path + "/:id";
+            params.id = id;
         }
-        /**
-         * 合并两个实例
-         * @param instance       实例名称
-         * @param extendInstance 需要合并的实例 
-         */
-        private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModel): IInterfaceModel {
-            return Object.assign({}, instance, extendInstance);
-        }
 
-        /**
-         * 获取接口的路径
-         * @param instance       实例名称
-         * @param extendInstance 需要合并的实例 
-         */
-        private getPath(instance: IInterfaceModel, extendInstance: IInterfaceModel): string {
-            let engine: IEngine;
-            let iinstance: IInterfaceModel = {};
+        options.instance = extraInstance;
+        options.params = params;
 
-            iinstance = this.megreInstance(instance, extendInstance || {});
-
-            engine = engineFactory.ModelProxy.engineFactory.use("default");
-
-            return engine.getStatePath(iinstance) + iinstance.path;
-        }
-
-        /**
-         * 执行函数
-         * @param intance        {IInterfaceModel}  接口的具体实例
-         * @param options        {IExeucte}         调用接口所需的data
-         * @return               {Promise<any>}
-         */
-        async execute(instance: IInterfaceModel, options: IExecute): Promise<any> {
-            let engine: IEngine;
-            let iinstance: IInterfaceModel = {};
-
-            iinstance = this.megreInstance(instance, options.instance || {});
-
-            engine = engineFactory.ModelProxy.engineFactory.use(iinstance.engine);
-
-            // 验证数据的准确性
-            engine.validate(iinstance, options);
-
-            return engine.proxy(iinstance, options);
-        }
+        return await this.execute(instance, options);
     }
 }

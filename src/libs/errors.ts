@@ -3,28 +3,11 @@
 export class BaseError implements Error {
     public name: string;
     public message: string;
-    public stack: string;
-    
+    public stack: string | undefined;
+
     constructor(message?: string) {
-        this.message = message;
-
+        this.message = message ? message : "";
         this.stack = (new Error()).stack;
-    }
-}
-
-/**
- * tv4验证错误后返回错误类
- */
-export class ModelProxyValidaterError extends BaseError {
-    error: Array<tv4.ValidationError> | tv4.ValidationError;
-    missing: Array<any>;
-
-    constructor(message: string, error: Array<tv4.ValidationError> | tv4.ValidationError, missing?: Array<any>) {
-        super(message);
-        // Object.setPrototypeOf(this, ModelProxyValidaterError.prototype);
-        this.name = "ModelProxy.ValidaterError";
-        this.error = error;
-        this.missing = missing;
     }
 }
 
