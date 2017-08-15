@@ -214,11 +214,11 @@ export class WxAppEngine extends BaseEngine {
 
 继承自[Compose](#compose)类；提供接口的具体调用中间件。
 
-- proxy
+- proxy <i id="engine_proxy">
 
 调用接口的时候，会触发这个方法，返回一个Promise对象；
 
-- validate
+- validate <i id="engine_validate">
 
 调用接口的时候，会触发这个方法，返回一个boolean；
 
