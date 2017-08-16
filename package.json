@@ -1,6 +1,6 @@
 {
   "name": "modelproxy",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "接口配置建模框架",
   "main": "out/index.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/nick121212/modelproxy.git"
   },
+  "typings": "./out/index.d.ts",
   "keywords": [
     "nodejs",
     "modelproxy",
