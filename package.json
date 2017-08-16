@@ -1,13 +1,12 @@
 {
   "name": "modelproxy",
-  "version": "0.6.4",
+  "version": "0.6.6",
   "description": "接口配置建模框架",
   "main": "out/index.js",
   "scripts": {
     "test": "mocha test/**/*.js",
     "test-list": "mocha --reporter list test/**/*.js",
     "demo": "node out/demo",
-    "publish": "publish-please",
     "publish-please": "publish-please",
     "prepublish": "publish-please guard"
   },
@@ -22,7 +21,7 @@
     "typescript",
     "ajax"
   ],
-  "author": "NICK121212@126.com",
+  "author": "nick121212(nick121212@126.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nick121212/modelproxy/issues"
