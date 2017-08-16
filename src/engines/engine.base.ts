@@ -13,21 +13,21 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
         super();
     }
 
-    /**
-     * 验证数据的准确性
-     * @param obj         {JSON}        数据
-     * @param schema      {JSONSCHEMA}  JSONSCHEMA
-     * @return            {Boolean}
-     */
-    protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
-        // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
+    // /**
+    //  * 验证数据的准确性
+    //  * @param obj         {JSON}        数据
+    //  * @param schema      {JSONSCHEMA}  JSONSCHEMA
+    //  * @return            {Boolean}
+    //  */
+    // protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
+    //     // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
 
-        // if (!valid.valid) {
-        //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
-        // }
+    //     // if (!valid.valid) {
+    //     //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
+    //     // }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * 验证数据的准确性
@@ -36,8 +36,8 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @return           {boolean}
      */
     validate(instance: IInterfaceModel, options: IExecute): boolean {
-        instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
-        instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
+        // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
+        // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 
         return true;
     }

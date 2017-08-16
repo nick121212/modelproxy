@@ -1,4 +1,3 @@
-/// <reference types="tv4" />
 import { IEngine } from '../models/engine';
 import { IExecute } from '../models/execute';
 import { Compose } from '../libs/compose';
@@ -6,13 +5,6 @@ import { IProxyCtx } from '../models/proxyctx';
 import { IInterfaceModel } from '../models/interface';
 export declare abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
     constructor();
-    /**
-     * 验证数据的准确性
-     * @param obj         {JSON}        数据
-     * @param schema      {JSONSCHEMA}  JSONSCHEMA
-     * @return            {Boolean}
-     */
-    protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean;
     /**
      * 验证数据的准确性
      * @param instance   {IInterfaceModel}  接口模型

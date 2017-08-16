@@ -1,4 +1,3 @@
-/// <reference types="tv4" />
 import { MethodType } from "./method";
 import { ICommon } from "./common";
 import { IExecute } from "./execute";
@@ -22,14 +21,6 @@ export interface IInterfaceModelCommon extends ICommon {
      * 接口地址
      */
     config?: Object;
-    /**
-     * data字段 JSONSCHEMA，用于验证data的数据准确性
-     */
-    dataSchema?: tv4.JsonSchema;
-    /**
-     * params字段 JSONSCHEMA，用于验证params的数据准确性
-     */
-    paramsSchema?: tv4.JsonSchema;
 }
 export interface IInterfaceModel extends IInterfaceModelCommon {
     /**

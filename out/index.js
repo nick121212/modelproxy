@@ -13,4 +13,6 @@ var engine_base_1 = require("./engines/engine.base");
 exports.BaseEngine = engine_base_1.BaseEngine;
 var engine_def_1 = require("./engines/engine.def");
 exports.DefaultEngine = engine_def_1.DefaultEngine;
+var base_factory_1 = require("./libs/base.factory");
+exports.BaseFactory = base_factory_1.BaseFactory;
 //# sourceMappingURL=index.js.map

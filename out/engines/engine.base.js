@@ -54,19 +54,19 @@ var BaseEngine = (function (_super) {
     function BaseEngine() {
         return _super.call(this) || this;
     }
-    /**
-     * 验证数据的准确性
-     * @param obj         {JSON}        数据
-     * @param schema      {JSONSCHEMA}  JSONSCHEMA
-     * @return            {Boolean}
-     */
-    BaseEngine.prototype.validateTv4 = function (obj, schema) {
-        // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
-        // if (!valid.valid) {
-        //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
-        // }
-        return true;
-    };
+    // /**
+    //  * 验证数据的准确性
+    //  * @param obj         {JSON}        数据
+    //  * @param schema      {JSONSCHEMA}  JSONSCHEMA
+    //  * @return            {Boolean}
+    //  */
+    // protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
+    //     // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
+    //     // if (!valid.valid) {
+    //     //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
+    //     // }
+    //     return true;
+    // }
     /**
      * 验证数据的准确性
      * @param instance   {IInterfaceModel}  接口模型
@@ -74,8 +74,8 @@ var BaseEngine = (function (_super) {
      * @return           {boolean}
      */
     BaseEngine.prototype.validate = function (instance, options) {
-        instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
-        instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
+        // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
+        // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
         return true;
     };
     /**
