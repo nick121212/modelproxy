@@ -66,17 +66,18 @@ proxy.loadConfig({
             }
         }]
 }, {}).then(function () { return __awaiter(_this, void 0, void 0, function () {
-    var login, _a, _b;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var login, _a, _b, _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
                 login = proxy.getNs("test").get("login");
                 if (!login) return [3 /*break*/, 2];
                 _b = (_a = console).log;
+                _c = [login.getPath()];
                 return [4 /*yield*/, login.get()];
             case 1:
-                _b.apply(_a, [_c.sent()]);
-                _c.label = 2;
+                _b.apply(_a, _c.concat([_d.sent()]));
+                _d.label = 2;
             case 2: return [2 /*return*/];
         }
     });
@@ -87,7 +88,7 @@ proxy.loadConfig({
             case 0:
                 article = proxy.getNs("test").get("article");
                 if (!article) return [3 /*break*/, 8];
-                console.log(article.getPath());
+                console.log("getPath", article.getPath());
                 _b = (_a = console).log;
                 return [4 /*yield*/, article.get(null, { params: { tag: "nick" } })];
             case 1:

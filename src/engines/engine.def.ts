@@ -1,7 +1,7 @@
 import { IEngine } from "../models/engine";
-import { IInterfaceModel } from '../models/interface';
-import { BaseEngine } from './engine.base';
-import { IExecute } from '../models/execute';
+import { IInterfaceModel } from "../models/interface";
+import { BaseEngine } from "./engine.base";
+import { IExecute } from "../models/execute";
 import { IProxyCtx } from "../models/proxyctx";
 
 export class DefaultEngine extends BaseEngine {
@@ -17,11 +17,13 @@ export class DefaultEngine extends BaseEngine {
         });
     }
 
-    async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
-        let fn = this.callback(() => { });
+    public async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
+        let fn = this.callback(() => {
+            // console.log("al");
+         });
         let res: IProxyCtx = await fn({
-            instance: instance,
             executeInfo: options,
+            instance: instance
         });
 
         if (res.isError) {

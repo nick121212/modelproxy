@@ -1,4 +1,4 @@
-import { ModelProxy } from './';
+import { ModelProxy } from "./";
 
 let proxy = new ModelProxy();
 
@@ -33,20 +33,19 @@ proxy.loadConfig({
     let login = proxy.getNs("test").get("login");
 
     if (login) {
-        console.log(await login.get());
+        console.log(login.getPath(), await login.get());
     }
 }).then(async () => {
     let article = proxy.getNs("test").get("article");
 
     if (article) {
-        console.log(article.getPath());
+        console.log("getPath", article.getPath());
         console.log(await article.get(null, { params: { tag: "nick" } }));
         console.log(await article.get(1, { params: { tag: "nick" } }));
         console.log(await article.put(1, { data: { tag: "nick" } }));
         console.log(await article.delete(1));
         console.log(await article.post({ data: { tag: "nick" } }));
         console.log(await proxy.execute("test", "article"));
-
         console.log(await proxy.execute("test", "login"));
     }
 }).catch(console.error);

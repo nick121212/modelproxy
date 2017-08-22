@@ -49,6 +49,16 @@ describe('modelproxy base', function () {
         });
     });
 
+    describe("execute function", function () {
+        
+        it('测试execute，输入错误的命名空间,返回没有找到命名空间的错误', function () {
+            // assert.throw((function () { proxy.execute("tes3t1","11"); }));
+            proxy.execute("tes3t1","11").catch((e)=>{
+                expect(e.message).to.equal("没有找到tes3t1空间;当前命名空间【test】");
+            })
+        });
+    });
+
     // describe("测试方法", function () {
     //     it('测试login方法是否存在', function () {
     //         expect(proxy.getNs("test").login).to.be.a("function")

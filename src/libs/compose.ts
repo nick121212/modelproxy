@@ -16,7 +16,7 @@ export class Compose<T extends IProxyCtx>  {
      * @param func    {Function} 中间件方法
      * @return        {void}
      */
-    use(func: Function): void {
+    public use(func: Function): void {
         if (typeof func !== "function") {
             throw new TypeError("middleware must be a function！");
         }
@@ -27,7 +27,7 @@ export class Compose<T extends IProxyCtx>  {
     /**
      * 清除中间件方法
      */
-    clear() {
+    public clear() {
         this.middlewares.length = 0;
     }
 
@@ -35,10 +35,14 @@ export class Compose<T extends IProxyCtx>  {
      * 生成中间件执行函数
      * @return {Function}
      */
-    compose(): Function {
-        if (!Array.isArray(this.middlewares)) throw new TypeError("Middleware stack must be an array!");
+    public compose(): Function {
+        if (!Array.isArray(this.middlewares)) {
+            throw new TypeError("Middleware stack must be an array!");
+        }
         for (const fn of this.middlewares) {
-            if (typeof fn !== "function") throw new TypeError("Middleware must be composed of functions!");
+            if (typeof fn !== "function") {
+                throw new TypeError("Middleware must be composed of functions!");
+            }
         }
 
         return (context: T, next: Function): Promise<any> => {
@@ -53,7 +57,9 @@ export class Compose<T extends IProxyCtx>  {
                             return reject(new Error("next() called multiple times" + i + "-" + index));
                         }
                         index = i;
-                        if (i === this.middlewares.length) fn = next;
+                        if (i === this.middlewares.length) {
+                            fn = next;
+                        }
                         if (!fn) {
                             return resolve1(context);
                         }
@@ -79,7 +85,7 @@ export class Compose<T extends IProxyCtx>  {
      * @param ctx   {Object} 执行上下文
      * @param err   {Object} 错误数据
      */
-    errorHandle(ctx: T, err: Error) {
+    public errorHandle(ctx: T, err: Error) {
         ctx.isError = true;
         ctx.err = err;
         // console.error("compose--", err);
@@ -90,19 +96,19 @@ export class Compose<T extends IProxyCtx>  {
      * @param complete {Function} 执行完毕后回调函数
      * @return  {Function}
      */
-    callback(complete: Function): Function {
+    public callback(complete: Function): Function {
         const fn = this.compose();
 
         return (options: any): Promise<any> => {
             let ctx: T = Object.assign(options || {}, {}) as T;
-            let promise = fn(ctx, async (ctx: any, next: Function) => {
+            let promise = fn(ctx, async (content: any, next: Function) => {
                 await next();
             }).then(() => {
                 complete(ctx);
 
                 return ctx;
             }).catch((err: Error) => {
-                this.errorHandle(ctx, err)
+                this.errorHandle(ctx, err);
             });
 
             return promise;

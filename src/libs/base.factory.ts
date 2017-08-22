@@ -6,7 +6,6 @@ import { ModelProxyMissingError } from "./errors";
 export class BaseFactory<T> {
     protected instances: { [id: string]: T; } = {};
 
-    constructor() { }
     /**
      * 添加一个实例
      * @param name     {string}    实例的名称
@@ -14,7 +13,7 @@ export class BaseFactory<T> {
      * @param override {boolean}   是否覆盖
      * @return         {void}
      */
-    add(name: string, intance: T, override: boolean = false): void {
+    public add(name: string, intance: T, override = false): void {
         if (override && this.instances.hasOwnProperty(name)) {
             return console.error(`已经存在name=【${name}】的engine！`);
         }
@@ -25,7 +24,7 @@ export class BaseFactory<T> {
      * 获取一个实例
      * @param name 实例标志
      */
-    get(name: string): T | null {
+    public get(name: string): T | null {
         if (this.instances.hasOwnProperty(name)) {
             return this.instances[name];
         }
@@ -37,11 +36,10 @@ export class BaseFactory<T> {
     * @param name     {string}    实例的名称
     * @return         {T}
     */
-    use(name: string): T {
+    public use(name: string): T {
         if (!name || !this.instances.hasOwnProperty(name)) {
             let engines = Object.keys(this.instances);
-            
-            throw new ModelProxyMissingError(`不存在name=【${name}】的engine！当前engines：【${engines.join(',')}】`);
+            throw new ModelProxyMissingError(`不存在name=【${name}】的engine！当前engines：【${engines.join(",")}】`);
         }
 
         return this.instances[name];

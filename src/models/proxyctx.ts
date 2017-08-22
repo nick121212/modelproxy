@@ -1,5 +1,5 @@
-import { IExecute } from './execute';
-import { IInterfaceModel } from './interface';
+import { IExecute } from "./execute";
+import { IInterfaceModel } from "./interface";
 
 export interface IProxyCtx extends IExecute {
     isError?: boolean;

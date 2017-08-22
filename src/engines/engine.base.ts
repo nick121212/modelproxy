@@ -1,12 +1,12 @@
-import * as pathToRegexp from 'path-to-regexp';
-import * as URLSearchParams from 'url-search-params';
+import * as pathToRegexp from "path-to-regexp";
+import * as URLSearchParams from "url-search-params";
 
-import { IEngine } from '../models/engine';
-import { IExecute } from '../models/execute';
-import { Compose } from '../libs/compose';
-import { IProxyCtx } from '../models/proxyctx';
-import { IInterfaceModel } from '../models/interface';
-import { ModelProxyMissingError } from '../libs/errors';
+import { IEngine } from "../models/engine";
+import { IExecute } from "../models/execute";
+import { Compose } from "../libs/compose";
+import { IProxyCtx } from "../models/proxyctx";
+import { IInterfaceModel } from "../models/interface";
+import { ModelProxyMissingError } from "../libs/errors";
 
 export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
     constructor() {
@@ -35,7 +35,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @param options    {IExecute}         参数
      * @return           {boolean}
      */
-    validate(instance: IInterfaceModel, options: IExecute): boolean {
+    public validate(instance: IInterfaceModel, options: IExecute): boolean {
         // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
         // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 
@@ -48,7 +48,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @param options    {IExecute}         参数
      * @return           {Promise<any>}
      */
-    async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
+    public async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
         return {};
     }
 
@@ -57,7 +57,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @param instance  {IInterfaceModel}   接口实例
      * @return          {String}
      */
-    getStatePath(instance: IInterfaceModel): string {
+    public getStatePath(instance: IInterfaceModel): string {
         if (instance.states && instance.state) {
             return instance.states[instance.state] || "";
         }
@@ -70,7 +70,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @param instance   {IInterfaceModel}  接口模型
      * @param options    {IExecute}         参数
      */
-    replacePath(instance: IInterfaceModel, { params = [], data = {} }: IExecute): string {
+    public replacePath(instance: IInterfaceModel, { params = [], data = {} }: IExecute): string {
         let tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string));
         let paths: Array<string> = [];
 
@@ -88,7 +88,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
             }
         });
 
-        return paths.join('');
+        return paths.join("");
     }
 
     /**
@@ -96,7 +96,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @param instance   {IInterfaceModel}  接口模型
      * @param options    {IExecute}         参数
      */
-    getFullPath(instance: IInterfaceModel, options: IExecute): string {
+    public getFullPath(instance: IInterfaceModel, options: IExecute): string {
         let url = `${this.getStatePath(instance)}` + this.replacePath(instance, options);
         let searchParams: URLSearchParams.Instance = new URLSearchParams();
 
@@ -105,7 +105,11 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
                 searchParams.append(key, options.params[key]);
             });
 
-            searchParams.keys.length && (url += `?${searchParams.toString()}`);
+            if (searchParams.keys.length) {
+                url += `?${searchParams.toString()}`;
+            }
+
+            // searchParams.keys.length && (url += `?${searchParams.toString()}`);
         }
 
         return url;

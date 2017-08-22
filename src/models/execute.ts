@@ -1,4 +1,4 @@
-import { IInterfaceModel, IInterfaceModelCommon } from './interface';
+import { IInterfaceModel, IInterfaceModelCommon } from "./interface";
 
 export interface IExecute {
     instance?: IInterfaceModelCommon;
