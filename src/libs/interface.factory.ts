@@ -22,6 +22,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
             get: this.custom.bind(this, instance, "GET"),
+            getPath: this.getPath.bind(this, instance),
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
             // patch: this.custom.bind(this, instance, "GET"),
@@ -61,11 +62,11 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
 
         return await this.execute(instance, options);
     }
-     /**
-     * 合并两个实例
-     * @param instance       实例名称
-     * @param extendInstance 需要合并的实例
-     */
+    /**
+    * 合并两个实例
+    * @param instance       实例名称
+    * @param extendInstance 需要合并的实例
+    */
     private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon): IInterfaceModel {
         return Object.assign({}, instance, extendInstance);
     }

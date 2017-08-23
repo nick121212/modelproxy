@@ -1,4 +1,4 @@
-import { IInterfaceModelCommon } from './interface';
+import { IInterfaceModelCommon } from "./interface";
 import { ICommon } from "./common";
 /**
  * 接口模型

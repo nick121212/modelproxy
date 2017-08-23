@@ -40,7 +40,7 @@ var BaseFactory = (function () {
     BaseFactory.prototype.use = function (name) {
         if (!name || !this.instances.hasOwnProperty(name)) {
             var engines = Object.keys(this.instances);
-            throw new errors_1.ModelProxyMissingError("\u4E0D\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01\u5F53\u524Dengines\uFF1A\u3010" + engines.join(',') + "\u3011");
+            throw new errors_1.ModelProxyMissingError("\u4E0D\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01\u5F53\u524Dengines\uFF1A\u3010" + engines.join(",") + "\u3011");
         }
         return this.instances[name];
     };

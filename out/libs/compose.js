@@ -66,12 +66,14 @@ var Compose = (function () {
      */
     Compose.prototype.compose = function () {
         var _this = this;
-        if (!Array.isArray(this.middlewares))
+        if (!Array.isArray(this.middlewares)) {
             throw new TypeError("Middleware stack must be an array!");
+        }
         for (var _i = 0, _a = this.middlewares; _i < _a.length; _i++) {
             var fn = _a[_i];
-            if (typeof fn !== "function")
+            if (typeof fn !== "function") {
                 throw new TypeError("Middleware must be composed of functions!");
+            }
         }
         return function (context, next) {
             return new Promise(function (resolve, reject) {
@@ -88,8 +90,9 @@ var Compose = (function () {
                                         return [2 /*return*/, reject(new Error("next() called multiple times" + i + "-" + index))];
                                     }
                                     index = i;
-                                    if (i === this.middlewares.length)
+                                    if (i === this.middlewares.length) {
                                         fn = next;
+                                    }
                                     if (!fn) {
                                         return [2 /*return*/, resolve1(context)];
                                     }
@@ -144,7 +147,7 @@ var Compose = (function () {
         var fn = this.compose();
         return function (options) {
             var ctx = Object.assign(options || {}, {});
-            var promise = fn(ctx, function (ctx, next) { return __awaiter(_this, void 0, void 0, function () {
+            var promise = fn(ctx, function (content, next) { return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, next()];

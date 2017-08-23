@@ -1,6 +1,6 @@
-import { IExecute } from '../models/execute';
-import { IEngine } from '../models/engine';
-import { IInterfaceModelCommon } from '../models/interface';
+import { IExecute } from "../models/execute";
+import { IEngine } from "../models/engine";
+import { IInterfaceModelCommon } from "../models/interface";
 import { IProxyConfig } from "../models/proxy.config";
 import { InterfaceFactory } from "./interface.factory";
 import { Compose } from "./compose";
@@ -15,15 +15,9 @@ export declare class ModelProxy extends Compose<any> {
         [id: string]: IEngine;
     }): ModelProxy;
     /**
-     * 初始化配置文件中的接口信息
-     * @param config {IProxyConfig} 配置信息
-     * @return {InterfaceFactory}
-     */
-    private initInterfaces(config, overrideInterfaceConfig?);
-    /**
      * 导入配置
      * @param config {IProxyConfig} 配置信息
-     * @return {InterfaceFactory}
+     * @return        当前实例
     */
     loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon): Promise<this>;
     /**
@@ -39,4 +33,10 @@ export declare class ModelProxy extends Compose<any> {
      * @return { InterfaceFactory }
      */
     getNs(ns: string): InterfaceFactory;
+    /**
+     * 初始化配置文件中的接口信息
+     * @param config {IProxyConfig} 配置信息
+     * @return {InterfaceFactory}
+     */
+    private initInterfaces(config, overrideInterfaceConfig?);
 }

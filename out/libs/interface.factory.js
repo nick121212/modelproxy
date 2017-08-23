@@ -63,35 +63,13 @@ var InterfaceFactory = (function (_super) {
         if (override === void 0) { override = false; }
         _super.prototype.add.call(this, name, instance, override);
         Object.assign(instance, {
+            delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
-            getPath: this.getPath.bind(this, instance),
             get: this.custom.bind(this, instance, "GET"),
+            getPath: this.getPath.bind(this, instance),
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
-            delete: this.custom.bind(this, instance, "DELETE")
-            // patch: this.custom.bind(this, instance, "GET"),
         });
-    };
-    /**
-     * 合并两个实例
-     * @param instance       实例名称
-     * @param extendInstance 需要合并的实例
-     */
-    InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
-        return Object.assign({}, instance, extendInstance);
-    };
-    /**
-     * 获取接口的路径
-     * @param instance       实例名称
-     * @param extendInstance 需要合并的实例
-     */
-    InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
-        if (extendInstance === void 0) { extendInstance = {}; }
-        var engine;
-        var iinstance;
-        iinstance = this.megreInstance(instance, extendInstance);
-        engine = engine_factory_1.engineFactory.use("default");
-        return engine.getStatePath(iinstance) + iinstance.path;
     };
     /**
      * 执行函数
@@ -132,6 +110,27 @@ var InterfaceFactory = (function (_super) {
                 }
             });
         });
+    };
+    /**
+    * 合并两个实例
+    * @param instance       实例名称
+    * @param extendInstance 需要合并的实例
+    */
+    InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
+        return Object.assign({}, instance, extendInstance);
+    };
+    /**
+     * 获取接口的路径
+     * @param instance       实例名称
+     * @param extendInstance 需要合并的实例
+     */
+    InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
+        if (extendInstance === void 0) { extendInstance = {}; }
+        var engine;
+        var iinstance;
+        iinstance = this.megreInstance(instance, extendInstance);
+        engine = engine_factory_1.engineFactory.use("default");
+        return engine.getStatePath(iinstance) + iinstance.path;
     };
     return InterfaceFactory;
 }(base_factory_1.BaseFactory));

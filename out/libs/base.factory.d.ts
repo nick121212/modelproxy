@@ -5,7 +5,6 @@ export declare class BaseFactory<T> {
     protected instances: {
         [id: string]: T;
     };
-    constructor();
     /**
      * 添加一个实例
      * @param name     {string}    实例的名称

@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var URLSearchParams = require("url-search-params");
+exports.URLSearchParams = URLSearchParams;
 var proxy_1 = require("./libs/proxy");
 exports.ModelProxy = proxy_1.ModelProxy;
 var compose_1 = require("./libs/compose");

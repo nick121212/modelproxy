@@ -124,7 +124,7 @@ var BaseEngine = (function (_super) {
                 delete params[name];
             }
         });
-        return paths.join('');
+        return paths.join("");
     };
     /**
      * 获取接口的全路径
@@ -138,7 +138,10 @@ var BaseEngine = (function (_super) {
             Object.keys(options.params).forEach(function (key) {
                 searchParams.append(key, options.params[key]);
             });
-            searchParams.keys.length && (url += "?" + searchParams.toString());
+            if (searchParams.keys.length) {
+                url += "?" + searchParams.toString();
+            }
+            // searchParams.keys.length && (url += `?${searchParams.toString()}`);
         }
         return url;
     };

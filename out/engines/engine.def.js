@@ -64,10 +64,12 @@ var DefaultEngine = (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        fn = this.callback(function () { });
+                        fn = this.callback(function () {
+                            // console.log("al");
+                        });
                         return [4 /*yield*/, fn({
-                                instance: instance,
                                 executeInfo: options,
+                                instance: instance
                             })];
                     case 1:
                         res = _a.sent();

@@ -1,8 +1,8 @@
-import { IEngine } from '../models/engine';
-import { IExecute } from '../models/execute';
-import { Compose } from '../libs/compose';
-import { IProxyCtx } from '../models/proxyctx';
-import { IInterfaceModel } from '../models/interface';
+import { IEngine } from "../models/engine";
+import { IExecute } from "../models/execute";
+import { Compose } from "../libs/compose";
+import { IProxyCtx } from "../models/proxyctx";
+import { IInterfaceModel } from "../models/interface";
 export declare abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
     constructor();
     /**

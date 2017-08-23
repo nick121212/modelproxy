@@ -64,33 +64,17 @@ var ModelProxy = (function (_super) {
      */
     ModelProxy.prototype.addEngines = function (engines) {
         for (var key in engines) {
-            engine_factory_1.engineFactory.add(key, engines[key], true);
+            if (engines.hasOwnProperty(key)) {
+                var element = engines[key];
+                engine_factory_1.engineFactory.add(key, element, true);
+            }
         }
         return this;
     };
     /**
-     * 初始化配置文件中的接口信息
-     * @param config {IProxyConfig} 配置信息
-     * @return {InterfaceFactory}
-     */
-    ModelProxy.prototype.initInterfaces = function (config, overrideInterfaceConfig) {
-        if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
-        var ifFactory = new interface_factory_1.InterfaceFactory();
-        config.interfaces.forEach(function (i) {
-            ifFactory.add(i.key, Object.assign({}, {
-                ns: config.key,
-                engine: config.engine,
-                states: config.states,
-                state: config.state,
-                mockDir: config.mockDir
-            }, i, overrideInterfaceConfig || {}));
-        });
-        return ifFactory;
-    };
-    /**
      * 导入配置
      * @param config {IProxyConfig} 配置信息
-     * @return {InterfaceFactory}
+     * @return        当前实例
     */
     ModelProxy.prototype.loadConfig = function (config, overrideInterfaceConfig) {
         return __awaiter(this, void 0, void 0, function () {
@@ -129,11 +113,33 @@ var ModelProxy = (function (_super) {
         if (!this.interfaces.hasOwnProperty(ns)) {
             var nses = [];
             for (var key in this.interfaces) {
-                nses.push(key);
+                if (this.interfaces.hasOwnProperty(key)) {
+                    var element = this.interfaces[key];
+                    nses.push(key);
+                }
             }
-            throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;\u5F53\u524D\u547D\u540D\u7A7A\u95F4\u3010" + nses.join(',') + "\u3011");
+            throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;\u5F53\u524D\u547D\u540D\u7A7A\u95F4\u3010" + nses.join(",") + "\u3011");
         }
         return this.interfaces[ns];
+    };
+    /**
+     * 初始化配置文件中的接口信息
+     * @param config {IProxyConfig} 配置信息
+     * @return {InterfaceFactory}
+     */
+    ModelProxy.prototype.initInterfaces = function (config, overrideInterfaceConfig) {
+        if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
+        var ifFactory = new interface_factory_1.InterfaceFactory();
+        config.interfaces.forEach(function (i) {
+            ifFactory.add(i.key, Object.assign({}, {
+                engine: config.engine,
+                mockDir: config.mockDir,
+                ns: config.key,
+                state: config.state,
+                states: config.states,
+            }, i, overrideInterfaceConfig || {}));
+        });
+        return ifFactory;
     };
     return ModelProxy;
 }(compose_1.Compose));
