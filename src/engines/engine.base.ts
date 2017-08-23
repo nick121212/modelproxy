@@ -8,6 +8,8 @@ import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";
 
+/// <reference path="../dts/url-search-params.d.ts" />
+
 export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
     constructor() {
         super();

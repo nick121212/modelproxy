@@ -54,59 +54,22 @@ var BaseEngine = (function (_super) {
     function BaseEngine() {
         return _super.call(this) || this;
     }
-    // /**
-    //  * 验证数据的准确性
-    //  * @param obj         {JSON}        数据
-    //  * @param schema      {JSONSCHEMA}  JSONSCHEMA
-    //  * @return            {Boolean}
-    //  */
-    // protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
-    //     // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
-    //     // if (!valid.valid) {
-    //     //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
-    //     // }
-    //     return true;
-    // }
-    /**
-     * 验证数据的准确性
-     * @param instance   {IInterfaceModel}  接口模型
-     * @param options    {IExecute}         参数
-     * @return           {boolean}
-     */
     BaseEngine.prototype.validate = function (instance, options) {
-        // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
-        // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
         return true;
     };
-    /**
-     * 代理接口
-     * @param instance   {IInterfaceModel}  接口模型
-     * @param options    {IExecute}         参数
-     * @return           {Promise<any>}
-     */
     BaseEngine.prototype.proxy = function (instance, options) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, {}];
+                return [2, {}];
             });
         });
     };
-    /**
-     * 取得state所对应的环境
-     * @param instance  {IInterfaceModel}   接口实例
-     * @return          {String}
-     */
     BaseEngine.prototype.getStatePath = function (instance) {
         if (instance.states && instance.state) {
             return instance.states[instance.state] || "";
         }
         return "";
     };
-    /**
-     * 替换path中的变量
-     * @param instance   {IInterfaceModel}  接口模型
-     * @param options    {IExecute}         参数
-     */
     BaseEngine.prototype.replacePath = function (instance, _a) {
         var _b = _a.params, params = _b === void 0 ? [] : _b, _c = _a.data, data = _c === void 0 ? {} : _c;
         var tokens = pathToRegexp.parse(instance.path);
@@ -126,11 +89,6 @@ var BaseEngine = (function (_super) {
         });
         return paths.join("");
     };
-    /**
-     * 获取接口的全路径
-     * @param instance   {IInterfaceModel}  接口模型
-     * @param options    {IExecute}         参数
-     */
     BaseEngine.prototype.getFullPath = function (instance, options) {
         var url = "" + this.getStatePath(instance) + this.replacePath(instance, options);
         var searchParams = new URLSearchParams();
@@ -141,7 +99,6 @@ var BaseEngine = (function (_super) {
             if (searchParams.keys.length) {
                 url += "?" + searchParams.toString();
             }
-            // searchParams.keys.length && (url += `?${searchParams.toString()}`);
         }
         return url;
     };

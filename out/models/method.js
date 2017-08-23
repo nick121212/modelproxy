@@ -1,8 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 操作类型
- */
 var MethodType;
 (function (MethodType) {
     MethodType[MethodType["GET"] = 0] = "GET";

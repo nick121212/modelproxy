@@ -52,13 +52,6 @@ var InterfaceFactory = (function (_super) {
     function InterfaceFactory() {
         return _super.call(this) || this;
     }
-    /**
-    * 添加一个实例
-    * @param name     {string}    实例的名称
-    * @param engine   {IEngine}   实例
-    * @param override {boolean}   是否覆盖
-    * @return {void}
-    */
     InterfaceFactory.prototype.add = function (name, instance, override) {
         if (override === void 0) { override = false; }
         _super.prototype.add.call(this, name, instance, override);
@@ -71,12 +64,6 @@ var InterfaceFactory = (function (_super) {
             put: this.custom.bind(this, instance, "PUT"),
         });
     };
-    /**
-     * 执行函数
-     * @param intance        {IInterfaceModel}  接口的具体实例
-     * @param options        {IExeucte}         调用接口所需的data
-     * @return               {Promise<any>}
-     */
     InterfaceFactory.prototype.execute = function (instance, options) {
         return __awaiter(this, void 0, void 0, function () {
             var engine, iinstance, _a, extraInstance;
@@ -84,9 +71,8 @@ var InterfaceFactory = (function (_super) {
                 _a = options.instance, extraInstance = _a === void 0 ? {} : _a;
                 iinstance = this.megreInstance(instance, extraInstance);
                 engine = engine_factory_1.engineFactory.use(iinstance.engine);
-                // 验证数据的准确性
                 engine.validate(iinstance, options);
-                return [2 /*return*/, engine.proxy(iinstance, options)];
+                return [2, engine.proxy(iinstance, options)];
             });
         });
     };
@@ -105,25 +91,15 @@ var InterfaceFactory = (function (_super) {
                         }
                         options.instance = extraInstance;
                         options.params = params;
-                        return [4 /*yield*/, this.execute(instance, options)];
-                    case 1: return [2 /*return*/, _c.sent()];
+                        return [4, this.execute(instance, options)];
+                    case 1: return [2, _c.sent()];
                 }
             });
         });
     };
-    /**
-    * 合并两个实例
-    * @param instance       实例名称
-    * @param extendInstance 需要合并的实例
-    */
     InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
         return Object.assign({}, instance, extendInstance);
     };
-    /**
-     * 获取接口的路径
-     * @param instance       实例名称
-     * @param extendInstance 需要合并的实例
-     */
     InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
         if (extendInstance === void 0) { extendInstance = {}; }
         var engine;

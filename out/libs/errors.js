@@ -1,5 +1,4 @@
 "use strict";
-// import * as tv4 from "tv4";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19,14 +18,10 @@ var BaseError = (function () {
     return BaseError;
 }());
 exports.BaseError = BaseError;
-/**
- * 缺少Engine返回错误类
- */
 var ModelProxyMissingError = (function (_super) {
     __extends(ModelProxyMissingError, _super);
     function ModelProxyMissingError(message) {
         var _this = _super.call(this, message) || this;
-        // Object.setPrototypeOf(this, ModelProxyMissingError.prototype);
         _this.name = "ModelProxy.MissingError";
         return _this;
     }

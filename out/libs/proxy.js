@@ -51,17 +51,11 @@ var compose_1 = require("./compose");
 var errors_1 = require("./errors");
 var ModelProxy = (function (_super) {
     __extends(ModelProxy, _super);
-    // private cproxy: cproxy.ModelProxy.ComposeProxy = new cproxy.ModelProxy.ComposeProxy();
-    // private composes: { [id: string]: ComposeFactory; } = {};
     function ModelProxy() {
         var _this = _super.call(this) || this;
         _this.interfaces = {};
         return _this;
     }
-    /**
-     * 添加engines
-     * @param engines { { [id: string]: IEngine; } }  引擎对象
-     */
     ModelProxy.prototype.addEngines = function (engines) {
         for (var key in engines) {
             if (engines.hasOwnProperty(key)) {
@@ -71,25 +65,14 @@ var ModelProxy = (function (_super) {
         }
         return this;
     };
-    /**
-     * 导入配置
-     * @param config {IProxyConfig} 配置信息
-     * @return        当前实例
-    */
     ModelProxy.prototype.loadConfig = function (config, overrideInterfaceConfig) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.interfaces[config.key] = this.initInterfaces(config, overrideInterfaceConfig);
-                return [2 /*return*/, this];
+                return [2, this];
             });
         });
     };
-    /**
-     * 执行一个接口方法
-     * @param path     {String}   执行的方法路径;格式：/${ns}/${key}；example: /localhost/login
-     * @param options  {IExecute} 调用接口所需的data
-     * @return {Promise<any>}
-     */
     ModelProxy.prototype.execute = function (ns, key, options) {
         if (options === void 0) { options = {}; }
         return __awaiter(this, void 0, void 0, function () {
@@ -100,15 +83,10 @@ var ModelProxy = (function (_super) {
                 if (!instance) {
                     throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u53D1\u73B0/" + ns + "/" + key + "\u7684\u63A5\u53E3\u65B9\u6CD5\uFF01");
                 }
-                return [2 /*return*/, instance.execute(options)];
+                return [2, instance.execute(options)];
             });
         });
     };
-    /**
-     * 获取namespace
-     * @param ns    {string} 空间名
-     * @return { InterfaceFactory }
-     */
     ModelProxy.prototype.getNs = function (ns) {
         if (!this.interfaces.hasOwnProperty(ns)) {
             var nses = [];
@@ -122,11 +100,6 @@ var ModelProxy = (function (_super) {
         }
         return this.interfaces[ns];
     };
-    /**
-     * 初始化配置文件中的接口信息
-     * @param config {IProxyConfig} 配置信息
-     * @return {InterfaceFactory}
-     */
     ModelProxy.prototype.initInterfaces = function (config, overrideInterfaceConfig) {
         if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
         var ifFactory = new interface_factory_1.InterfaceFactory();

@@ -71,14 +71,14 @@ proxy.loadConfig({
         switch (_d.label) {
             case 0:
                 login = proxy.getNs("test").get("login");
-                if (!login) return [3 /*break*/, 2];
+                if (!login) return [3, 2];
                 _b = (_a = console).log;
                 _c = [login.getPath()];
-                return [4 /*yield*/, login.get()];
+                return [4, login.get()];
             case 1:
                 _b.apply(_a, _c.concat([_d.sent()]));
                 _d.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); }).then(function () { return __awaiter(_this, void 0, void 0, function () {
@@ -87,38 +87,38 @@ proxy.loadConfig({
         switch (_q.label) {
             case 0:
                 article = proxy.getNs("test").get("article");
-                if (!article) return [3 /*break*/, 8];
+                if (!article) return [3, 8];
                 console.log("getPath", article.getPath());
                 _b = (_a = console).log;
-                return [4 /*yield*/, article.get(null, { params: { tag: "nick" } })];
+                return [4, article.get(null, { params: { tag: "nick" } })];
             case 1:
                 _b.apply(_a, [_q.sent()]);
                 _d = (_c = console).log;
-                return [4 /*yield*/, article.get(1, { params: { tag: "nick" } })];
+                return [4, article.get(1, { params: { tag: "nick" } })];
             case 2:
                 _d.apply(_c, [_q.sent()]);
                 _f = (_e = console).log;
-                return [4 /*yield*/, article.put(1, { data: { tag: "nick" } })];
+                return [4, article.put(1, { data: { tag: "nick" } })];
             case 3:
                 _f.apply(_e, [_q.sent()]);
                 _h = (_g = console).log;
-                return [4 /*yield*/, article.delete(1)];
+                return [4, article.delete(1)];
             case 4:
                 _h.apply(_g, [_q.sent()]);
                 _k = (_j = console).log;
-                return [4 /*yield*/, article.post({ data: { tag: "nick" } })];
+                return [4, article.post({ data: { tag: "nick" } })];
             case 5:
                 _k.apply(_j, [_q.sent()]);
                 _m = (_l = console).log;
-                return [4 /*yield*/, proxy.execute("test", "article")];
+                return [4, proxy.execute("test", "article")];
             case 6:
                 _m.apply(_l, [_q.sent()]);
                 _p = (_o = console).log;
-                return [4 /*yield*/, proxy.execute("test", "login")];
+                return [4, proxy.execute("test", "login")];
             case 7:
                 _p.apply(_o, [_q.sent()]);
                 _q.label = 8;
-            case 8: return [2 /*return*/];
+            case 8: return [2];
         }
     });
 }); }).catch(console.error);

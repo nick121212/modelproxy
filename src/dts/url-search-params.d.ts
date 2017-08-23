@@ -1,7 +1,7 @@
 
 // Type definitions for url-search-params 0.5.*
 // Project: https://github.com/WebReflection/url-search-params
-// Definitions by: Bart van der Schoor <https://github.com/nick121212>
+// Definitions by: Nick <https://github.com/nick121212>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 declare module 'url-search-params' {

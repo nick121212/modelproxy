@@ -65,9 +65,8 @@ var DefaultEngine = (function (_super) {
                 switch (_a.label) {
                     case 0:
                         fn = this.callback(function () {
-                            // console.log("al");
                         });
-                        return [4 /*yield*/, fn({
+                        return [4, fn({
                                 executeInfo: options,
                                 instance: instance
                             })];
@@ -76,8 +75,7 @@ var DefaultEngine = (function (_super) {
                         if (res.isError) {
                             throw res.err;
                         }
-                        // console.log("执行接口成功！接口的路径：", this.getFullPath(instance, options), instance.method);
-                        return [2 /*return*/, instance];
+                        return [2, instance];
                 }
             });
         });

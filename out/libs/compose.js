@@ -35,35 +35,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import * as Bluebird from "bluebird";
-/**
- * koa中间件方法
- */
 var Compose = (function () {
     function Compose() {
         this.middlewares = [];
     }
-    /**
-     * 添加中间件函数
-     * @param func    {Function} 中间件方法
-     * @return        {void}
-     */
     Compose.prototype.use = function (func) {
         if (typeof func !== "function") {
             throw new TypeError("middleware must be a function！");
         }
         this.middlewares.push(func);
     };
-    /**
-     * 清除中间件方法
-     */
     Compose.prototype.clear = function () {
         this.middlewares.length = 0;
     };
-    /**
-     * 生成中间件执行函数
-     * @return {Function}
-     */
     Compose.prototype.compose = function () {
         var _this = this;
         if (!Array.isArray(this.middlewares)) {
@@ -87,38 +71,37 @@ var Compose = (function () {
                                 case 0:
                                     fn = this.middlewares[i];
                                     if (i <= index) {
-                                        return [2 /*return*/, reject(new Error("next() called multiple times" + i + "-" + index))];
+                                        return [2, reject(new Error("next() called multiple times" + i + "-" + index))];
                                     }
                                     index = i;
                                     if (i === this.middlewares.length) {
                                         fn = next;
                                     }
                                     if (!fn) {
-                                        return [2 /*return*/, resolve1(context)];
+                                        return [2, resolve1(context)];
                                     }
                                     _a.label = 1;
                                 case 1:
                                     _a.trys.push([1, 3, , 4]);
-                                    return [4 /*yield*/, fn(context, function () { return __awaiter(_this, void 0, void 0, function () {
+                                    return [4, fn(context, function () { return __awaiter(_this, void 0, void 0, function () {
                                             return __generator(this, function (_a) {
                                                 switch (_a.label) {
-                                                    case 0: return [4 /*yield*/, dispatch(i + 1)];
+                                                    case 0: return [4, dispatch(i + 1)];
                                                     case 1:
                                                         _a.sent();
                                                         resolve1();
-                                                        return [2 /*return*/];
+                                                        return [2];
                                                 }
                                             });
                                         }); })];
                                 case 2:
                                     _a.sent();
-                                    return [3 /*break*/, 4];
+                                    return [3, 4];
                                 case 3:
                                     err_1 = _a.sent();
-                                    // console.log("compose error" + err);
                                     reject(err_1);
-                                    return [3 /*break*/, 4];
-                                case 4: return [2 /*return*/];
+                                    return [3, 4];
+                                case 4: return [2];
                             }
                         });
                     }); });
@@ -127,21 +110,10 @@ var Compose = (function () {
             });
         };
     };
-    /**
-     * 错误的判断
-     * @param ctx   {Object} 执行上下文
-     * @param err   {Object} 错误数据
-     */
     Compose.prototype.errorHandle = function (ctx, err) {
         ctx.isError = true;
         ctx.err = err;
-        // console.error("compose--", err);
     };
-    /**
-     * 包装compose函数
-     * @param complete {Function} 执行完毕后回调函数
-     * @return  {Function}
-     */
     Compose.prototype.callback = function (complete) {
         var _this = this;
         var fn = this.compose();
@@ -150,10 +122,10 @@ var Compose = (function () {
             var promise = fn(ctx, function (content, next) { return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, next()];
+                        case 0: return [4, next()];
                         case 1:
                             _a.sent();
-                            return [2 /*return*/];
+                            return [2];
                     }
                 });
             }); }).then(function () {
