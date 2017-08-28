@@ -22,6 +22,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
             get: this.custom.bind(this, instance, "GET"),
+            getFullPath: this.getFullPath.bind(this, instance),
             getPath: this.getPath.bind(this, instance),
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
@@ -67,7 +68,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
     * @param instance       实例名称
     * @param extendInstance 需要合并的实例
     */
-    private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon): IInterfaceModel {
+    private megreInstance(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon = {}): IInterfaceModel {
         return Object.assign({}, instance, extendInstance);
     }
     /**
@@ -84,5 +85,20 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         engine = engineFactory.use("default");
 
         return engine.getStatePath(iinstance) + iinstance.path;
+    }
+    /**
+     * 获取接口的路径
+     * @param instance       实例名称
+     * @param extendInstance 需要合并的实例
+     */
+    private getFullPath(instance: IInterfaceModel, options: IExecute = {}): string {
+        let engine: IEngine;
+        let iinstance: IInterfaceModel;
+
+        iinstance = this.megreInstance(instance, options.instance);
+
+        engine = engineFactory.use("default");
+
+        return engine.getFullPath(iinstance, options);
     }
 }

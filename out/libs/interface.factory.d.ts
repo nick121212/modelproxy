@@ -6,6 +6,7 @@ export declare class InterfaceFactory extends BaseFactory<IInterfaceModel> {
     add(name: string, instance: IInterfaceModel, override?: boolean): void;
     execute(instance: IInterfaceModel, options: IExecute): Promise<any>;
     custom(instance: IInterfaceModel, type: string, id?: string | number | null, options?: IExecute): Promise<any>;
-    private megreInstance(instance, extendInstance);
+    private megreInstance(instance, extendInstance?);
     private getPath(instance, extendInstance?);
+    private getFullPath(instance, options?);
 }

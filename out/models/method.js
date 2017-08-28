@@ -10,4 +10,3 @@ var MethodType;
     MethodType[MethodType["PATCH"] = 5] = "PATCH";
     MethodType[MethodType["OPTIONS"] = 6] = "OPTIONS";
 })(MethodType = exports.MethodType || (exports.MethodType = {}));
-//# sourceMappingURL=method.js.map

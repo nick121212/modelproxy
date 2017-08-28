@@ -73,7 +73,7 @@ proxy.loadConfig({
                 login = proxy.getNs("test").get("login");
                 if (!login) return [3, 2];
                 _b = (_a = console).log;
-                _c = [login.getPath()];
+                _c = [login.getFullPath({ params: { tag: "ni", a: 33 } })];
                 return [4, login.get()];
             case 1:
                 _b.apply(_a, _c.concat([_d.sent()]));
@@ -82,44 +82,15 @@ proxy.loadConfig({
         }
     });
 }); }).then(function () { return __awaiter(_this, void 0, void 0, function () {
-    var article, _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
-    return __generator(this, function (_q) {
-        switch (_q.label) {
-            case 0:
-                article = proxy.getNs("test").get("article");
-                if (!article) return [3, 8];
-                console.log("getPath", article.getPath());
-                _b = (_a = console).log;
-                return [4, article.get(null, { params: { tag: "nick" } })];
-            case 1:
-                _b.apply(_a, [_q.sent()]);
-                _d = (_c = console).log;
-                return [4, article.get(1, { params: { tag: "nick" } })];
-            case 2:
-                _d.apply(_c, [_q.sent()]);
-                _f = (_e = console).log;
-                return [4, article.put(1, { data: { tag: "nick" } })];
-            case 3:
-                _f.apply(_e, [_q.sent()]);
-                _h = (_g = console).log;
-                return [4, article.delete(1)];
-            case 4:
-                _h.apply(_g, [_q.sent()]);
-                _k = (_j = console).log;
-                return [4, article.post({ data: { tag: "nick" } })];
-            case 5:
-                _k.apply(_j, [_q.sent()]);
-                _m = (_l = console).log;
-                return [4, proxy.execute("test", "article")];
-            case 6:
-                _m.apply(_l, [_q.sent()]);
-                _p = (_o = console).log;
-                return [4, proxy.execute("test", "login")];
-            case 7:
-                _p.apply(_o, [_q.sent()]);
-                _q.label = 8;
-            case 8: return [2];
+    var article;
+    return __generator(this, function (_a) {
+        article = proxy.getNs("test").get("article");
+        if (article) {
+            console.log("getPath", article.getFullPath({
+                data: {},
+                params: { a: 1 }
+            }));
         }
+        return [2];
     });
 }); }).catch(console.error);
-//# sourceMappingURL=demo.js.map

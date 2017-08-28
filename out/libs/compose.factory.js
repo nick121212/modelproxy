@@ -19,4 +19,3 @@ var ComposeFactory = (function (_super) {
     return ComposeFactory;
 }(base_factory_1.BaseFactory));
 exports.ComposeFactory = ComposeFactory;
-//# sourceMappingURL=compose.factory.js.map

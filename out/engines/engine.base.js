@@ -60,6 +60,7 @@ var BaseEngine = (function (_super) {
     BaseEngine.prototype.proxy = function (instance, options) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                instance.getPath(options.instance);
                 return [2, {}];
             });
         });
@@ -96,7 +97,7 @@ var BaseEngine = (function (_super) {
             Object.keys(options.params).forEach(function (key) {
                 searchParams.append(key, options.params[key]);
             });
-            if (searchParams.keys.length) {
+            if (!searchParams.keys().next().done) {
                 url += "?" + searchParams.toString();
             }
         }
@@ -105,4 +106,3 @@ var BaseEngine = (function (_super) {
     return BaseEngine;
 }(compose_1.Compose));
 exports.BaseEngine = BaseEngine;
-//# sourceMappingURL=engine.base.js.map

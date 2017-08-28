@@ -140,4 +140,3 @@ var Compose = (function () {
     return Compose;
 }());
 exports.Compose = Compose;
-//# sourceMappingURL=compose.js.map

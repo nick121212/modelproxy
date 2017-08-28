@@ -28,4 +28,3 @@ var BaseFactory = (function () {
     return BaseFactory;
 }());
 exports.BaseFactory = BaseFactory;
-//# sourceMappingURL=base.factory.js.map

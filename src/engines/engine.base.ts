@@ -8,8 +8,6 @@ import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";
 
-/// <reference path="../dts/url-search-params.d.ts" />
-
 export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
     constructor() {
         super();
@@ -51,6 +49,9 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      * @return           {Promise<any>}
      */
     public async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
+        instance.getPath(options.instance);
+
+
         return {};
     }
 
@@ -100,18 +101,16 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      */
     public getFullPath(instance: IInterfaceModel, options: IExecute): string {
         let url = `${this.getStatePath(instance)}` + this.replacePath(instance, options);
-        let searchParams: URLSearchParams.Instance = new URLSearchParams();
+        let searchParams: URLSearchParams = new URLSearchParams();
 
         if (options.params) {
             Object.keys(options.params).forEach((key) => {
                 searchParams.append(key, options.params[key]);
             });
 
-            if (searchParams.keys.length) {
+            if (!searchParams.keys().next().done) {
                 url += `?${searchParams.toString()}`;
             }
-
-            // searchParams.keys.length && (url += `?${searchParams.toString()}`);
         }
 
         return url;

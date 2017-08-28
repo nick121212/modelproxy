@@ -59,6 +59,7 @@ var InterfaceFactory = (function (_super) {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
             get: this.custom.bind(this, instance, "GET"),
+            getFullPath: this.getFullPath.bind(this, instance),
             getPath: this.getPath.bind(this, instance),
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
@@ -98,6 +99,7 @@ var InterfaceFactory = (function (_super) {
         });
     };
     InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
+        if (extendInstance === void 0) { extendInstance = {}; }
         return Object.assign({}, instance, extendInstance);
     };
     InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
@@ -108,7 +110,14 @@ var InterfaceFactory = (function (_super) {
         engine = engine_factory_1.engineFactory.use("default");
         return engine.getStatePath(iinstance) + iinstance.path;
     };
+    InterfaceFactory.prototype.getFullPath = function (instance, options) {
+        if (options === void 0) { options = {}; }
+        var engine;
+        var iinstance;
+        iinstance = this.megreInstance(instance, options.instance);
+        engine = engine_factory_1.engineFactory.use("default");
+        return engine.getFullPath(iinstance, options);
+    };
     return InterfaceFactory;
 }(base_factory_1.BaseFactory));
 exports.InterfaceFactory = InterfaceFactory;
-//# sourceMappingURL=interface.factory.js.map

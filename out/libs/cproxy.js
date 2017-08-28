@@ -21,4 +21,3 @@ var ComposeProxy = (function (_super) {
     return ComposeProxy;
 }(compose_1.Compose));
 exports.ComposeProxy = ComposeProxy;
-//# sourceMappingURL=cproxy.js.map

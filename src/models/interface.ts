@@ -40,7 +40,11 @@ export interface IInterfaceModel extends IInterfaceModelCommon {
     /**
      * 获取接口的执行路径
      */
-    getPath(extendInstance?: IInterfaceModel): string;
+    getPath(extendInterface?: IInterfaceModelCommon): string;
+    /**
+     * 获取接口的执行路径
+     */
+    getFullPath(options?: IExecute): string;
     /**
      * 执行接口，修改method为get
      */

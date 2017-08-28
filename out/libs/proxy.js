@@ -117,4 +117,3 @@ var ModelProxy = (function (_super) {
     return ModelProxy;
 }(compose_1.Compose));
 exports.ModelProxy = ModelProxy;
-//# sourceMappingURL=proxy.js.map
