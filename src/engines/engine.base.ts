@@ -1,5 +1,6 @@
 import * as pathToRegexp from "path-to-regexp";
-import * as URLSearchParams from "url-search-params";
+// import URLSearchParams from "url-search-params";
+import "url-search-params-polyfill";
 
 import { IEngine } from "../models/engine";
 import { IExecute } from "../models/execute";
@@ -50,7 +51,6 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
      */
     public async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
         instance.getPath(options.instance);
-
 
         return {};
     }
@@ -108,7 +108,7 @@ export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
                 searchParams.append(key, options.params[key]);
             });
 
-            if (!searchParams.keys().next().done) {
+            if (searchParams.toString()) {
                 url += `?${searchParams.toString()}`;
             }
         }

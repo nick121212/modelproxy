@@ -1,3 +1,4 @@
+import "url-search-params-polyfill";
 import { IEngine } from "../models/engine";
 import { IExecute } from "../models/execute";
 import { Compose } from "../libs/compose";
