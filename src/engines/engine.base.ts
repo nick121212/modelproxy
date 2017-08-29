@@ -9,7 +9,7 @@ import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";
 
-export abstract class BaseEngine extends Compose<IProxyCtx> implements IEngine {
+export  class BaseEngine extends Compose<IProxyCtx> implements IEngine {
     constructor() {
         super();
     }

@@ -1,28 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const errors_1 = require("./errors");
-class BaseFactory {
-    constructor() {
+var errors_1 = require("./errors");
+var BaseFactory = (function () {
+    function BaseFactory() {
         this.instances = {};
     }
-    add(name, intance, override = false) {
+    BaseFactory.prototype.add = function (name, intance, override) {
+        if (override === void 0) { override = false; }
         if (override && this.instances.hasOwnProperty(name)) {
-            return console.error(`已经存在name=【${name}】的engine！`);
+            return console.error("\u5DF2\u7ECF\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01");
         }
         this.instances[name] = intance;
-    }
-    get(name) {
+    };
+    BaseFactory.prototype.get = function (name) {
         if (this.instances.hasOwnProperty(name)) {
             return this.instances[name];
         }
         return null;
-    }
-    use(name) {
+    };
+    BaseFactory.prototype.use = function (name) {
         if (!name || !this.instances.hasOwnProperty(name)) {
-            let engines = Object.keys(this.instances);
-            throw new errors_1.ModelProxyMissingError(`不存在name=【${name}】的engine！当前engines：【${engines.join(",")}】`);
+            var engines = Object.keys(this.instances);
+            throw new errors_1.ModelProxyMissingError("\u4E0D\u5B58\u5728name=\u3010" + name + "\u3011\u7684engine\uFF01\u5F53\u524Dengines\uFF1A\u3010" + engines.join(",") + "\u3011");
         }
         return this.instances[name];
-    }
-}
+    };
+    return BaseFactory;
+}());
 exports.BaseFactory = BaseFactory;
