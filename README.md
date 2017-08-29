@@ -222,6 +222,10 @@ export class WxAppEngine extends BaseEngine {
 
 调用接口的时候，会触发这个方法，返回一个boolean；
 
+> engine列表
+
+1. [fetch](https://github.com/nick121212/modelproxy-engine-fetch.git)
+
 ## 7. compose类
 
 拷贝于koa的compose类；
