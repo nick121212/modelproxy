@@ -91,7 +91,7 @@ export class ModelProxy extends Compose<any> {
     private initInterfaces(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon = {}): InterfaceFactory {
         let ifFactory = new InterfaceFactory();
 
-        config.interfaces.forEach((i: IInterfaceModel) => {
+        config.interfaces.forEach((i: IInterfaceModelCommon) => {
             ifFactory.add(i.key as string, Object.assign({}, {
                 engine: config.engine,
                 mockDir: config.mockDir,
