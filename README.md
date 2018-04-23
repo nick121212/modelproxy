@@ -255,7 +255,7 @@ export class WxAppEngine extends BaseEngine {
 
 - ### validate
 
-调用接口的时候，会触发这个方法，返回一个boolean；
+调用接口的时候，会触发这个方法，返回一个Promise；
 
 > engine列表
 
