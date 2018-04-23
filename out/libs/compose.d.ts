@@ -6,5 +6,5 @@ export declare class Compose<T extends IProxyCtx> {
     clear(): void;
     compose(): Function;
     errorHandle(ctx: T, err: Error): void;
-    callback(complete: Function): Function;
+    callback(complete?: Function): Function;
 }

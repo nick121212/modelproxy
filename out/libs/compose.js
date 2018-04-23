@@ -72,7 +72,9 @@ class Compose {
             let promise = fn(ctx, (content, next) => __awaiter(this, void 0, void 0, function* () {
                 yield next();
             })).then(() => {
-                complete(ctx);
+                if (complete) {
+                    complete(ctx);
+                }
                 return ctx;
             }).catch((err) => {
                 this.errorHandle(ctx, err);

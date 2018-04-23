@@ -31,7 +31,7 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
             let { instance: extraInstance = {} } = options;
             iinstance = this.megreInstance(instance, extraInstance);
             engine = engine_factory_1.engineFactory.use(iinstance.engine);
-            engine.validate(iinstance, options);
+            yield engine.validate(iinstance, options);
             return engine.proxy(iinstance, options);
         });
     }

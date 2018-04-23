@@ -14,29 +14,13 @@ export  class BaseEngine extends Compose<IProxyCtx> implements IEngine {
         super();
     }
 
-    // /**
-    //  * 验证数据的准确性
-    //  * @param obj         {JSON}        数据
-    //  * @param schema      {JSONSCHEMA}  JSONSCHEMA
-    //  * @return            {Boolean}
-    //  */
-    // protected validateTv4(obj: JSON, schema: tv4.JsonSchema): boolean {
-    //     // let valid: tv4.MultiResult = tv4.validateMultiple(obj, schema as tv4.JsonSchema);
-
-    //     // if (!valid.valid) {
-    //     //     throw new ModelProxyValidaterError("tv4验证错误", valid.errors, valid.missing);
-    //     // }
-
-    //     return true;
-    // }
-
     /**
      * 验证数据的准确性
      * @param instance   {IInterfaceModel}  接口模型
      * @param options    {IExecute}         参数
      * @return           {boolean}
      */
-    public validate(instance: IInterfaceModel, options: IExecute): boolean {
+    public async validate(instance: IInterfaceModel, options: IExecute): Promise<boolean> {
         // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
         // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 

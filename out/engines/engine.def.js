@@ -21,8 +21,7 @@ class DefaultEngine extends engine_base_1.BaseEngine {
     }
     proxy(instance, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            let fn = this.callback(() => {
-            });
+            let fn = this.callback();
             let res = yield fn({
                 executeInfo: options,
                 instance: instance

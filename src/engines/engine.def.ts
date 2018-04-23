@@ -4,6 +4,10 @@ import { BaseEngine } from "./engine.base";
 import { IExecute } from "../models/execute";
 import { IProxyCtx } from "../models/proxyctx";
 
+/**
+ * 默认的engine
+ * 返回接口的实例
+ */
 export class DefaultEngine extends BaseEngine {
     constructor() {
         super();
@@ -17,10 +21,14 @@ export class DefaultEngine extends BaseEngine {
         });
     }
 
+    /**
+     * 调用接口，这里触发一次中间件方法
+     * @param instance 接口的实例
+     * @param options  接口的调用参数
+     * @returns {Promise<any>}
+     */
     public async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
-        let fn = this.callback(() => {
-            // console.log("al");
-        });
+        let fn = this.callback();
         let res: IProxyCtx = await fn({
             executeInfo: options,
             instance: instance
@@ -29,7 +37,6 @@ export class DefaultEngine extends BaseEngine {
         if (res.isError) {
             throw res.err;
         }
-        // console.log("执行接口成功！接口的路径：", this.getFullPath(instance, options), instance.method);
 
         return instance;
         // return this.getFullPath(instance, options);

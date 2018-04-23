@@ -96,7 +96,7 @@ export class Compose<T extends IProxyCtx>  {
      * @param complete {Function} 执行完毕后回调函数
      * @return  {Function}
      */
-    public callback(complete: Function): Function {
+    public callback(complete?: Function): Function {
         const fn = this.compose();
 
         return (options: any): Promise<any> => {
@@ -104,7 +104,9 @@ export class Compose<T extends IProxyCtx>  {
             let promise = fn(ctx, async (content: any, next: Function) => {
                 await next();
             }).then(() => {
-                complete(ctx);
+                if (complete) {
+                    complete(ctx);
+                }
 
                 return ctx;
             }).catch((err: Error) => {

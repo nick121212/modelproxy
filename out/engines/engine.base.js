@@ -17,7 +17,9 @@ class BaseEngine extends compose_1.Compose {
         super();
     }
     validate(instance, options) {
-        return true;
+        return __awaiter(this, void 0, void 0, function* () {
+            return true;
+        });
     }
     proxy(instance, options) {
         return __awaiter(this, void 0, void 0, function* () {

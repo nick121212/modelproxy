@@ -44,7 +44,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         engine = engineFactory.use(iinstance.engine as string);
 
         // 验证数据的准确性
-        engine.validate(iinstance, options);
+        await engine.validate(iinstance, options);
 
         return engine.proxy(iinstance, options);
     }

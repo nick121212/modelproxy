@@ -354,8 +354,10 @@ if (login && article) {
 
 ## 9. ChangeList
 
+- 1.0.10
+  - 修改Engine中的validate返回值为Promise<boolean>;
 - 1.0.9
-  - 添加了executeAll和race方法
+  - 添加了executeAll和race方法;
 
 ## 10. License
 
