@@ -42,8 +42,8 @@ let login = proxy.getNs("test").get("login");
 if (login) {
     (() => __awaiter(this, void 0, void 0, function* () {
         console.log("登录接口：", login.getFullPath({ params: { tag: "ni", a: 33 } }), yield login.get(null, {
-            params: { tag: "test" }
-        }));
+            params: { tag: "nick" }
+        }).catch(console.log));
     }))();
 }
 let article = proxy.getNs("test").get("article");

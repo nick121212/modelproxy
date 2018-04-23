@@ -36,8 +36,8 @@ let login = proxy.getNs("test").get("login");
 if (login) {
     (async () => {
         console.log("登录接口：", login.getFullPath({ params: { tag: "ni", a: 33 } }), await login.get(null, {
-            params: { tag: "test" }
-        }));
+            params: { tag: "nick" }
+        }).catch(console.log));
     })();
 }
 

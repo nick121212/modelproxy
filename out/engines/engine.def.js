@@ -19,6 +19,11 @@ class DefaultEngine extends engine_base_1.BaseEngine {
             });
         });
     }
+    validate(instance, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return true;
+        });
+    }
     proxy(instance, options) {
         return __awaiter(this, void 0, void 0, function* () {
             let fn = this.callback();

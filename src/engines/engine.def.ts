@@ -21,6 +21,14 @@ export class DefaultEngine extends BaseEngine {
         });
     }
 
+    public async validate(instance: IInterfaceModel, options: IExecute): Promise<boolean> {
+        // if(options.params.tag==="nick"){
+        //     throw new Error("nick is not allowed!");
+        // }
+        
+        return true;
+    }
+
     /**
      * 调用接口，这里触发一次中间件方法
      * @param instance 接口的实例

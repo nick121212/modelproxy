@@ -43,8 +43,12 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         iinstance = this.megreInstance(instance, extraInstance);
         engine = engineFactory.use(iinstance.engine as string);
 
-        // 验证数据的准确性
-        await engine.validate(iinstance, options);
+        try {
+            // 验证数据的准确性
+            await engine.validate(iinstance, options);
+        } catch (e) {
+            throw e;
+        }
 
         return engine.proxy(iinstance, options);
     }
