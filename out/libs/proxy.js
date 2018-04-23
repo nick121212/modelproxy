@@ -14,7 +14,7 @@ const compose_1 = require("./compose");
 const errors_1 = require("./errors");
 class ModelProxy extends compose_1.Compose {
     constructor() {
-        super();
+        super(...arguments);
         this.interfaces = {};
     }
     addEngines(engines) {
@@ -27,10 +27,8 @@ class ModelProxy extends compose_1.Compose {
         return this;
     }
     loadConfig(config, overrideInterfaceConfig) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.interfaces[config.key] = this.initInterfaces(config, overrideInterfaceConfig);
-            return this;
-        });
+        this.interfaces[config.key] = this.initInterfaces(config, overrideInterfaceConfig);
+        return this;
     }
     execute(ns, key, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -40,6 +38,38 @@ class ModelProxy extends compose_1.Compose {
                 throw new errors_1.ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
             }
             return instance.execute(options);
+        });
+    }
+    executeAll(inters) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const maps = [];
+            if (!inters) {
+                return null;
+            }
+            Object.keys(inters).forEach((key) => {
+                maps.push(inters[key]().then((data) => {
+                    return {
+                        [key]: data
+                    };
+                }));
+            });
+            return Promise.all(maps).then((data) => {
+                return data.reduce((prev, next) => {
+                    return Object.assign({}, prev, next);
+                });
+            });
+        });
+    }
+    race(inters) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const maps = inters.map((inter) => {
+                if (inter.then) {
+                    return inter;
+                }
+                const { ns, key, options = {} } = inter;
+                return this.execute(ns, key, options);
+            });
+            return Promise.race(maps);
         });
     }
     getNs(ns) {

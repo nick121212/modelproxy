@@ -34,10 +34,10 @@ describe('modelproxy interface', function () {
     var proxy;
     var data = { "username": "nick", "password": "111111" };
 
-    before(function (done) {
+    before(function () {
         global.Promise = bluebird;
         proxy = new modelProxy.ModelProxy();
-        proxy.loadConfig(config).then(done.bind(null, null));
+        proxy.loadConfig(config);
     });
 
     describe("测试接口", function () {

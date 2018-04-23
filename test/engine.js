@@ -36,7 +36,7 @@ describe('modelproxy engine', function () {
     var proxy, defEngine;
     var data = { "username": "nick", "password": "111111" };
 
-    before(function (done) {
+    before(function () {
         defEngine = new modelProxy.DefaultEngine();
 
         proxy = new modelProxy.ModelProxy();
@@ -45,7 +45,7 @@ describe('modelproxy engine', function () {
         });
         proxy.loadConfig(config, {
             engine: "test"
-        }).then(done.bind(null, null));
+        });
     });
 
     describe("测试engine", function () {
