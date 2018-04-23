@@ -14,20 +14,20 @@ export class DefaultEngine extends BaseEngine {
 
         this.use((ctx: IProxyCtx, next: Function) => {
             next();
-
+            console.log("调用地址：", (ctx.instance as any).method, this.getFullPath(ctx.instance as any, ctx.executeInfo as any));
             return new Promise((resolve) => {
                 resolve();
             });
         });
     }
 
-    public async validate(instance: IInterfaceModel, options: IExecute): Promise<boolean> {
-        // if(options.params.tag==="nick"){
-        //     throw new Error("nick is not allowed!");
-        // }
-        
-        return true;
-    }
+    // public async validate(instance: IInterfaceModel, options: IExecute): Promise<boolean> {
+    //     // if(options.params.tag==="nick"){
+    //     //     throw new Error("nick is not allowed!");
+    //     // }
+
+    //     return true;
+    // }
 
     /**
      * 调用接口，这里触发一次中间件方法

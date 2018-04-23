@@ -14,14 +14,10 @@ class DefaultEngine extends engine_base_1.BaseEngine {
         super();
         this.use((ctx, next) => {
             next();
+            console.log("调用地址：", ctx.instance.method, this.getFullPath(ctx.instance, ctx.executeInfo));
             return new Promise((resolve) => {
                 resolve();
             });
-        });
-    }
-    validate(instance, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return true;
         });
     }
     proxy(instance, options) {

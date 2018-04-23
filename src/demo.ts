@@ -44,10 +44,6 @@ if (login) {
 let article = proxy.getNs("test").get("article");
 
 if (article) {
-    console.log("getPath", article.getFullPath({
-        data: {},
-        params: { a: 1 }
-    }));
     (async () => {
         console.log(await article.get(null, { params: { tag: "nick" } }));
         console.log(await article.get(1, { params: { tag: "nick" } }));
