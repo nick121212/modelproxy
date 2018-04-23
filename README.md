@@ -49,7 +49,7 @@
 事例配置：
 
 ```typescript
-{
+proxy.loadConfig({
     "key": "test",
     "title": "p-uc",
     "engine": "default",
@@ -73,7 +73,7 @@
             "test": "test-1"
         }
     }]
-}
+});
 ```
 
 - ### addEngines
