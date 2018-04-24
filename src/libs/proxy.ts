@@ -103,7 +103,7 @@ export class ModelProxy extends Compose<any> {
             if ((inter as Promise<any>).then) {
                 return inter;
             }
-            const { ns, key, options = {} } = inter as NormalExecuteInfo;
+            const { ns = "", key = "", options = {} } = inter as NormalExecuteInfo;
 
             return this.execute(ns, key, options);
         });

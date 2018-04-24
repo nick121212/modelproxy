@@ -66,7 +66,7 @@ class ModelProxy extends compose_1.Compose {
                 if (inter.then) {
                     return inter;
                 }
-                const { ns, key, options = {} } = inter;
+                const { ns = "", key = "", options = {} } = inter;
                 return this.execute(ns, key, options);
             });
             return Promise.race(maps);

@@ -13,17 +13,13 @@ class DefaultEngine extends engine_base_1.BaseEngine {
     constructor() {
         super();
         this.use((ctx, next) => {
+            console.log(ctx.instance.title, ctx.instance.method, this.getFullPath(ctx.instance, ctx.executeInfo));
             next();
-            console.log("调用地址：", ctx.instance.method, this.getFullPath(ctx.instance, ctx.executeInfo));
-            return new Promise((resolve) => {
-                resolve();
-            });
         });
     }
     proxy(instance, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            let fn = this.callback();
-            let res = yield fn({
+            const fn = this.callback(), res = yield fn({
                 executeInfo: options,
                 instance: instance
             });
