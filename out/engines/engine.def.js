@@ -12,14 +12,14 @@ const engine_base_1 = require("./engine.base");
 class DefaultEngine extends engine_base_1.BaseEngine {
     constructor() {
         super();
-        this.use((ctx, next) => {
+        this.use((ctx, next) => __awaiter(this, void 0, void 0, function* () {
             console.log(ctx.instance.title, ctx.instance.method, this.getFullPath(ctx.instance, ctx.executeInfo));
-            next();
-        });
+            yield next("");
+        }));
     }
     proxy(instance, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fn = this.callback(), res = yield fn({
+            const res = yield this.callback()({
                 executeInfo: options,
                 instance: instance
             });

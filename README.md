@@ -2,7 +2,7 @@
 
 ## 1. 解决了什么问题
 
- 通过配置文件，自动生成接口的调用方法，参考[modelproxy](https://github.com/papertiger8848/modelproxy)。   
+ 通过配置文件，自动生成接口的调用方法，参考[modelproxy](https://github.com/papertiger8848/modelproxy)。
  在具体的实践过程中，总觉得很多的不满意，修改一下使得满足更多的场景。
 
 ## 2. 安装和依赖
@@ -99,14 +99,32 @@ export class WxAppEngine extends BaseEngine {
             const { instance, executeInfo = {}, settings = {} } = ctx;
             let { header = {} } = settings;
 
-            ctx.result = await app.wxPromisify(wx.request)({
-                url: this.getFullPath(instance, executeInfo),
-                data: executeInfo.data,
-                header: header || {},
-                method: instance.method
+            try{
+                ctx.result = await app.wxPromisify(wx.request)({
+                    url: this.getFullPath(instance, executeInfo),
+                    data: executeInfo.data,
+                    header: header || {},
+                    method: instance.method
+                });
+            }catch(e){
+                ctx.isError=true;
+                ctx.err = e;
+            }
+            // 如果有错误，则调用下一个中间件，如果没错误则停止中间件的执行
+            await next(!ctx.isError ? "abort" : null);
+        });
+
+        this.use(async (ctx,next)=>{
+            wx.showToast({
+                title: ctx.err.message,
+                icon: "error"
             });
 
-            await next();
+            console.group("接口调用错误！",new Date());
+            console.error(ctx.err);
+            console.groupEnd();
+
+            throw ctx.err;
         });
 
         return this;
@@ -354,8 +372,10 @@ if (login && article) {
 
 ## 9. ChangeList
 
+- 1.0.11
+  - 为compose类添加结束标志位;
 - 1.0.10
-  - 修改Engine中的validate返回值为Promise<boolean>;
+  - 修改Engine中的validate返回值为Promise;
 - 1.0.9
   - 添加了executeAll和race方法;
 

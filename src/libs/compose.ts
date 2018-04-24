@@ -64,7 +64,10 @@ export class Compose<T extends IProxyCtx>  {
                             return resolve1(context);
                         }
                         try {
-                            await fn(context, async () => {
+                            await fn(context, async (key?: string) => {
+                                if (key === "abort") {
+                                    return resolve1(context);
+                                }
                                 await dispatch(i + 1);
                                 resolve1();
                             });

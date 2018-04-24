@@ -9,9 +9,8 @@ export class BaseFactory<T> {
     /**
      * 添加一个实例
      * @param name     {string}    实例的名称
-     * @param engine   {IEngine}   实例
+     * @param intance  {T}         实例
      * @param override {boolean}   是否覆盖
-     * @return         {void}
      */
     public add(name: string, intance: T, override = false): void {
         if (override && this.instances.hasOwnProperty(name)) {

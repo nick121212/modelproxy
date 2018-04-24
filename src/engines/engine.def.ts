@@ -12,10 +12,10 @@ export class DefaultEngine extends BaseEngine {
     constructor() {
         super();
 
-        this.use((ctx: IProxyCtx, next: Function) => {
+        this.use(async (ctx: IProxyCtx, next: Function) => {
             console.log((ctx.instance as any).title, (ctx.instance as any).method, this.getFullPath(ctx.instance as any, ctx.executeInfo as any));
 
-            next();
+            await next("");
         });
     }
 
@@ -26,8 +26,7 @@ export class DefaultEngine extends BaseEngine {
      * @returns {Promise<any>}
      */
     public async proxy(instance: IInterfaceModel, options: IExecute): Promise<any> {
-        const fn = this.callback(),
-            res: IProxyCtx = await fn({
+        const res: IProxyCtx = await this.callback()({
                 executeInfo: options,
                 instance: instance
             });

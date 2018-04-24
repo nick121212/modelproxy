@@ -47,7 +47,10 @@ class Compose {
                             return resolve1(context);
                         }
                         try {
-                            yield fn(context, () => __awaiter(this, void 0, void 0, function* () {
+                            yield fn(context, (key) => __awaiter(this, void 0, void 0, function* () {
+                                if (key === "abort") {
+                                    return resolve1(context);
+                                }
                                 yield dispatch(i + 1);
                                 resolve1();
                             }));
