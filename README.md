@@ -139,19 +139,6 @@ export class WxAppEngine extends BaseEngine {
 
         await fn(ctx);
 
-        if (ctx.isError) {
-            wx.showToast({
-                title: ctx.err.message,
-                icon: "error"
-            });
-
-            console.group("接口调用错误！",new Date());
-            console.error(ctx.err);
-            console.groupEnd();
-
-            throw ctx.err;
-        }
-
         return ctx.result;
     }
 }
