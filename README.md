@@ -256,11 +256,11 @@ export class WxAppEngine extends BaseEngine {
 
 - ### proxy
 
-调用接口的时候，会触发这个方法，返回一个Promise对象；
+调用接口的时候，会触发这个方法，返回一个Promise对象；
 
 - ### validate
 
-调用接口的时候，会触发这个方法，返回一个Promise；
+调用接口的时候，会触发这个方法，返回一个Promise；
 
 > engine列表
 
