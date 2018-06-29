@@ -1,0 +1,32 @@
+{
+  "name": "modelproxy-engine-fetch",
+  "version": "1.0.32",
+  "description": "modelproxy中fetch的engine",
+  "main": "out/fetch.engine.js",
+  "scripts": {
+    "test": "exit 0;",
+    "build": "tsc -d"
+  },
+  "typings": "./out/fetch.engine.d.ts",
+  "types": "./out/fetch.engine.d.ts",
+  "author": "Nick",
+  "license": "ISC",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "0.0.34",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "bluebird": "^3.5.0",
+    "chai": "~3.4.1",
+    "mocha": "~2.3.4",
+    "mochawesome": "~1.2.1",
+    "modelproxy": "^1.0.32",
+    "ts-loader": "^4.4.1",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^2.1.5",
+    "uglifyjs-webpack-plugin": "^1.2.6",
+    "webpack": "^4.12.0"
+  }
+}

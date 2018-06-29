@@ -1,0 +1,48 @@
+{
+  "name": "modelproxy",
+  "version": "1.0.32",
+  "description": "接口配置建模框架",
+  "main": "out/index.js",
+  "scripts": {
+    "test": "mocha test/**/*.js",
+    "build": "tsc -d"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nick121212/modelproxy.git"
+  },
+  "typings": "./out/index.d.ts",
+  "keywords": [
+    "nodejs",
+    "modelproxy",
+    "javascript",
+    "typescript",
+    "ajax"
+  ],
+  "author": "nick121212",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nick121212/modelproxy/issues"
+  },
+  "homepage": "https://github.com/nick121212/modelproxy#readme",
+  "devDependencies": {
+    "@types/chai": "^3.4.35",
+    "@types/json-pointer": "^1.0.30",
+    "@types/node": "^7.0.5",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "bluebird": "^3.5.0",
+    "chai": "~3.4.1",
+    "mocha": "~2.3.4",
+    "mochawesome": "~1.2.1",
+    "ts-loader": "^4.4.1",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^2.1.5",
+    "uglifyjs-webpack-plugin": "^1.2.6",
+    "webpack": "^4.12.0"
+  },
+  "dependencies": {
+    "path-to-regexp": "^1.7.0",
+    "url-search-params-polyfill": "^2.0.0"
+  }
+}

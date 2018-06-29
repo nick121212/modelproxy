@@ -1,0 +1,10 @@
+node_modules
+.idea
+.vscode
+.history
+src
+test
+.publishrc
+tsconfig.json
+tslint.json
+.eslintrc

@@ -1,48 +1,23 @@
 {
   "name": "modelproxy",
-  "version": "1.0.11",
-  "description": "接口配置建模框架",
-  "main": "out/index.js",
+  "version": "1.0.0",
+  "description": "modelproxy相关项目归并",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.js",
-    "test-list": "mocha --reporter list test/**/*.js",
-    "demo": "node out/demo",
-    "publish-please": "publish-please",
-    "prepublish": "publish-please guard"
+    "test": "lerna run test",
+    "publish": "lerna publish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nick121212/modelproxy.git"
   },
-  "typings": "./out/index.d.ts",
   "keywords": [
-    "nodejs",
     "modelproxy",
-    "javascript",
-    "typescript",
-    "ajax"
+    "interface"
   ],
-  "author": "nick121212(nick121212@126.com)",
+  "author": "NICK",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/nick121212/modelproxy/issues"
-  },
-  "homepage": "https://github.com/nick121212/modelproxy#readme",
-  "devDependencies": {
-    "@types/chai": "^3.4.35",
-    "@types/json-pointer": "^1.0.30",
-    "@types/node": "^7.0.5",
-    "bluebird": "^3.5.0",
-    "chai": "~3.4.1",
-    "mocha": "~2.3.4",
-    "mochawesome": "~1.2.1",
-    "publish-please": "^2.3.1",
-    "ts-loader": "^1.3.3",
-    "typescript": "^2.1.5",
-    "webpack": "^2.2.1"
-  },
   "dependencies": {
-    "path-to-regexp": "^1.7.0",
-    "url-search-params-polyfill": "^2.0.0"
+    "lerna": "^2.4.0"
   }
 }
