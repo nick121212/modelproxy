@@ -1,0 +1,35 @@
+import { createTheme } from "office-ui-fabric-react/lib/Styling";
+
+export default createTheme({
+    isInverted: true,
+    palette:{
+      "themePrimary": "#ffffff",
+      "themeLighterAlt": "#767676",
+      "themeLighter": "#a6a6a6",
+      "themeLight": "#c8c8c8",
+      "themeTertiary": "#d0d0d0",
+      "themeSecondary": "#dadada",
+      "themeDarkAlt": "#eaeaea",
+      "themeDark": "#f4f4f4",
+      "themeDarker": "#f8f8f8",
+      "neutralLighterAlt": "#3c3c3c",
+      "neutralLighter": "#444444",
+      "neutralLight": "#515151",
+      "neutralQuaternaryAlt": "#595959",
+      "neutralQuaternary": "#5f5f5f",
+      "neutralTertiaryAlt": "#7a7a7a",
+      "neutralTertiary": "#c8c8c8",
+      "neutralSecondary": "#d0d0d0",
+      "neutralPrimaryAlt": "#dadada",
+      "neutralPrimary": "#ffffff",
+      "neutralDark": "#f4f4f4",
+      "black": "#f8f8f8",
+      "white": "#333333",
+      "primaryBackground": "#333333",
+      "primaryText": "#ffffff",
+      "bodyBackground": "#333333",
+      "bodyText": "#ffffff",
+      "disabledBackground": "#444444",
+      "disabledText": "#7a7a7a"
+    } as any,
+});

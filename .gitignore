@@ -6,4 +6,3 @@ lerna-debug.log
 package-lock.json
 /packages/**/config
 /packages/**/modelproxy-api
-/packages/**/modelproxy-ui

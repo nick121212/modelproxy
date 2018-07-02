@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "$id": "project",
+    "required": ["key", "projectName"],
+    "properties": {
+        "key": {
+            "type": "string",
+            "title": "项目的唯一标志"
+        },
+        "projectName": {
+            "type": "string",
+            "title": "项目名称"
+        },
+        "description": {
+            "type": "string",
+            "title": "项目简介"
+        }
+    }
+}

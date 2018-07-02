@@ -1,0 +1,8 @@
+@each $shrink in 0,
+1,
+2,
+3 {
+    .shrink-#{$shrink} {
+        flex-shrink: $shrink*1;
+    }
+}

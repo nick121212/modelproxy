@@ -14,4 +14,3 @@ lerna-debug.log
 /packages/**/images
 /packages/**/config
 /packages/**/modelproxy-api
-/packages/**/modelproxy-ui
