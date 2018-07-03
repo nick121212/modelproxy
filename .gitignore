@@ -5,3 +5,5 @@ node_modules
 lerna-debug.log
 package-lock.json
 /packages/**/config
+/packages/**/.vscode
+/packages/**/.idea
