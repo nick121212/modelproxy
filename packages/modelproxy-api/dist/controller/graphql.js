@@ -21,7 +21,7 @@ const typeDefs = `
   `;
 // The resolvers
 const resolvers = {
-    Query: { books: (withAuthor) => books },
+    Query: { books: (_withAuthor) => books },
 };
 // Put together a schema
 const schema = graphql_tools_1.makeExecutableSchema({

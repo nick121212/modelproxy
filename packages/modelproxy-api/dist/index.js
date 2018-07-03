@@ -6,13 +6,15 @@ const path_1 = tslib_1.__importDefault(require("path"));
 const routing_controllers_1 = require("routing-controllers");
 const typeorm_1 = require("typeorm");
 const config_1 = tslib_1.__importDefault(require("config"));
-const apollo_server_express_1 = require("apollo-server-express");
+// import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
+// import { makeExecutableSchema } from "graphql-tools";
 const container_1 = require("./container");
 const pwd = path_1.default.resolve(__dirname);
 /**
  * 载入DI
  */
 routing_controllers_1.useContainer(container_1.container);
+// const a: AsyncIterator;
 /**
  * 创建app
  */
@@ -36,7 +38,7 @@ const app = routing_controllers_1.createExpressServer({
  * 链接mysql然后启动服务
  */
 typeorm_1.createConnection().then((_conn) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-    app.use('/graphiql', apollo_server_express_1.graphiqlExpress({ endpointURL: '/graphql' }));
+    // app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
     // 启动应用
     app.listen(config_1.default.get("site.port") || 3004, config_1.default.get("site.host") || "0.0.0.0", () => {
         console.log("server listen on 3004");

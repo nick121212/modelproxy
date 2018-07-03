@@ -22,7 +22,7 @@ const typeDefs = `
 
 // The resolvers
 const resolvers = {
-    Query: { books: (withAuthor: boolean) => books },
+    Query: { books: (_withAuthor: boolean) => books },
 };
 
 // Put together a schema
