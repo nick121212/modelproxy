@@ -41,19 +41,8 @@ export const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware({
 export default (history: any) => applyMiddleware(
     reduxThunk,
     routerMiddleware(history),
-    // loadingBarMiddleware({
-    //     promiseTypeSuffixes: ['REQUEST', 'SUCCESS', 'FAILURE'],
-    // }),
     reduxPromise,
     proxyMid({ proxy }),
-    // reduxPromise,
     sagaMiddleware,
     logger
 )(createStore);
-
-// thunk,
-//     routerMiddleware(history),
-//     promise,
-//     mpMiddleware({ proxy }),
-//     sagaMiddleware,
-//     logger

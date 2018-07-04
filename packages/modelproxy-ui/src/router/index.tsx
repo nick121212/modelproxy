@@ -87,7 +87,6 @@ export default (
                 </div>
                 {/** 业务模块 */}
                 <Switch>
-
                     <Route path="/project" component={Project} />
                     <Route path="/" component={Mail} />
                 </Switch>

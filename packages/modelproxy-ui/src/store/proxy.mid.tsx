@@ -67,6 +67,10 @@ export default (settings: { proxy: ModelProxy }): Middleware => {
                             throw err;
                         })
                     } as any);
+
+                    return next(Object.assign({}, action, {
+                        payload: promise
+                    }));
                 }
 
                 // 调用下层的拦截器

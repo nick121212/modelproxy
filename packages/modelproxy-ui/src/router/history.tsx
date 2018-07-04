@@ -1,3 +1,3 @@
-import { createHashHistory, History } from "history";
+import { createBrowserHistory as createHistory, History } from "history";
 
-export const historyInstance: History = createHashHistory({ basename: "/" });
+export const historyInstance: History = createHistory({ basename: "/" });

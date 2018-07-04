@@ -1,6 +1,6 @@
 import { FetchEngine } from "modelproxy-engine-fetch";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
-import { delay } from "redux-saga";
+// import { delay } from "redux-saga";
 
 // 定义一个jsonp的调用方式
 export const fetchEngine = new FetchEngine();
@@ -33,7 +33,7 @@ fetchEngine.use(async (ctx: IProxyCtx, next: (s?: string) => Promise<any>) => {
     // }
     // ctx.result = ctx.result.data;
 
-    await delay(3000);
+    // await delay(3000);
 
     await next();
 });

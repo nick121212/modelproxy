@@ -41,7 +41,7 @@ export class Component extends React.PureComponent<IProps, any>{
     }
 
     public render() {
-        const { match, listData, fetchListData } = this.props;
+        const { match, history, listData, fetchListData } = this.props;
         const { loaded = false, loading = false, data = {} } = listData ? listData.toJS() : {};
 
         if (loaded && data && data.total) {
@@ -52,10 +52,11 @@ export class Component extends React.PureComponent<IProps, any>{
             <MainPanel className="w-100 flex pa0 flex-column"
                 toolbar={
                     <LinkGroup items={[
-                        getLinkItem("新建项目", "Add", () => void (0), {
-                            href: `#${match.path}/create`,
-                            disabled: loading
-                        }),
+                        getLinkItem("新建项目", "Add", () => {
+                            history.replace(`${match.path}/create`);
+                        }, {
+                                disabled: loading
+                            }),
                         getLinkItem("刷新列表", "Refresh", () => {
                             if (fetchListData) {
                                 fetchListData();

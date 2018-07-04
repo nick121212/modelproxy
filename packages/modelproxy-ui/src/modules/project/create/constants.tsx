@@ -1,10 +1,11 @@
 import { DefaultProps } from "fx-schema-form-react/libs/components";
 import { SchemaFormProps } from "fx-schema-form-react/libs/libs/dec";
 import { Map } from "immutable";
+import { RouteComponentProps } from "react-router";
 
 import { mainReducerKey } from "../constants";
 
-export interface IProps extends SchemaFormProps, DefaultProps {
+export interface IProps extends SchemaFormProps, DefaultProps, RouteComponentProps<any, any> {
     confirmData?: Map<string, any>;
     toggleConfirm?: (confirm: boolean) => void;
     saveData?: (data: any) => void;

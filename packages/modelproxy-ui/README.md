@@ -1,6 +1,6 @@
 # Microsoft Outlook style for React
 
-react-fabric-outlook
+扁鹊UI
 
 ## [LIVE DEMO](https://nick121212.github.io/react-fabric-outlook/build/index.html#/)
 

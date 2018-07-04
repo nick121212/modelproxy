@@ -6,6 +6,10 @@ import { combineReducers } from "redux-immutable";
 import reactRouterReducer from "../router/router.reducer.shim";
 
 const schemaFormReducer = schemaFormReact.reducerFactory.get("schemaForm");
+
+/**
+ * 全局的reducer
+ */
 const defaultReducer: any = {
   routing: reactRouterReducer,
   schemaForm: schemaFormReducer.reducer,
