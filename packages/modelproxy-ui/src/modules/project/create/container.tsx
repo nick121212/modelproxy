@@ -19,8 +19,19 @@ export const hoc = compose<IProps, any>(
     withRouter,
     connect(mapStateToProps),
     withHandlers({
-        saveData: (props: IProps) => {
+        backToProject: (props: IProps) => {
             const { history, match } = props;
+
+            return () => {
+                history.replace(match.path.split("/").slice(0, -1).join("/"));
+            };
+        }
+    }),
+    withHandlers({
+
+        saveData: (props: IProps) => {
+            const { backToProject = () => void(0) } = props;
+
             return async (data: any) => {
                 const action: any = await saveDataRed.actions.execute({
                     settings: {
@@ -33,7 +44,7 @@ export const hoc = compose<IProps, any>(
                 if (action.payload) {
                     await action.payload;
 
-                    history.replace(match.path.split("/").slice(0, -1).join("/"));
+                    backToProject();
                 }
             }
         },

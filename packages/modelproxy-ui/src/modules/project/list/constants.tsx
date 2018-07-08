@@ -5,7 +5,9 @@ import { mainReducerKey } from "../constants";
 
 export interface IProps extends RouteComponentProps<any, any> {
     listData?: Map<string, any>;
-    fetchListData?: () => void;
+    paginationData?: Map<string, any>;
+    fetchListData?: (page?: number, pageSize?: number) => void;
+    setPageInfo?: (total: number, page: number, pageSize: number) => void;
 }
 
 

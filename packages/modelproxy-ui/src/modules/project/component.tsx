@@ -12,7 +12,7 @@ export default class Component extends PureComponent<any, any>{
 
     return (
       <div className="flex w-100 h-100">
-        <div className="flex flex-column shrink-0" style={{ width: 375 }}>
+        <div className="flex flex-column flex-auto shrink-0">
           <ListComponent />
         </div>
 

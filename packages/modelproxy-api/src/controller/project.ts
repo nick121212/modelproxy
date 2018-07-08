@@ -1,4 +1,4 @@
-import { JsonController, Body, Get, Post, Put, Delete, Param } from "routing-controllers";
+import { JsonController, Body, Get, Post, Put, Delete, Param, QueryParam } from "routing-controllers";
 import { injectable, inject } from "inversify";
 import { EntityFromParam, EntityFromBody } from "typeorm-routing-controllers-extensions";
 import { Repository, UpdateResult } from "typeorm";
@@ -25,11 +25,13 @@ export class ProjectController {
     @Get("/")
     async getAll(@Respository({
         type: ProjectEntity
-    }) userRepository: Repository<ProjectEntity>) {
+    }) userRepository: Repository<ProjectEntity>, @QueryParam("page") page: number = 1, @QueryParam("pageSize") pageSize: number = 10) {
         let data = await userRepository.findAndCount({
             where: {
 
-            }
+            },
+            skip: (page - 1) * pageSize,
+            take: pageSize
         });
 
         return {
@@ -139,7 +141,6 @@ export class ProjectController {
                     const path = a.requestUrl.replace(/\\\\\\/ig, "");
                     const keys = path.replace(/^\//ig, "").split("/").reverse();
 
-                    // keys.length = 2;
                     actions.push({
                         key: keys.reverse().join("."),
                         title: a.name,

@@ -1,16 +1,15 @@
 // import classNames from "classnames";
 // import { CommandBarButton } from "office-ui-fabric-react/lib/Button";
-import { buildColumns, ConstrainMode, DetailsList, DetailsListLayoutMode, IColumn, Selection } from "office-ui-fabric-react/lib/DetailsList";
+import { buildColumns, ConstrainMode, DetailsListLayoutMode, SelectionMode } from "office-ui-fabric-react/lib/DetailsList";
 import { Icon } from "office-ui-fabric-react/lib/Icon";
 // import { ProgressIndicator } from "office-ui-fabric-react/lib/ProgressIndicator";
 import React from "react";
 
-import { getLinkItem, LinkGroup, MainPanel } from "../../../fabric";
+import { getLinkItem, ITableColumn, LinkGroup, MainPanel, Table } from "../../../fabric";
 import { IProps } from "./constants";
 import { hoc } from "./container";
 
 export class Component extends React.PureComponent<IProps, any>{
-    private selection: Selection = new Selection();
 
     constructor(props: IProps, content: any) {
         super(props, content);
@@ -21,18 +20,9 @@ export class Component extends React.PureComponent<IProps, any>{
     }
 
     public _buildColumns(items: any[]) {
-        const columns = buildColumns(items, true, undefined, "key", true, undefined, true).map((col: IColumn) => {
-
-            Reflect.deleteProperty(col, "minWidth");
+        const columns = buildColumns(items, true, undefined, "", false, undefined, true).map((col: ITableColumn) => {
             Reflect.deleteProperty(col, "maxWidth");
-
-            if (col.fieldName === "key") {
-                col.isCollapsable = true;
-                col.onColumnClick = () => {
-                    col.isSorted = true;
-                    col.isSortedDescending = !col.isSortedDescending;
-                }
-            }
+            col.canSort = true;
 
             return col;
         });
@@ -41,15 +31,12 @@ export class Component extends React.PureComponent<IProps, any>{
     }
 
     public render() {
-        const { match, history, listData, fetchListData } = this.props;
+        const { match, history, listData, fetchListData, paginationData } = this.props;
         const { loaded = false, loading = false, data = {} } = listData ? listData.toJS() : {};
-
-        if (loaded && data && data.total) {
-            this.selection.setItems(data.models, false);
-        }
+        const { curPage = 1, pageSize = 10 } = paginationData ? paginationData.toJS() : {};
 
         return (
-            <MainPanel className="w-100 flex pa0 flex-column"
+            <MainPanel className="w-100 flex pa0 flex-column overflow-hidden"
                 toolbar={
                     <LinkGroup items={[
                         getLinkItem("新建项目", "Add", () => {
@@ -59,7 +46,7 @@ export class Component extends React.PureComponent<IProps, any>{
                             }),
                         getLinkItem("刷新列表", "Refresh", () => {
                             if (fetchListData) {
-                                fetchListData();
+                                fetchListData(curPage, pageSize);
                             }
                         }, {
                                 disabled: loading
@@ -68,14 +55,24 @@ export class Component extends React.PureComponent<IProps, any>{
                 }>
                 {
                     (loaded && data && data.total) ?
-                        <DetailsList
-                            className="h-100 w-100"
+                        <Table
+                            disabled={loading}
+                            onSelectionChanged={console.log}
+                            onSortChanged={console.log}
+                            onPaginationChanged={(page: number, ps: number) => {
+                                if (fetchListData) {
+                                    fetchListData(page, ps);
+                                }
+                            }}
+                            pagination={paginationData ? paginationData.toJS() : {}}
+                            className="h-100 w-100 flex-auto"
                             setKey="id"
                             layoutMode={DetailsListLayoutMode.fixedColumns}
                             constrainMode={ConstrainMode.horizontalConstrained}
                             items={data ? data.models : []}
                             columns={this._buildColumns(data ? data.models : [])}
                             isHeaderVisible={true}
+                            selectionMode={SelectionMode.single}
                             selectionPreservedOnEmptyClick={true}
                             enterModalSelectionOnTouch={true}
                         /> :
@@ -84,7 +81,7 @@ export class Component extends React.PureComponent<IProps, any>{
                                 <Icon iconName="ProjectCollection" className="db f-6" />
                                 <div>
                                     项目列表为空
-                                    </div>
+                                </div>
                             </div>
                         )
                 }

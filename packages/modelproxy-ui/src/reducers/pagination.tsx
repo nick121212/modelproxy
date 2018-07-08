@@ -1,15 +1,13 @@
-
-
 import Immutable from "immutable";
 import { Reducer } from "redux";
 import { createAction, createReducer, EmptyActionCreator, SimpleActionCreator } from "redux-act";
 
 export interface IPaginationReducerModel {
   total: number;
-  curPage: number;
-  pageSize: number;
+  curPage?: number;
+  pageSize?: number;
 
-  totalPage: number;
+  totalPage?: number;
   hasNext?: boolean;
   hasPrev?: boolean;
 }
@@ -31,9 +29,11 @@ export class PaginationReducer {
    */
   constructor(protected initialState: IPaginationReducerModel = {
     total: 0,
-    curPage: 0,
+    curPage: 1,
     pageSize: 10,
-    totalPage: 0
+    totalPage: 0,
+    hasNext: false,
+    hasPrev: false
   }) { }
 
   /**
@@ -62,19 +62,28 @@ export class PaginationReducer {
         return state.merge({ pageSize: data });
       },
       [this.setInfo as any]: (state: Immutable.Map<string, any>, data: IPaginationReducerModel) => {
-        if (data.total && data.pageSize) {
-          data.totalPage = Math.ceil(data.total / data.pageSize);
+        const { total, pageSize } = data;
+        let { totalPage = 0, curPage = 0 } = data;
+
+        if (total && pageSize) {
+          totalPage = Math.ceil(total / pageSize);
+
+          data.hasNext = totalPage > curPage;
         }
 
-        if (data.totalPage < data.curPage) {
-          data.curPage = data.totalPage;
+        if (totalPage < curPage) {
+          curPage = totalPage;
         }
 
-        if ((data.totalPage || 0) < (data.curPage || 0)) {
-          data.curPage = data.totalPage || 0;
+        if (curPage < 1) {
+          curPage = 1;
         }
 
-        return state.merge(data);
+        data.hasPrev = curPage > 1;
+
+        return state.merge(Object.assign({}, data, {
+          total, pageSize, totalPage, curPage
+        }));
       },
       [this.prev as any]: (state: Immutable.Map<string, any>) => {
         const data: IPaginationReducerModel = state.toJS();
@@ -87,9 +96,10 @@ export class PaginationReducer {
       },
       [this.next as any]: (state: Immutable.Map<string, any>) => {
         const data: IPaginationReducerModel = state.toJS();
+        const { curPage = 0, totalPage = 0 } = data;
 
-        if (data.curPage < data.totalPage - 1) {
-          data.curPage = data.curPage + 1;
+        if (curPage < totalPage - 1) {
+          data.curPage = curPage + 1;
         }
 
         return state.merge(data);

@@ -6,9 +6,11 @@ import { RouteComponentProps } from "react-router";
 import { mainReducerKey } from "../constants";
 
 export interface IProps extends SchemaFormProps, DefaultProps, RouteComponentProps<any, any> {
+    title?: string;
     confirmData?: Map<string, any>;
     toggleConfirm?: (confirm: boolean) => void;
     saveData?: (data: any) => void;
+    backToProject?: () => void;
 }
 
 export const reducerKey = "create";

@@ -1,22 +1,32 @@
 import React, { PureComponent } from "react";
 
-import classNames from 'classnames';
+import classNames from "classnames";
 import { CommandBarButton } from 'office-ui-fabric-react/lib/Button';
 
-import { LightTheme, Link, LinkGroup } from "../../fabric";
+import { getLinkItem, LightTheme, Link, LinkGroup } from "../../fabric";
 
 export default class Component extends PureComponent<any, any>{
   public render() {
     return (
       <div className="flex flex-column">
-        <Link {...this.getLinkItem(false, "settings", "GlobalNavButton")} width={41}/>
+        <Link {...this.getLinkItem(false, "settings", "GlobalNavButton")} width={41} />
 
         <LinkGroup className="flex-column flex-auto overflow-auto bt br b--black-20 " isBottom={false} items={[
-          this.getLinkItem(false, "settings", "Mail"),
-          this.getLinkItem(false, "feature", "Calendar"),
-          this.getLinkItem(false, "help", "People"),
-          this.getLinkItem(false, "help", "Photo2"),
-          this.getLinkItem(false, "help", "CheckboxComposite")
+          getLinkItem("", "", undefined, {
+            iconProps: { iconName: "Mail", className: "f4" }
+          }),
+          getLinkItem("", "", undefined, {
+            iconProps: { iconName: "Calendar", className: "f4" }
+          }),
+          getLinkItem("", "", undefined, {
+            iconProps: { iconName: "People", className: "f4" }
+          }),
+          getLinkItem("", "", undefined, {
+            iconProps: { iconName: "Photo2", className: "f4" }
+          }),
+          getLinkItem("", "", undefined, {
+            iconProps: { iconName: "Calendar", className: "f4" }
+          })
         ]} />
       </div>
     );

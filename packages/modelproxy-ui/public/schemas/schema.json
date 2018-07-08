@@ -1,0 +1,103 @@
+{
+    "type": "object",
+    "$id": "schema",
+    "required": ["type"],
+    "properties": {
+        "$id": {
+            "type": "string",
+            "title": "schema的ID"
+        },
+        "$ref": {
+            "type": "string",
+            "title": "引用"
+        },
+        "multipleOf": {
+            "type": "number",
+            "title": "倍数",
+            "description": "仅当按此关键字的值是数字实例才有效"
+        },
+        "maximum": {
+            "type": "number",
+            "title": "最大值",
+            "description": "仅当按此关键字的值是数字实例才有效"
+        },
+        "minimum": {
+            "type": "number",
+            "title": "最小值",
+            "description": "仅当按此关键字的值是数字实例才有效"
+        },
+        "exclusiveMinimum": {
+            "type": "number",
+            "title": "严格小于(不等于)",
+            "description": "仅当按此关键字的值是数字实例才有效"
+        },
+        "exclusiveMaximum": {
+            "type": "number",
+            "title": "严格大于(不等于)",
+            "description": "仅当按此关键字的值是数字实例才有效"
+        },
+        "maxLength": {
+            "type": "number",
+            "title": "最大长度",
+            "description": "仅当按此关键字类型是字符串时才有效"
+        },
+        "pattern": {
+            "type": "string",
+            "title": "验证的正则表达式",
+            "description": "仅当按此关键字类型是字符串时才有效"
+        },
+        "maxItems": {
+            "type": "number",
+            "title": "最大元素个数",
+            "description": "仅当按此关键字的值是数组实例才有效"
+        },
+        "minItems": {
+            "type": "number",
+            "title": "最小元素个数",
+            "description": "仅当按此关键字的值是数组实例才有效"
+        },
+        "uniqueItems": {
+            "type": "boolean",
+            "title": "元素是否唯一",
+            "description": "仅当按此关键字的值是数组实例才有效"
+        },
+        "maxProperties": {
+            "type": "number",
+            "title": "最大属性个数"
+        },
+        "minProperties": {
+            "type": "number",
+            "title": "最小属性个数"
+        },
+        "required": {
+            "type": "array",
+            "title": "必填项",
+            "items": {
+                "type": "string",
+                "title": "必填项字段名"
+            }
+        },
+        "title": {
+            "type": "string",
+            "title": "标题"
+        },
+        "format": {
+            "type": "string",
+            "title": "格式"
+        },
+        "description": {
+            "type": "string",
+            "title": "描述"
+        },
+        "type": {
+            "type": "string",
+            "title": "类型"
+        },
+        "items-1": {
+            "type": "object"
+        },
+        "properties-1": {
+            "type": "object"
+        }
+    }
+}

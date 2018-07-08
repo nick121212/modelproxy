@@ -21,10 +21,12 @@ let ProjectController = class ProjectController {
     /**
      * 获取所有的数据
      */
-    getAll(userRepository) {
+    getAll(userRepository, page = 1, pageSize = 10) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let data = yield userRepository.findAndCount({
-                where: {}
+                where: {},
+                skip: (page - 1) * pageSize,
+                take: pageSize
             });
             return {
                 models: data[0],
@@ -104,7 +106,6 @@ let ProjectController = class ProjectController {
                     p.actionList.forEach((a) => {
                         const path = a.requestUrl.replace(/\\\\\\/ig, "");
                         const keys = path.replace(/^\//ig, "").split("/").reverse();
-                        // keys.length = 2;
                         actions.push({
                             key: keys.reverse().join("."),
                             title: a.name,
@@ -129,9 +130,9 @@ tslib_1.__decorate([
     routing_controllers_1.Get("/"),
     tslib_1.__param(0, repository_1.Respository({
         type: project_1.ProjectEntity
-    })),
+    })), tslib_1.__param(1, routing_controllers_1.QueryParam("page")), tslib_1.__param(2, routing_controllers_1.QueryParam("pageSize")),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository]),
+    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository, Number, Number]),
     tslib_1.__metadata("design:returntype", Promise)
 ], ProjectController.prototype, "getAll", null);
 tslib_1.__decorate([

@@ -7,7 +7,7 @@ import "./icons";
 import { default as DarkTheme } from "./themes/dark";
 import { default as LightTheme } from "./themes/light";
 
-export { Link, LinkGroup, SearchBox, Panel, MainPanel } from "./components";
+export { Link, LinkGroup, SearchBox, Panel, MainPanel, Table, ITableColumn } from "./components";
 export { getLinkItem } from "./utils";
 
 const style: Stylesheet = Stylesheet.getInstance();

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React, { PureComponent } from "react";
 
 import { default as Link, IProps as LinkProps } from "./link";
@@ -17,8 +17,8 @@ export default class Component extends PureComponent<IProps>{
     const { children, className, isBottom = true, items = [] } = this.props;
 
     return (
-      <div className={classNames("flex w-100", className)}>
-        {!isBottom ? <div className="flex-auto">{children}</div> : null}
+      <div className={classnames("flex w-100", className)}>
+        {(!isBottom && children) ? <div className="flex-auto">{children}</div> : null}
         {
           items.map((item: any, idx: number) => {
             return <Link
@@ -27,7 +27,7 @@ export default class Component extends PureComponent<IProps>{
               {...item} />
           })
         }
-        {isBottom ? <div className="flex-auto">{children}</div> : null}
+        {(isBottom && children) ? <div className="flex-auto">{children}</div> : null}
       </div>
     );
   }
