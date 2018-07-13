@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "test",
+    "definitions": {
+        "Artist": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "founded": {
+                    "type": "integer"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "founded",
+                "members",
+                "name"
+            ],
+            "title": "Artist"
+        },
+        "Album": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "artist": {
+                    "$ref": "#/definitions/Artist"
+                },
+                "tracks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Track"
+                    }
+                }
+            },
+            "required": [
+                "artist",
+                "name",
+                "tracks"
+            ],
+            "title": "Album"
+        },
+        "Track": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "duration",
+                "name"
+            ],
+            "title": "Track"
+        }
+    }
+}

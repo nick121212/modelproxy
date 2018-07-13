@@ -1,0 +1,40 @@
+{
+    "$id": "dashboard",
+    "type": "object",
+    "required": ["firstName", "lastName", "habit"],
+    "default": {},
+    "properties": {
+        "firstName": {
+            "type": "string",
+            "minLength": 5
+        },
+        "lastName": {
+            "type": "string",
+            "default": "1"
+        },
+        "age": {
+            "type": "number"
+        },
+        "isEighteen": {
+            "type": "boolean"
+        },
+        "favoriteColor": {
+            "type": "string"
+        },
+        "sex": {
+            "type": "string"
+        },
+        "habit": {
+            "type": "array",
+            "minItems": 2,
+            "title": "兴趣爱好",
+            "items": {
+                "title": "兴趣爱好",
+                "type": "string"
+            }
+        },
+        "born": {
+            "type": "string"
+        }
+    }
+}

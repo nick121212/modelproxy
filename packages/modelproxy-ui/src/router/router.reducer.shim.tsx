@@ -8,6 +8,7 @@ export default (state = fromJS({
 	locationBeforeTransitions: null
 }), action: any) => {
 	if (action.type === LOCATION_CHANGE) {
+		console.log(action);
 		return state.set("locationBeforeTransitions", action.payload);
 	}
 

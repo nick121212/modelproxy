@@ -7,14 +7,13 @@ import { JSONSchema6 } from "json-schema";
 // import { BaseFactory } from "modelproxy";
 
 import { getSchema } from "../modelproxy/proxy";
+import fields from "./fields";
 import hocs from "./hocs";
 import temps from "./temps";
 import widgets from "./widgets";
-// import { fields as efields } from "./fields";
-
 
 const { defaultTheme, hocFactory } = schemaFormReact;
-const { tempFactory, widgetFactory } = defaultTheme;
+const { tempFactory, widgetFactory, fieldFactory } = defaultTheme;
 
 // 添加templates到schemaForm组件
 temps.forEach((temp: any) => {
@@ -34,23 +33,22 @@ widgets.forEach((widget: any) => {
 });
 // 添加hocs到schemaForm组件
 [...ehocs, ...hocs].forEach((hoc: any) => {
-  hocFactory.add(hoc.name, hoc.hoc(hocFactory));
+  hocFactory.add(hoc.name, hoc.hoc(hocFactory), true);
 });
-// // 添加fields到schemaForm组件
-// efields.forEach((field: { [key: string]: any }) => {
-//   for (const key in field) {
-//     if (field.hasOwnProperty(key)) {
-//       fieldFactory.add(key, field[key]);
-//     }
-//   }
-// });
+// 添加fields到schemaForm组件
+fields.forEach((field: { [key: string]: any }) => {
+  for (const key in field) {
+    if (field.hasOwnProperty(key)) {
+      fieldFactory.add(key, field[key]);
+    }
+  }
+});
 
 // 初始化ajv实例
 export const curAjv: ajv.Ajv = ajvErrors(new ajv({
   allErrors: true,
   jsonPointers: true,
   useDefaults: true,
-  // tslint:disable-next-line:object-literal-sort-keys
   format: "full",
   $data: true,
   errorDataPath: "property",
@@ -76,45 +74,4 @@ export const curAjv: ajv.Ajv = ajvErrors(new ajv({
     }) as any;
   }
 }));
-
-// tslint:disable-next-line:no-unused-expression
-new ResolveLib(curAjv, {
-  $id: "dashboard",
-  type: "object",
-  required: ["firstName", "lastName", "habit"],
-  default: {},
-  properties: {
-    firstName: {
-      type: "string",
-      minLength: 5
-    },
-    lastName: {
-      type: "string",
-      default: "1"
-    },
-    age: {
-      type: "number"
-    },
-    isEighteen: {
-      type: "boolean"
-    },
-    favoriteColor: {
-      type: "string"
-    },
-    sex: {
-      type: "string"
-    },
-    habit: {
-      type: "array",
-      minItems: 2,
-      title: "兴趣爱好",
-      items: {
-        title: "兴趣爱好",
-        type: "string"
-      }
-    },
-    born: {
-      type: "string"
-    }
-  }
-} as any);
+console.log(hocFactory)

@@ -7,6 +7,8 @@ import proxy from "../../modelproxy/proxy";
 import { ArrayComponent } from "../components/array";
 import { ArrayItemComponent } from "../components/arrayitem";
 import { NoneComponent } from "../components/none";
+import { ObjArrayComponent } from "../components/objarray";
+import { ObjectArrayItemComponent } from "../components/objarrayitem";
 
 const { hocFactory } = schemaFormReact;
 
@@ -22,6 +24,12 @@ export const globalOptions = Immutable.fromJS({
                 data: true,
                 meta: true,
                 metaKeys: ["isLoading", "options", "children"]
+            })]
+        },
+        objarray: {
+            temps: ["card"],
+            fieldHocs: [hocFactory.get("data")({
+                data: true
             })]
         },
         array: {
@@ -97,6 +105,7 @@ export const globalOptions = Immutable.fromJS({
                 meta: true,
                 metaKeys: ["isLoading", "errorText", "isValid", "dirty"]
             })],
+            showTitle: false,
             options: {
                 fullWidth: true,
                 margin: "normal",
@@ -107,6 +116,10 @@ export const globalOptions = Immutable.fromJS({
     hoc: {
         data: {
             rootReducerKey: ["schemaForm"]
+        },
+        objarray: {
+            ArrayComponent: ObjArrayComponent,
+            ArrayItemComponent: ObjectArrayItemComponent
         },
         array: {
             ArrayComponent,

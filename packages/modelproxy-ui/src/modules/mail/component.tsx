@@ -9,6 +9,7 @@ import { DashboardTestComponent } from "./form";
 
 export default class Component extends PureComponent<any, any>{
   public render() {
+
     return (
       <div className="flex w-100 h-100">
         <div className="flex flex-column flex-auto">
@@ -24,7 +25,7 @@ export default class Component extends PureComponent<any, any>{
           </div>
 
           <div className="flex-auto w-100 b--black-20 bt br pa5 bg-white overflow-auto">
-            <DashboardTestComponent />
+            <DashboardTestComponent key="form"/>
           </div>
 
         </div>

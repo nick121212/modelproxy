@@ -13,11 +13,11 @@ export { settings } from "./redux";
 
 export const Component = () => {
     return <>
-        <Header key="header" />
-        <Person key="person" />
-        <Settings key="settings" />
-        <Help key="help" />
-        <Feature key="feature" />
-        <Application key="application" />
+        <Header />
+        <Person />
+        <Settings />
+        <Help />
+        <Feature />
+        <Application />
     </>;
 };

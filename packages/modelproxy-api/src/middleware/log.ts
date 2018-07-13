@@ -15,14 +15,13 @@ export class LoggingMiddleware implements ExpressErrorMiddlewareInterface {
     }
 
     error(err: any, req: Request, _res: Response, next: (err?: any) => any) {
+        next(err);
+
         this.$log.error(`开始请求----------------请求URL：${req.originalUrl}; 请求路径：${req.path}`);
         this.$log.error(`请求参数：`, req.params);
         this.$log.error(`请求QS：`, req.query);
         this.$log.error(`请求body：`, req.body);
         this.$log.error(`请求头：`, req.headers);
         this.$log.error(`结束结束----------------请求Status：${err.httpCode}`);
-
-        next(err);
     }
-
 }

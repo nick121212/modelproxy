@@ -7,6 +7,8 @@ import { getLinkItem, LightTheme, Link, LinkGroup } from "../../fabric";
 
 export default class Component extends PureComponent<any, any>{
   public render() {
+    console.log("nav", this.props);
+    
     return (
       <div className="flex flex-column">
         <Link {...this.getLinkItem(false, "settings", "GlobalNavButton")} width={41} />

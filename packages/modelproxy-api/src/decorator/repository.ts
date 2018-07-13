@@ -3,7 +3,6 @@ import { getMetadataArgsStorage } from "routing-controllers";
 
 import { getRespository } from "../utils/utils";
 
-
 /**
  * 一个获取Repo的装饰器
  * @param options 参数

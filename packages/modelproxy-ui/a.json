@@ -1,0 +1,318 @@
+{
+    "errcode": 0,
+    "errmsg": "",
+    "example": [{
+        "id": "390736401",
+        "key": "时间",
+        "value": ["15", "39"]
+    }, {
+        "id": "1017898216",
+        "key": "邮箱",
+        "value": "qian.wang02@weimob.com"
+    }, {
+        "id": "1166072345",
+        "key": "微信号",
+        "value": "biubiubiu_233"
+    }, {
+        "id": "8234863131",
+        "key": "日期",
+        "value": ["2018", "07", "09"]
+    }, {
+        "id": "5616116788",
+        "key": "姓名",
+        "value": "王倩小程序七九二"
+    }, {
+        "id": "6733841001",
+        "key": "手机号",
+        "value": "18555555555"
+    }, {
+        "id": "7851249557",
+        "key": "省市区",
+        "value": ["上海市", "上海市", "黄浦区"]
+    }, {
+        "id": "5097743393",
+        "key": "下拉单选",
+        "value": {
+            "id": 5097743393,
+            "url": "//image-c.weimobwmc.com/saas-wxbiz/bacf94c5f3df44b2be84f7c15a959d6a.png",
+            "text": "选项3",
+            "index": 2
+        }
+    }, {
+        "id": "4538245058",
+        "key": "复选框",
+        "value": [{
+            "id": 2918619902,
+            "text": "选项2"
+        }, {
+            "id": 4498597657,
+            "text": "选项3"
+        }, {
+            "id": 8797435839,
+            "text": "选项4"
+        }, {
+            "id": 8017448368,
+            "text": "选项5"
+        }]
+    }],
+    "data": {
+        "count": 2,
+        "rows": [{
+                "id": 343,
+                "appid": "wxacb6663f71902236",
+                "pid": "2260",
+                "zhanId": 2,
+                "pageId": 610,
+                "channel": 1,
+                "data": [{
+                        "id": "210495843",
+                        "key": "姓名",
+                        "value": "杜大侠"
+                    },
+                    {
+                        "id": "554863626",
+                        "key": "微信号",
+                        "value": "weixinhao"
+                    },
+                    {
+                        "id": "4681155611",
+                        "key": "手机号",
+                        "value": "15963635421"
+                    }
+                ],
+                "createdAt": "2018-07-05T09:14:39.312Z"
+            },
+            {
+                "id": 344,
+                "appid": "wxacb6663f71902236",
+                "pid": "2260",
+                "zhanId": 2,
+                "pageId": 611,
+                "channel": 1,
+                "data": [{
+                        "id": "1207276974",
+                        "key": "邮箱",
+                        "value": "12456437845@qq.com"
+                    },
+                    {
+                        "id": "2203846177",
+                        "key": "复选框",
+                        "value": [{
+                                "id": 7714363275,
+                                "text": "选项1"
+                            },
+                            {
+                                "id": 8022659703,
+                                "text": "选项2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "5559129926",
+                        "key": "自定义",
+                        "value": "自定义内容"
+                    },
+                    {
+                        "id": "7313876034",
+                        "key": "省市区",
+                        "value": ["北京市", "北京市", "东城区"]
+                    },
+                    {
+                        "id": "9933965891",
+                        "key": "日期",
+                        "value": ["2018", "07", "05"]
+                    },
+                    {
+                        "id": "9661481278",
+                        "key": "时间",
+                        "value": ["23", "23"]
+                    },
+                    {
+                        "id": "7133060732",
+                        "key": "下拉单选",
+                        "value": {
+                            "id": 7133060732,
+                            "url": "//image-c.weimobwmc.com/saas-wxbiz/bacf94c5f3df44b2be84f7c15a959d6a.png",
+                            "text": "选项1",
+                            "index": 0
+                        }
+                    }
+                ],
+                "createdAt": "2018-07-05T09:19:09.487Z"
+            }
+        ],
+        "sumCount": 2,
+        "intputList": [{
+                "key": 210495843,
+                "mode": "text",
+                "tisp": "请选择",
+                "type": "name",
+                "value": "姓名",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "tipsColor": "#ccc",
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 610
+            },
+            {
+                "key": 4681155611,
+                "mode": "text",
+                "tisp": "请选择",
+                "type": "mobile",
+                "value": "手机号",
+                "required": true,
+                "tipsColor": "#ccc",
+                "pageId": 610
+            },
+            {
+                "key": 554863626,
+                "mode": "text",
+                "tisp": "请选择",
+                "type": "custom",
+                "value": "微信号",
+                "required": true,
+                "tipsColor": "#ccc",
+                "pageId": 610
+            },
+            {
+                "key": 1207276974,
+                "mode": "text",
+                "tisp": "请选择",
+                "type": "email",
+                "value": "邮箱",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "tipsColor": "#ccc",
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            },
+            {
+                "key": 5559129926,
+                "mode": "text",
+                "tisp": "请选择",
+                "type": "custom",
+                "value": "自定义",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "tipsColor": "#ccc",
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            },
+            {
+                "key": 7313876034,
+                "mode": "region",
+                "tips": "请选择",
+                "tisp": "请选择",
+                "type": "custom",
+                "itype": "picker",
+                "value": "省市区",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "tipsColor": "#ccc",
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            },
+            {
+                "key": 9933965891,
+                "mode": "date",
+                "tips": "请选择",
+                "tisp": "请选择",
+                "type": "custom",
+                "itype": "picker",
+                "value": "日期",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "tipsColor": "#ccc",
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            },
+            {
+                "key": 9661481278,
+                "mode": "time",
+                "tips": "请选择",
+                "tisp": "请选择",
+                "type": "custom",
+                "itype": "picker",
+                "value": "时间",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "tipsColor": "#ccc",
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            },
+            {
+                "key": 7133060732,
+                "list": [{
+                    "id": 6680031041,
+                    "url": "//image-c.weimobwmc.com/saas-wxbiz/bacf94c5f3df44b2be84f7c15a959d6a.png",
+                    "text": "选项1",
+                    "$$hashKey": "1FP"
+                }],
+                "mode": "select",
+                "tisp": "请选择",
+                "type": "custom",
+                "itype": "select",
+                "style": 3,
+                "value": "下拉单选",
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "iconColor": "#333",
+                "iconWidth": 20,
+                "textWidth": 90,
+                "tipsColor": "#ccc",
+                "imageWidth": 60,
+                "prohibitFixed": false,
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            },
+            {
+                "key": 2203846177,
+                "list": [{
+                        "id": 7714363275,
+                        "text": "选项1",
+                        "$$hashKey": "1GY"
+                    },
+                    {
+                        "id": 8022659703,
+                        "text": "选项2",
+                        "$$hashKey": "1GZ"
+                    }
+                ],
+                "mode": "checkbox",
+                "tisp": "请选择",
+                "type": "custom",
+                "itype": "checkbox",
+                "style": 3,
+                "value": "复选框",
+                "number": 4,
+                "isFixed": 0,
+                "accredit": false,
+                "required": true,
+                "drawColor": "#fff",
+                "fontColor": "#999",
+                "tipsColor": "#ccc",
+                "borderColor": "#E6E6E6",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "checkedColor": "#E22020",
+                "prohibitFixed": false,
+                "backgroundColor": "#E8E8E8",
+                "prohibitBottomFixed": false,
+                "pageId": 611
+            }
+        ]
+    }
+}

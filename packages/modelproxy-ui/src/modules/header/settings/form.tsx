@@ -11,7 +11,7 @@ import { curAjv } from "../../../schemaform";
 import { globalOptions } from "../../../schemaform/options/default";
 
 
-const { schemaFormDec, SchemaForm } = schemaFormReact;
+const { schemaFormDec, SchemaForm, hocFactory } = schemaFormReact;
 
 @(compose(
   defaultProps({
@@ -21,6 +21,7 @@ const { schemaFormDec, SchemaForm } = schemaFormReact;
     formKey: "dashboard",
     shouldResetForm: true
   }),
+  hocFactory.get("asyncSchema"),
   schemaFormDec({
     rootReducerKey: ["schemaForm"],
     parentKeys: ["dashboard"]
@@ -199,7 +200,7 @@ export class DashboardTestComponent extends React.PureComponent<SchemaFormProps 
               }
             })
           } as UiSchema]
-        }]}
+        }] as any}
         parentKeys={parentKeys}
         globalOptions={globalOptions}
         ajv={curAjv} />

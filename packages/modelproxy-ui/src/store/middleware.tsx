@@ -5,7 +5,6 @@ import { applyMiddleware, createStore } from "redux";
 import { createLogger } from "redux-logger";
 import reduxPromise from "redux-promise";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
-import reduxThunk from "redux-thunk";
 
 import proxy from "../modelproxy/proxy";
 import proxyMid from "./proxy.mid";
@@ -39,7 +38,7 @@ export const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware({
  * 导出默认方法，这里需要一个history：History
  */
 export default (history: any) => applyMiddleware(
-    reduxThunk,
+    // reduxThunk,
     routerMiddleware(history),
     reduxPromise,
     proxyMid({ proxy }),

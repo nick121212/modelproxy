@@ -164,4 +164,98 @@ export const uiSchemasOfDashboard = [{
         })
     } as UiSchema]
 }];
-export const uiSchemasOfSchema = ["type"];
+
+const getSchemas = () => {
+    return [type, extra];
+};
+const type: any = {
+    key: "type",
+    widget: "dropdown",
+    options: fromJS({
+        widget: {
+            dropdown: {
+                options: {
+                    options: [{
+                        key: "object",
+                        text: "对象"
+                    }, {
+                        key: "array",
+                        text: "数组"
+                    }, {
+                        key: "string",
+                        text: "字符串"
+                    }, {
+                        key: "number",
+                        text: "数字"
+                    }, {
+                        key: "boolean",
+                        text: "布尔"
+                    }, {
+                        key: "integer",
+                        text: "整形"
+                    }]
+                }
+            }
+        }
+    })
+};
+const extra: any = {
+    key: "extra",
+    hocs: ["utils", "theme", "field", "validate", "oneOf"],
+    options: fromJS({
+        hoc: {
+            oneOf: {
+                condition: {
+                    paths: [{ path: "../type" }]
+                },
+                path: "../type",
+                key: "oneOf",
+                uiSchemas: {
+                    "array": {
+                        schemaId: "schema", uiSchemas: ["title", {
+                            key: "items-1",
+                            hocs: ["utils", "theme", "field", "validate", "objarray", "temp"],
+                            field: "objarray",
+                            options: fromJS({
+                                field: {
+                                    objarray: {
+                                        schemaId: "schema",
+                                        uiSchemas: getSchemas
+                                    }
+                                }
+                            })
+                        }]
+                    },
+                    "object": {
+                        schemaId: "schema", uiSchemas: ["title", {
+                            key: "properties-1",
+                            hocs: ["utils", "theme", "field", "validate", "objarray", "temp"],
+                            field: "objarray",
+                            options: fromJS({
+                                field: {
+                                    objarray: {
+                                        schemaId: "schema",
+                                        uiSchemas: getSchemas
+                                    }
+                                }
+                            })
+                        }]
+                    },
+                    "string": { schemaId: "schema", uiSchemas: ["title", "maxLength", "minLength"] },
+                    "number": {
+                        schemaId: "schema", uiSchemas: ["title", "minimum", "maximum"]
+                    },
+                    "boolean": {
+                        schemaId: "schema", uiSchemas: ["title"]
+                    },
+                    "integer": {
+                        schemaId: "schema", uiSchemas: ["title", "minimum", "maximum"]
+                    }
+                }
+            }
+        }
+    })
+};
+
+
+export const uiSchemasOfSchema: any[] = [type, extra];

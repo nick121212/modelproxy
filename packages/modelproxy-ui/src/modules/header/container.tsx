@@ -1,10 +1,9 @@
 import Immutable from "immutable";
 import { connect } from "react-redux";
-import { compose } from "recompose";
+import { compose, shouldUpdate } from "recompose";
 import { Dispatch } from "redux";
 
 import { IProps, mainReducerKey, rootReducerKeys } from "./constants";
-
 import { headReducer } from "./redux";
 
 const mapStateToProps = (state: Immutable.Map<string, any>, ownProps: IProps) => {
@@ -20,5 +19,6 @@ const mapActionToProps = (dispatch: Dispatch, ownProps: IProps) => {
 };
 
 export const hoc = compose<IProps, any>(
+  shouldUpdate(() => false),
   connect(mapStateToProps, mapActionToProps)
 );

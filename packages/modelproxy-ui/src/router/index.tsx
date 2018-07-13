@@ -66,34 +66,39 @@ const Project = Loadable({
 });
 
 
+console.log(Header)
 /**
  * 路由
  */
-export default (
-    <Router history={historyInstance as any}>
-        <div className="flex items-start flex-column h-100 bg-near-white">
-            {/** 头部的组件 */}
-            <div className="w-100">
-                <Route path="/" component={Header} />
-            </div>
-            <div className="flex-auto w-100 flex items-start h-100 bg-near-white relative">
-                {/** 这里放置一些弹窗 */}
-                <div id="app-con" style={{
-                    pointerEvents: "none"
-                }} className="z-999 absolute w-100 h-100 bg-transparent" />
-                {/** 左侧的导航组件 */}
-                <div className="h-100 flex">
-                    <Route path="/" component={Nav} />
-                </div>
-                {/** 业务模块 */}
-                <Switch>
-                    <Route path="/project" component={Project} />
-                    <Route path="/" component={Mail} />
-                </Switch>
+export default class RouterComponent extends React.PureComponent<any, any>{
+    public render() {
+        return (
+            <Router history={historyInstance as any}>
+                <div className="flex items-start flex-column h-100 bg-near-white">
+                    {/** 头部的组件 */}
+                    <div className="w-100">
+                        {/*<Route key="header" component={Header} />*/}
+                    </div>
+                    <div className="flex-auto w-100 flex items-start h-100 bg-near-white relative">
+                        {/** 这里放置一些弹窗 */}
+                        <div id="app-con" style={{
+                            pointerEvents: "none"
+                        }} className="z-999 absolute w-100 h-100 bg-transparent" />
+                        {/** 左侧的导航组件 */}
+                        <div className="h-100 flex">
+                            <Route component={Nav} />
+                        </div>
+                        {/** 业务模块 */}
+                        <Switch>
+                            <Route path="/project" component={Project} />
+                            <Route key="mail" component={Mail} />
+                        </Switch>
 
-            </div>
-        </div>
-    </Router>
-);
+                    </div>
+                </div>
+            </Router>
+        );
+    }
+}
 
 export { historyInstance } from "./history";
