@@ -111,28 +111,6 @@ export const globalOptions = Immutable.fromJS({
         },
         proxy: {
             proxy
-        },
-        format: {
-            date: {
-                widget: "date",
-                options: {
-                    temp: {
-                        formItem: {
-                            showTitle: false
-                        }
-                    }
-                }
-            },
-            time: {
-                widget: "time",
-                options: {
-                    temp: {
-                        formItem: {
-                            showTitle: false
-                        }
-                    }
-                }
-            }
         }
     },
     widget: {

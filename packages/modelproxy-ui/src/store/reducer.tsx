@@ -5,18 +5,18 @@ import { combineReducers } from "redux-immutable";
 
 import reactRouterReducer from "../router/router.reducer.shim";
 
-const schemaFormReducer = schemaFormReact.reducerFactory.get("schemaForm");
+export const schemaFormReducer = schemaFormReact.reducerFactory.get("schemaForm");
 
 /**
  * 全局的reducer
  */
 const defaultReducer: any = {
-  routing: reactRouterReducer,
-  schemaForm: schemaFormReducer.reducer,
-  loadingBar: loadingBarReducer,
-  modules: {
-    __init__: (state = 1) => state
-  }
+    routing: reactRouterReducer,
+    schemaForm: schemaFormReducer.reducer,
+    loadingBar: loadingBarReducer,
+    modules: {
+        __init__: (state = 1) => state
+    }
 };
 
 export { defaultReducer };
@@ -26,19 +26,19 @@ export { defaultReducer };
  * @param map reducerMap
  */
 export const calcReducers = (map: any = defaultReducer): Reducer<any> => {
-  const rtns: any = {};
+    const rtns: any = {};
 
-  for (const key in map) {
-    if (map.hasOwnProperty(key)) {
-      const element: any = map[key];
+    for (const key in map) {
+        if (map.hasOwnProperty(key)) {
+            const element: any = map[key];
 
-      if (element.constructor === Function) {
-        rtns[key] = element;
-      } else {
-        rtns[key] = calcReducers(element);
-      }
+            if (element.constructor === Function) {
+                rtns[key] = element;
+            } else {
+                rtns[key] = calcReducers(element);
+            }
+        }
     }
-  }
 
-  return combineReducers(rtns as any);
+    return combineReducers(rtns as any);
 }

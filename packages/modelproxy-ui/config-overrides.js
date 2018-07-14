@@ -15,7 +15,7 @@ module.exports = function override(config, env) {
     const oneOf = config.module.rules.find(rule => rule.oneOf).oneOf;
     oneOf.unshift(sassLoader);
 
-    config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }], config);
+    config = injectBabelPlugin(["import", { libraryName: "antd" }], config);
 
     return config;
 }

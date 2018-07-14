@@ -1,5 +1,6 @@
 
 
+import { FluxStandardAction } from "flux-standard-action";
 import Immutable from "immutable";
 import { IExecute } from "modelproxy/out/models/execute";
 import { Reducer } from "redux";
@@ -109,7 +110,7 @@ export class ModelProxyReducer<T> {
      * 拦截execute action后执行的方法
      * @param action 当前被拦截的action
      */
-    private *fetch(action: any) {
+    private *fetch(action: FluxStandardAction<any>) {
         if (action.error) {
             yield put(this.error(Object.assign({ msg: true }, action.payload)));
         } else {
