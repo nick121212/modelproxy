@@ -6,14 +6,22 @@ import registerServiceWorker from "./registerServiceWorker";
 import RouterComponent from "./router";
 import { store } from "./store";
 
-import "./fabric";
 import "./style";
 
-ReactDOM.render((
-  <Provider store={store}>
-    <RouterComponent />
-  </Provider>),
-  document.getElementById("root"));
+const render = () => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <RouterComponent/>
+        </Provider>,
+        document.getElementById("root"));
+};
+
+// 开启热更替
+if ((module as any).hot) {
+    (module as any).hot.accept(render);
+}
+
+render();
 
 // 开启pwa
 registerServiceWorker();

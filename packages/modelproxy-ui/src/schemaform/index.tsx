@@ -7,13 +7,13 @@ import { JSONSchema6 } from "json-schema";
 // import { BaseFactory } from "modelproxy";
 
 import { getSchema } from "../modelproxy/proxy";
-import fields from "./fields";
+// import fields from "./fields";
 import hocs from "./hocs";
 import temps from "./temps";
 import widgets from "./widgets";
 
 const { defaultTheme, hocFactory } = schemaFormReact;
-const { tempFactory, widgetFactory, fieldFactory } = defaultTheme;
+const { tempFactory, widgetFactory } = defaultTheme;
 
 // 添加templates到schemaForm组件
 temps.forEach((temp: any) => {
@@ -36,13 +36,13 @@ widgets.forEach((widget: any) => {
   hocFactory.add(hoc.name, hoc.hoc(hocFactory), true);
 });
 // 添加fields到schemaForm组件
-fields.forEach((field: { [key: string]: any }) => {
-  for (const key in field) {
-    if (field.hasOwnProperty(key)) {
-      fieldFactory.add(key, field[key]);
-    }
-  }
-});
+// fields.forEach((field: { [key: string]: any }) => {
+//   for (const key in field) {
+//     if (field.hasOwnProperty(key)) {
+//       fieldFactory.add(key, field[key]);
+//     }
+//   }
+// });
 
 // 初始化ajv实例
 export const curAjv: ajv.Ajv = ajvErrors(new ajv({

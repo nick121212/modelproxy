@@ -2,13 +2,10 @@ import schemaFormReact from "fx-schema-form-react";
 import Immutable from "immutable";
 import { compose } from "recompose";
 
-import { LightTheme } from "../../fabric";
 import proxy from "../../modelproxy/proxy";
 import { ArrayComponent } from "../components/array";
 import { ArrayItemComponent } from "../components/arrayitem";
 import { NoneComponent } from "../components/none";
-import { ObjArrayComponent } from "../components/objarray";
-import { ObjectArrayItemComponent } from "../components/objarrayitem";
 
 const { hocFactory } = schemaFormReact;
 
@@ -52,21 +49,6 @@ export const globalOptions = Immutable.fromJS({
                 temp: {
                     card: {
                         icon: "apps"
-                    }
-                }
-            })
-        },
-        normal: {
-        },
-        number: {
-            options: Immutable.fromJS({
-                widget: {
-                    number: {
-                        options: {
-                            inputProps: {
-                                type: "number"
-                            }
-                        }
                     }
                 }
             })
@@ -117,10 +99,6 @@ export const globalOptions = Immutable.fromJS({
         data: {
             rootReducerKey: ["schemaForm"]
         },
-        objarray: {
-            ArrayComponent: ObjArrayComponent,
-            ArrayItemComponent: ObjectArrayItemComponent
-        },
         array: {
             ArrayComponent,
             ArrayItemComponent: compose(hocFactory.get("utils")(), hocFactory.get("data")({
@@ -158,30 +136,6 @@ export const globalOptions = Immutable.fromJS({
         }
     },
     widget: {
-        text: {
-            options: {}
-        },
-        date: {
-            options: {}
-        },
-        datetime: {
-            options: {}
-        },
-        time: {
-            options: {}
-        },
-        select: {
-            options: {}
-        },
-        toggle: {
-            options: {
-                theme: LightTheme
-            }
-        },
-        checkbox: {
-            options: {
-                theme: LightTheme
-            }
-        }
+        
     }
 });
