@@ -1,46 +1,57 @@
-// import schemaFormReact from "fx-schema-form-react";
-import classNames from "classnames";
+import { Form } from "antd";
+import { FormItemProps } from "antd/lib/form/FormItem";
+import schemaFormReact from "fx-schema-form-react";
 import { DefaultProps } from "fx-schema-form-react/libs/components";
 import { ArrayHocOutProps } from "fx-schema-form-react/libs/hocs/array";
 import { UtilsHocOutProps } from "fx-schema-form-react/libs/hocs/utils";
-import { schemaFormTypes } from "fx-schema-form-react/libs/models";
-// import { schemaFormTypes } from "fx-schema-form-react/libs/models";
-import { fromJS } from "immutable";
 import React, { PureComponent } from "react";
 
+const { schemaFormTypes } = schemaFormReact;
+
 export interface IProps extends DefaultProps, UtilsHocOutProps, ArrayHocOutProps {
+    tempKey: string;
 }
 
 export const tempKey = "formItem";
-export class Temp extends PureComponent<IProps> {
-    public render(): any {
-        const { children, uiSchema, getOptions, getTitle, formItemMeta = fromJS({}), initArrayComponent, arrayIndex } = this.props;
-        const tempOptions = getOptions(this.props, schemaFormTypes.template, tempKey);
-        const { isValid = true, errorText = "" } = formItemMeta.toJS();
 
-        if (!uiSchema) {
-            return null;
+export class Temp extends PureComponent<IProps, any> {
+    public render(): JSX.Element {
+        const { children, getOptions, getTitle, formItemMeta, initArrayComponent, } = this.props;
+        const tempOptions = getOptions(this.props, schemaFormTypes.template, tempKey);
+        const { description, isRequired, keys } = this.props.uiSchema as any;
+        const props: FormItemProps = {};
+        const { dirty = false, isValid = true, errorText = "", isLoading = false } = formItemMeta ? formItemMeta.toJS() : {};
+        let { hasFeedback = true } = tempOptions;
+
+        if (dirty) {
+            props.validateStatus = !isValid ? "error" : "success";
+        }
+
+        if (isLoading) {
+            props.validateStatus = "validating";
+            hasFeedback = true;
         }
 
         return (
-            <div className={classNames("form-item mb3", tempOptions.className, { "error": !isValid })}>
-                <div className={classNames("flex items-center", { "mt2": tempOptions.showTitle })}>
-                    <span className={classNames("f6 mv1 fw4 black flex-auto", { "red": !isValid })}>
-                        {tempOptions.showTitle !== false ? getTitle(this.props) : ""}
-                    </span>
-
-                    {(initArrayComponent && tempOptions.showToolbox !== false) ? initArrayComponent(this.props, arrayIndex) : null}
-                </div>
-
+            <Form.Item
+                key={(keys || []).join() + tempKey + isValid}
+                required={isRequired}
+                label={
+                    tempOptions.showTitle === false ? getTitle(this.props) : (
+                        <span>
+                            {initArrayComponent ? initArrayComponent(this.props) : null}
+                            {getTitle(this.props)}
+                        </span>
+                    )
+                }
+                extra={description}
+                hasFeedback={dirty && hasFeedback}
+                help={isValid ? "" : errorText}
+                {...props}
+                {...tempOptions.options}>
                 {children}
 
-                {
-                    !isValid ? <span className="dib f7 red mv1">
-                        {errorText}
-                    </span> : null
-                }
-
-            </div >
+            </Form.Item>
         );
     }
 }

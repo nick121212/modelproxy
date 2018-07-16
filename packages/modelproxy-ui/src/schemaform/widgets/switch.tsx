@@ -1,4 +1,4 @@
-import { InputNumber } from "antd";
+import { Switch } from "antd";
 import schemaFormReact from "fx-schema-form-react";
 import { DefaultProps } from "fx-schema-form-react/libs/components";
 import { UtilsHocOutProps } from "fx-schema-form-react/libs/hocs/utils";
@@ -11,47 +11,33 @@ const { schemaFormTypes } = schemaFormReact;
 export interface IProps extends DefaultProps, UtilsHocOutProps, ValidateHocOutProps {
 }
 
-export const widgetKey = "number";
+export const widgetKey = "switch";
 
 export class Widget extends PureComponent<IProps, any> {
-    private count: number = 0;
-
 
     public render(): JSX.Element | null {
-        const { getOptions, uiSchema, formItemMeta, updateItemData, removeItemData, updateItemMeta } = this.props;
+        const { getOptions, updateItemData, validate, formItemMeta } = this.props;
         const metaOptions = formItemMeta ? formItemMeta.getIn(["options", schemaFormTypes.widget, widgetKey]) : fromJS({});
         const widgetOptions = getOptions(this.props, schemaFormTypes.widget, widgetKey, metaOptions);
 
-        if (!uiSchema) {
-            return null;
-        }
-
         return (
-            <InputNumber
+            <Switch onChange={async (checked: boolean) => {
+                if (updateItemData) {
+                    updateItemData(this.props, checked, await validate(this.props, checked));
+                }
+            }}
                 {...(widgetOptions.options || {})}
-                {...this.setDefaultProps()}
-                onChange={(val: number) => {
-                    if (Number.isNaN(val)) {
-                        return removeItemData(this.props);
-                    }
-
-                    this.count++;
-                    updateItemData(this.props, val);
-                }} onBlur={() => {
-                    if (this.count > 0) {
-                        this.count = 0;
-                        updateItemMeta(this.props, this.props.formItemData);
-                    }
-                }} />
+                {...this.setDefaultProps()} />
         );
     }
 
     private setDefaultProps(): any {
         const props: any = {};
 
-        props.value = "";
         if (this.props.formItemData !== undefined) {
-            props.value = this.props.formItemData;
+            props.checked = this.props.formItemData;
+        } else {
+            props.checked = false;
         }
 
         return props;
@@ -60,6 +46,5 @@ export class Widget extends PureComponent<IProps, any> {
 
 export default {
     [widgetKey]: Widget,
-    "integer": Widget,
-    "float": Widget
+    "boolean": Widget
 };

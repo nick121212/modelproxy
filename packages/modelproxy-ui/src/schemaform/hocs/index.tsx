@@ -1,3 +1,4 @@
-import asyncSchema from "./schema";
+import proxyHoc from "./proxy";
+import schemaHoc from "./schema";
 
-export default [asyncSchema];
+export default [schemaHoc, proxyHoc];

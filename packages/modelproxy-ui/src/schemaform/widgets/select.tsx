@@ -1,48 +1,64 @@
 import { Select } from "antd";
+import schemaFormReact from "fx-schema-form-react";
 import { DefaultProps } from "fx-schema-form-react/libs/components";
 import { UtilsHocOutProps } from "fx-schema-form-react/libs/hocs/utils";
 import { ValidateHocOutProps } from "fx-schema-form-react/libs/hocs/validate";
-import { schemaFormTypes } from "fx-schema-form-react/libs/models";
+import Immutable from "immutable";
 import { fromJS } from "immutable";
 import React, { PureComponent } from "react";
 
-export const name = "select";
+const { schemaFormTypes } = schemaFormReact;
 
-export interface IAntdInputWidgetProps extends DefaultProps, UtilsHocOutProps, ValidateHocOutProps {
+export interface IProps extends DefaultProps, UtilsHocOutProps, ValidateHocOutProps {
 }
 
-export class Widget extends PureComponent<IAntdInputWidgetProps, any> {
+export const widgetKey = "select";
 
+export class Widget extends PureComponent<IProps, any> {
+    public render(): JSX.Element | null {
+        const { getOptions, uiSchema, formItemMeta, updateItemData, validate } = this.props;
+        const metaOptions = formItemMeta ? formItemMeta.getIn(["options", schemaFormTypes.widget, widgetKey]) : fromJS({});
+        const widgetOptions = getOptions(this.props, schemaFormTypes.widget, widgetKey, metaOptions);
 
-    public render(): JSX.Element {
-        const { getOptions, uiSchema, updateItemData, validate, getTitle, formItemMeta } = this.props;
-        const { readonly = false } = uiSchema || {};
-        const metaOptions = formItemMeta ? formItemMeta.getIn(["options", schemaFormTypes.widget, name]) : fromJS({});
-        const widgetOptions = getOptions(this.props, schemaFormTypes.widget, name, metaOptions);
+        if (!uiSchema) {
+            return null;
+        }
 
         return (
             <Select
-                onChange={async (value: any) => {
-                    updateItemData(this.props, value, await validate(this.props, value));
-                }}
-                disabled={readonly}
-                placeholder={getTitle(this.props)}
-                {...widgetOptions.options}
-                {...this.setDefaultProps()} />
+                {...(widgetOptions.options || {})}
+                {...this.setDefaultProps(widgetOptions)}
+                onChange={async (val: any, options: any) => {
+                    updateItemData(this.props, val, await validate(this.props, val));
+                }} />
         );
     }
 
-    private setDefaultProps(): any {
+    private setDefaultProps(widgetOptions: any): any {
         const props: any = {};
 
-        if (this.props.formItemData !== undefined) {
-            props.defaultValue = this.props.formItemData;
+        props.value = "";
+        if (widgetOptions.options.mode === "multiple" || widgetOptions.options.mode === "tags") {
+            props.value = [];
         }
 
-        return { options: props };
+        if (this.props.formItemData !== undefined) {
+            props.value = this.props.formItemData;
+            if (Immutable.Map.isMap(props.value) || Immutable.List.isList(props.value)) {
+                props.value = props.value.toJS();
+            }
+        }
+
+        if (widgetOptions.children) {
+            props.children = widgetOptions.children.map((c: any) => {
+                return <Select.Option key={c.value} title={c.label}>{c.label}</Select.Option>;
+            });
+        }
+
+        return props;
     }
 }
 
 export default {
-    [name]: Widget
+    [widgetKey]: Widget
 };

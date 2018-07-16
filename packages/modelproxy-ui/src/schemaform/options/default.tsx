@@ -1,6 +1,5 @@
 import schemaFormReact from "fx-schema-form-react";
 import Immutable from "immutable";
-import { compose } from "recompose";
 
 import proxy from "../../modelproxy/proxy";
 import { ArrayComponent } from "../components/array";
@@ -70,28 +69,31 @@ export const globalOptions = Immutable.fromJS({
     },
     temp: {
         card: {
-            tempHocs: [hocFactory.get("data")({
+            tempHocs: [schemaFormReact.hocFactory.get("data")({
                 meta: true,
                 data: true,
                 dataLength: true,
                 metaKeys: ["collapsing", "errorText", "isValid"]
             })],
             options: {
-                elevation: 0,
-                raised: false,
-                // className: "ml3 mr3"
+                className: "ml3 mr3"
             }
         },
         formItem: {
-            tempHocs: [hocFactory.get("data")({
+            tempHocs: [schemaFormReact.hocFactory.get("data")({
                 meta: true,
                 metaKeys: ["isLoading", "errorText", "isValid", "dirty"]
             })],
-            showTitle: false,
             options: {
-                fullWidth: true,
-                margin: "normal",
-                className: "flex w-auto"
+                className: "ml3 mr3 flex w-auto",
+                labelCol: {
+                    xs: { span: 24 },
+                    sm: { span: 5 },
+                },
+                wrapperCol: {
+                    xs: { span: 24 },
+                    sm: { span: 12 },
+                }
             }
         }
     },
@@ -101,19 +103,72 @@ export const globalOptions = Immutable.fromJS({
         },
         array: {
             ArrayComponent,
-            ArrayItemComponent: compose(hocFactory.get("utils")(), hocFactory.get("data")({
-                data: true,
-                dataLength: true
-            }))(ArrayItemComponent)
+            ArrayItemComponent
         },
         schemaFormDec: {
-            hocIncludeKeys: ["schemaId", "isValid", "data"]
+            hocIncludeKeys: ["schemaId", "isValid"]
         },
         proxy: {
             proxy
+        },
+        format: {
+            date: {
+                widget: "date"
+            },
+            "date-time": {
+                widget: "date",
+                options: Immutable.fromJS({
+                    widget: {
+                        date: {
+                            options: {
+                                style: {
+                                    width: "100%"
+                                },
+                                format: "YYYY-MM-DD HH:mm",
+                                showTime: true
+                            }
+                        }
+                    }
+                })
+            },
+            time: {
+                widget: "date",
+                options: Immutable.fromJS({
+                    widget: {
+                        date: {
+                            options: {
+                                style: {
+                                    width: "100%"
+                                },
+                                mode: "time",
+                                format: "HH:mm:ss",
+                                showTime: true
+                            }
+                        }
+                    }
+                })
+            }
         }
     },
     widget: {
-        
+        text: {
+            options: {
+                autoFocus: false
+            }
+        },
+        number: {
+            options: {
+                style: {
+                    width: "100%"
+                }
+            }
+        },
+        date: {
+            options: {
+                style: {
+                    width: "100%"
+                }
+            }
+        }
     }
 });

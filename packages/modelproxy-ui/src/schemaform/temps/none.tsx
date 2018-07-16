@@ -11,9 +11,9 @@ export class Temp extends PureComponent<IProps> {
     public render(): any {
         const { children } = this.props;
 
-        return <div>
+        return <>
             {children}
-        </div>;
+        </>;
     }
 }
 

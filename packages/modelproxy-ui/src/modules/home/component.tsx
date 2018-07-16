@@ -64,13 +64,13 @@ export default class Component extends React.PureComponent<any, any>{
 
         return (
             <div className="flex flex-auto overflow-auto h-100 flex-column">
-                <div className="flex-auto overflow-auto">
+                <div className="overflow-auto">
                     <SchemaEditor data={this.state.jsonSchema} onChange={(jsonSchema1: any) => {
                         this.setState({
                             jsonSchema: jsonSchema1
                         });
                     }} showEditor={true} /></div>
-                <div className="flex-auto overflow-auto">
+                <div className="overflow-auto">
                     <EditorSchemaForm key={Date.now().toString()} />
                 </div>
             </div>

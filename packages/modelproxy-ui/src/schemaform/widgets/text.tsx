@@ -1,24 +1,24 @@
-import { InputNumber } from "antd";
+import { Input } from "antd";
 import schemaFormReact from "fx-schema-form-react";
 import { DefaultProps } from "fx-schema-form-react/libs/components";
 import { UtilsHocOutProps } from "fx-schema-form-react/libs/hocs/utils";
 import { ValidateHocOutProps } from "fx-schema-form-react/libs/hocs/validate";
 import { fromJS } from "immutable";
-import React, { PureComponent } from "react";
+import React, { ChangeEvent, PureComponent } from "react";
 
 const { schemaFormTypes } = schemaFormReact;
 
 export interface IProps extends DefaultProps, UtilsHocOutProps, ValidateHocOutProps {
 }
 
-export const widgetKey = "number";
+export const widgetKey = "text";
 
 export class Widget extends PureComponent<IProps, any> {
     private count: number = 0;
 
 
     public render(): JSX.Element | null {
-        const { getOptions, uiSchema, formItemMeta, updateItemData, removeItemData, updateItemMeta } = this.props;
+        const { getOptions, uiSchema, formItemMeta, updateItemData, updateItemMeta } = this.props;
         const metaOptions = formItemMeta ? formItemMeta.getIn(["options", schemaFormTypes.widget, widgetKey]) : fromJS({});
         const widgetOptions = getOptions(this.props, schemaFormTypes.widget, widgetKey, metaOptions);
 
@@ -27,16 +27,12 @@ export class Widget extends PureComponent<IProps, any> {
         }
 
         return (
-            <InputNumber
+            <Input
                 {...(widgetOptions.options || {})}
                 {...this.setDefaultProps()}
-                onChange={(val: number) => {
-                    if (Number.isNaN(val)) {
-                        return removeItemData(this.props);
-                    }
-
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     this.count++;
-                    updateItemData(this.props, val);
+                    updateItemData(this.props, e.target.value);
                 }} onBlur={() => {
                     if (this.count > 0) {
                         this.count = 0;
@@ -49,9 +45,10 @@ export class Widget extends PureComponent<IProps, any> {
     private setDefaultProps(): any {
         const props: any = {};
 
-        props.value = "";
         if (this.props.formItemData !== undefined) {
             props.value = this.props.formItemData;
+        } else {
+            props.value = "";
         }
 
         return props;
@@ -60,6 +57,6 @@ export class Widget extends PureComponent<IProps, any> {
 
 export default {
     [widgetKey]: Widget,
-    "integer": Widget,
-    "float": Widget
+    "string": Widget,
+    "default": Widget
 };
