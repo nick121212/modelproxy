@@ -6,7 +6,7 @@
     "password": "",
     "database": "modelproxy",
     "synchronize": true,
-    "logging": false,
+    "logging": true,
     "entities": [
        "dist/entity/**/*.js"
     ],

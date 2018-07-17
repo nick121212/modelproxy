@@ -15,6 +15,7 @@
     "config": "^1.30.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
     "fetch-swagger-schema": "^0.1.2",
     "generate-schema": "^2.6.0",
     "graphql": "^0.13.2",
@@ -36,8 +37,10 @@
     "to-json-schema": "^0.2.0",
     "tracer": "^0.8.15",
     "tslib": "^1.9.2",
+    "typegql": "^0.6.0",
     "typeorm": "^0.2.7",
-    "typeorm-routing-controllers-extensions": "^0.2.0"
+    "typeorm-routing-controllers-extensions": "^0.2.0",
+    "typeorm-typedi-extensions": "^0.2.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",

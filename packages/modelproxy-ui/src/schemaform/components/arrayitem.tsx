@@ -35,21 +35,21 @@ export class ArrayItemComponent extends React.PureComponent<DefaultProps & Utils
         };
 
         return (
-            <div key="opt">
+            <>
                 <Tooltip title="删除项">
                     <Button aria-label="Remove" shape="circle" type="danger" ghost={true} icon="minus" onClick={this.removeItem} />
                 </Tooltip>
                 <Tooltip title="上移">
-                    <Button aria-label="moveUp" shape="circle" ghost={true} icon="minus" onClick={() => {
+                    <Button aria-label="moveUp" shape="circle" type="primary" ghost={true} icon="caret-up" onClick={() => {
                         this.moveTo(arrayIndex - 1);
                     }} />
                 </Tooltip>
                 <Tooltip title="下移">
-                    <Button aria-label="moveDown" shape="circle" ghost={true} icon="minus" onClick={() => {
+                    <Button aria-label="moveDown" shape="circle" type="primary" ghost={true} icon="caret-down" onClick={() => {
                         this.moveTo(arrayIndex + 1);
                     }} />
                 </Tooltip>
-            </div>
+            </>
         );
     }
 }

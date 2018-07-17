@@ -38,10 +38,10 @@ export class Temp extends PureComponent<IProps, any> {
                 required={isRequired}
                 label={
                     tempOptions.showTitle === false ? getTitle(this.props) : (
-                        <span>
+                        <>
                             {initArrayComponent ? initArrayComponent(this.props) : null}
                             {getTitle(this.props)}
-                        </span>
+                        </>
                     )
                 }
                 extra={description}

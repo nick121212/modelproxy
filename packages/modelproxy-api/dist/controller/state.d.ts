@@ -8,7 +8,7 @@ export declare class ProjectController {
     /**
      * 获取所有的数据
      */
-    getAll(repo: Repository<StateEntity>): Promise<{
+    getAll(repo: Repository<StateEntity>, params: any, page?: number, pageSize?: number): Promise<{
         models: StateEntity[];
         total: number;
     }>;

@@ -1,7 +1,7 @@
 import { Controller, UseBefore, Post } from "routing-controllers";
 import { injectable } from "inversify";
-import { makeExecutableSchema } from 'graphql-tools';
-import { graphqlExpress } from 'apollo-server-express';
+import { makeExecutableSchema } from "graphql-tools";
+import { graphqlExpress } from "apollo-server-express";
 import bodyParse from "body-parser";
 
 
@@ -19,7 +19,16 @@ const typeDefs = `
   `;
 
 const resolvers = {
-    Query: { books: (_withAuthor: boolean) => books },
+    Query: {
+        books: (_withAuthor: boolean) => books.map((book) => {
+            if (_withAuthor) {
+                return book;
+            }
+            return {
+                title: book.title
+            };
+        })
+    },
 };
 
 const schema = makeExecutableSchema({

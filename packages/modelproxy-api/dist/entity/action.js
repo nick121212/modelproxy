@@ -12,7 +12,6 @@ tslib_1.__decorate([
 ], ActionEntity.prototype, "id", void 0);
 tslib_1.__decorate([
     typeorm_1.Column({
-        unique: true,
         nullable: false
     }),
     tslib_1.__metadata("design:type", String)
@@ -34,11 +33,21 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", String)
 ], ActionEntity.prototype, "path", void 0);
 tslib_1.__decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column({
+        default: ""
+    }),
     tslib_1.__metadata("design:type", String)
-], ActionEntity.prototype, "requestSchema", void 0);
+], ActionEntity.prototype, "paramSchema", void 0);
 tslib_1.__decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column({
+        default: ""
+    }),
+    tslib_1.__metadata("design:type", String)
+], ActionEntity.prototype, "dataSchema", void 0);
+tslib_1.__decorate([
+    typeorm_1.Column({
+        default: ""
+    }),
     tslib_1.__metadata("design:type", String)
 ], ActionEntity.prototype, "responseSchema", void 0);
 tslib_1.__decorate([
@@ -52,7 +61,8 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", project_1.ProjectEntity)
 ], ActionEntity.prototype, "project", void 0);
 ActionEntity = tslib_1.__decorate([
-    typeorm_1.Entity()
+    typeorm_1.Entity(),
+    typeorm_1.Index(["key", "project"], { unique: true })
 ], ActionEntity);
 exports.ActionEntity = ActionEntity;
 //# sourceMappingURL=action.js.map

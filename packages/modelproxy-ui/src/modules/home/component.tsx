@@ -1,6 +1,6 @@
 import { ResolveLib } from "fx-schema-form-core";
 import schemaFormReact from "fx-schema-form-react";
-import schemaEditor from "json-schema-editor-visual";
+import schemaEditor from "json-schema-editor-visual/dist/main";
 import React from "react";
 import { compose, defaultProps } from "recompose";
 
@@ -20,18 +20,27 @@ export default class Component extends React.PureComponent<any, any>{
         this.state = {
             jsonSchema: `
             {
-                "type":"object",
-                "default":{},
-                "properties":{
-                    "firstName":{
-                        "type": "string",
-                        "default": "nick"
-                    },
-                    "lastName":{
-                        "type":"string"
+                "type": "object",
+                "default": {},
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "default": "nick"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "field_6": {
+                    "type": "string"
+                  },
+                  "field_7": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
+                  }
                 }
-            }
+              }
         ` };
     }
     public render() {
@@ -63,14 +72,14 @@ export default class Component extends React.PureComponent<any, any>{
             }))(DashboardTestComponent);
 
         return (
-            <div className="flex flex-auto overflow-auto h-100 flex-column">
-                <div className="overflow-auto">
+            <div className=" flex-auto overflow-auto h-100 flex-column">
+                <div className="overflow-auto h-50">
                     <SchemaEditor data={this.state.jsonSchema} onChange={(jsonSchema1: any) => {
                         this.setState({
                             jsonSchema: jsonSchema1
                         });
                     }} showEditor={true} /></div>
-                <div className="overflow-auto">
+                <div className="overflow-auto h-50 bt ">
                     <EditorSchemaForm key={Date.now().toString()} />
                 </div>
             </div>

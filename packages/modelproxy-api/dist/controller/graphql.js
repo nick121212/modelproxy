@@ -18,7 +18,16 @@ const typeDefs = `
     type Book { title: String, author: String }
   `;
 const resolvers = {
-    Query: { books: (_withAuthor) => books },
+    Query: {
+        books: (_withAuthor) => books.map((book) => {
+            if (_withAuthor) {
+                return book;
+            }
+            return {
+                title: book.title
+            };
+        })
+    },
 };
 const schema = graphql_tools_1.makeExecutableSchema({
     typeDefs,

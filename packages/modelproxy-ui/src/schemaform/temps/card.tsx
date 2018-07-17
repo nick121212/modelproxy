@@ -29,9 +29,11 @@ export class Temp extends PureComponent<IProps> {
             <Card title={
                 <Card.Meta
                     avatar={
-                        tempOptions.icon ? <Avatar aria-label="Card-Icon">
-                            <Icon type={tempOptions.icon} />
-                        </Avatar> : null}
+                        tempOptions.icon ? (
+                            <Avatar aria-label="Card-Icon">
+                                <Icon type={tempOptions.icon} />
+                            </Avatar>
+                        ) : null}
                     title={getTitle(this.props)}
                     description={(tempOptions.showCount !== false && type === "array") ? `当前有${formItemData || 0}项` : description}
                     {...tempOptions.cardMetaOptions}

@@ -13,15 +13,15 @@ export declare class ProjectEntity extends BaseEntity {
     /**
      * key，不能重复，用于调用接口使用
      */
-    key: string;
+    key?: string;
     /**
      * 项目名称
      */
-    projectName: string;
+    projectName?: string;
     /**
      * 描述
      */
-    description: string;
+    description?: string;
     /**
      * 项目下的所有的tag
      */

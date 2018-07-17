@@ -1,7 +1,6 @@
-import { Repository } from "typeorm";
+import { Repository, Connection } from "typeorm";
 import { ModelProxy } from "modelproxy";
 import { ProjectEntity } from "../entity/project";
-import { ActionEntity } from "../entity/action";
 /**
  * 项目相关信息
  */
@@ -43,5 +42,5 @@ export declare class ProjectController {
     /**
      * 将RAP1中的数据导入
      */
-    importFromRap(tagRepo: Repository<ProjectEntity>, actionRepo: Repository<ActionEntity>, entity: ProjectEntity, projectId: number): Promise<ProjectEntity>;
+    importFromRap(conn: Connection, entity: ProjectEntity, projectId: number): Promise<ProjectEntity>;
 }

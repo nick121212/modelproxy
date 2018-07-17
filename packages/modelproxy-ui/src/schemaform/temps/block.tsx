@@ -1,11 +1,8 @@
-// import schemaFormReact from "fx-schema-form-react";
 import { DefaultProps } from "fx-schema-form-react/libs/components";
 import { ArrayHocOutProps } from "fx-schema-form-react/libs/hocs/array";
 import { UtilsHocOutProps } from "fx-schema-form-react/libs/hocs/utils";
 import { schemaFormTypes } from "fx-schema-form-react/libs/models";
 import React, { PureComponent } from "react";
-
-// const { schemaFormTypes } = schemaFormReact;
 
 export interface IProps extends DefaultProps, UtilsHocOutProps, ArrayHocOutProps {
 }

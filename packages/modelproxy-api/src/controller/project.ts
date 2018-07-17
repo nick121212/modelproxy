@@ -1,14 +1,12 @@
 import { JsonController, Body, Get, Post, Put, Delete, Param, QueryParam } from "routing-controllers";
 import { injectable, inject } from "inversify";
 import { EntityFromParam, EntityFromBody } from "typeorm-routing-controllers-extensions";
-import { Repository, UpdateResult } from "typeorm";
+import { Repository, UpdateResult, Connection, EntityManager } from "typeorm";
 import { ModelProxy } from "modelproxy";
-// import { Response } from "express";
 
 import { Respository } from "../decorator/repository";
+import { GetConnection } from "../decorator/conn";
 import { ProjectEntity } from "../entity/project";
-import { TagEntity } from "../entity/tag";
-import { ActionEntity } from "../entity/action";
 
 /**
  * 项目相关信息
@@ -19,17 +17,22 @@ export class ProjectController {
     constructor(@inject("proxy") private proxy: ModelProxy) {
 
     }
+
     /**
      * 获取所有的数据
      */
     @Get("/")
-    async getAll(@Respository({
-        type: ProjectEntity
-    }) userRepository: Repository<ProjectEntity>, @QueryParam("page") page: number = 1, @QueryParam("pageSize") pageSize: number = 10) {
-        let data = await userRepository.findAndCount({
-            where: {
+    async getAll(
+        @Respository({
+            type: ProjectEntity
+        }) userRepository: Repository<ProjectEntity>,
+        @QueryParam("page", { required: false }) page: number = 1,
+        @QueryParam("pageSize", { required: false }) pageSize: number = 10
+    ) {
 
-            },
+        let data = await userRepository.findAndCount({
+            where: {},
+            relations: ["tags"],
             skip: (page - 1) * pageSize,
             take: pageSize
         });
@@ -109,11 +112,12 @@ export class ProjectController {
      * 将RAP1中的数据导入
      */
     @Post("/:id/import/rap/:projectId")
-    async importFromRap(@Respository({
-        type: TagEntity
-    }) tagRepo: Repository<ProjectEntity>, @Respository({
-        type: ActionEntity
-    }) actionRepo: Repository<ActionEntity>, @EntityFromParam("id") entity: ProjectEntity, @Param("projectId") projectId: number) {
+    async importFromRap(
+        @GetConnection({}) conn: Connection,
+
+        @EntityFromParam("id") entity: ProjectEntity,
+        @Param("projectId") projectId: number
+    ) {
         let rapData;
         const tags: any[] = [];
         const actions: any[] = [];
@@ -156,8 +160,12 @@ export class ProjectController {
             });
         });
 
-        await tagRepo.save(tags);
-        await actionRepo.save(actions);
+        await conn.transaction((entityManager: EntityManager) => {
+            return Promise.all([
+                entityManager.save(tags),
+                entityManager.save(actions)
+            ]);
+        });
 
         return entity;
     }

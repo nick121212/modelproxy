@@ -1,5 +1,5 @@
 import { default as gs } from "generate-schema";
-import { JsonController, Post, BodyParam, Get } from "routing-controllers";
+import { JsonController, Post, BodyParam } from "routing-controllers";
 import { injectable } from "inversify";
 import { resolve, option as jsfOption, extend } from "json-schema-faker";
 import { JSONSchema4 } from "json-schema";

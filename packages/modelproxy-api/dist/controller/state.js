@@ -17,14 +17,18 @@ let ProjectController = class ProjectController {
     /**
      * 获取所有的数据
      */
-    getAll(repo) {
+    getAll(repo, params, page = 1, pageSize = 10) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let data = yield repo.findAndCount({
-                where: {}
+            const [models, total] = yield repo.findAndCount({
+                where: {
+                    projectId: params.projectId ? typeorm_1.Equal(params.projectId) : null
+                },
+                skip: (page - 1) * pageSize,
+                take: pageSize
             });
             return {
-                models: data[0],
-                total: data[1]
+                models,
+                total
             };
         });
     }
@@ -80,17 +84,22 @@ tslib_1.__decorate([
     tslib_1.__param(0, repository_1.Respository({
         type: state_1.StateEntity
     })),
+    tslib_1.__param(1, routing_controllers_1.Params()),
+    tslib_1.__param(2, routing_controllers_1.QueryParam("page", { required: false })),
+    tslib_1.__param(3, routing_controllers_1.QueryParam("pageSize", { required: false })),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository]),
+    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository, Object, Number, Number]),
     tslib_1.__metadata("design:returntype", Promise)
 ], ProjectController.prototype, "getAll", null);
 tslib_1.__decorate([
     routing_controllers_1.Get("/:id"),
     tslib_1.__param(0, repository_1.Respository({
         type: state_1.StateEntity
-    })), tslib_1.__param(1, typeorm_routing_controllers_extensions_1.EntityFromParam("id")),
+    })),
+    tslib_1.__param(1, typeorm_routing_controllers_extensions_1.EntityFromParam("id")),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository, state_1.StateEntity]),
+    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository,
+        state_1.StateEntity]),
     tslib_1.__metadata("design:returntype", void 0)
 ], ProjectController.prototype, "getOne", null);
 tslib_1.__decorate([
@@ -127,6 +136,7 @@ tslib_1.__decorate([
 ProjectController = tslib_1.__decorate([
     inversify_1.injectable(),
     routing_controllers_1.JsonController("/states"),
+    routing_controllers_1.JsonController("/projects/:projectId/states"),
     tslib_1.__metadata("design:paramtypes", [])
 ], ProjectController);
 exports.ProjectController = ProjectController;

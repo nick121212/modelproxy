@@ -31,12 +31,12 @@ tslib_1.__decorate([
 ], ProjectEntity.prototype, "description", void 0);
 tslib_1.__decorate([
     typeorm_1.OneToMany(() => tag_1.TagEntity, tag => tag.project),
-    typeorm_1.JoinColumn(),
+    typeorm_1.JoinTable(),
     tslib_1.__metadata("design:type", Array)
 ], ProjectEntity.prototype, "tags", void 0);
 tslib_1.__decorate([
     typeorm_1.OneToMany(() => state_1.StateEntity, state => state.project),
-    typeorm_1.JoinColumn(),
+    typeorm_1.JoinTable(),
     tslib_1.__metadata("design:type", Array)
 ], ProjectEntity.prototype, "states", void 0);
 tslib_1.__decorate([

@@ -27,7 +27,8 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", project_1.ProjectEntity)
 ], StateEntity.prototype, "project", void 0);
 StateEntity = tslib_1.__decorate([
-    typeorm_1.Entity()
+    typeorm_1.Entity(),
+    typeorm_1.Index(["stateName", "project"], { unique: true })
 ], StateEntity);
 exports.StateEntity = StateEntity;
 //# sourceMappingURL=state.js.map

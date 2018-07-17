@@ -6,11 +6,9 @@ const inversify_1 = require("inversify");
 const typeorm_routing_controllers_extensions_1 = require("typeorm-routing-controllers-extensions");
 const typeorm_1 = require("typeorm");
 const modelproxy_1 = require("modelproxy");
-// import { Response } from "express";
 const repository_1 = require("../decorator/repository");
+const conn_1 = require("../decorator/conn");
 const project_1 = require("../entity/project");
-const tag_1 = require("../entity/tag");
-const action_1 = require("../entity/action");
 /**
  * 项目相关信息
  */
@@ -25,6 +23,7 @@ let ProjectController = class ProjectController {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let data = yield userRepository.findAndCount({
                 where: {},
+                relations: ["tags"],
                 skip: (page - 1) * pageSize,
                 take: pageSize
             });
@@ -83,7 +82,7 @@ let ProjectController = class ProjectController {
     /**
      * 将RAP1中的数据导入
      */
-    importFromRap(tagRepo, actionRepo, entity, projectId) {
+    importFromRap(conn, entity, projectId) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let rapData;
             const tags = [];
@@ -120,8 +119,12 @@ let ProjectController = class ProjectController {
                     });
                 });
             });
-            yield tagRepo.save(tags);
-            yield actionRepo.save(actions);
+            yield conn.transaction((entityManager) => {
+                return Promise.all([
+                    entityManager.save(tags),
+                    entityManager.save(actions)
+                ]);
+            });
             return entity;
         });
     }
@@ -130,7 +133,9 @@ tslib_1.__decorate([
     routing_controllers_1.Get("/"),
     tslib_1.__param(0, repository_1.Respository({
         type: project_1.ProjectEntity
-    })), tslib_1.__param(1, routing_controllers_1.QueryParam("page")), tslib_1.__param(2, routing_controllers_1.QueryParam("pageSize")),
+    })),
+    tslib_1.__param(1, routing_controllers_1.QueryParam("page", { required: false })),
+    tslib_1.__param(2, routing_controllers_1.QueryParam("pageSize", { required: false })),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository, Number, Number]),
     tslib_1.__metadata("design:returntype", Promise)
@@ -177,14 +182,12 @@ tslib_1.__decorate([
 ], ProjectController.prototype, "remove", null);
 tslib_1.__decorate([
     routing_controllers_1.Post("/:id/import/rap/:projectId"),
-    tslib_1.__param(0, repository_1.Respository({
-        type: tag_1.TagEntity
-    })), tslib_1.__param(1, repository_1.Respository({
-        type: action_1.ActionEntity
-    })), tslib_1.__param(2, typeorm_routing_controllers_extensions_1.EntityFromParam("id")), tslib_1.__param(3, routing_controllers_1.Param("projectId")),
+    tslib_1.__param(0, conn_1.GetConnection({})),
+    tslib_1.__param(1, typeorm_routing_controllers_extensions_1.EntityFromParam("id")),
+    tslib_1.__param(2, routing_controllers_1.Param("projectId")),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [typeorm_1.Repository,
-        typeorm_1.Repository, project_1.ProjectEntity, Number]),
+    tslib_1.__metadata("design:paramtypes", [typeorm_1.Connection,
+        project_1.ProjectEntity, Number]),
     tslib_1.__metadata("design:returntype", Promise)
 ], ProjectController.prototype, "importFromRap", null);
 ProjectController = tslib_1.__decorate([

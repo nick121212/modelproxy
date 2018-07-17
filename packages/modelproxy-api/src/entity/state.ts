@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, Index } from "typeorm";
 
 import { ProjectEntity } from "./project";
 
 @Entity()
+@Index(["stateName", "project"], { unique: true })
 export class StateEntity extends BaseEntity {
 
     /**

@@ -1,6 +1,6 @@
 import { Controller, UseBefore, Get } from "routing-controllers";
 import { injectable } from "inversify";
-import { graphiqlExpress } from 'apollo-server-express';
+import { graphiqlExpress } from "apollo-server-express";
 
 /**
  * graphiql

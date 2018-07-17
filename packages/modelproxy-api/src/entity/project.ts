@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, JoinColumn, JoinTable } from "typeorm";
 
 import { TagEntity } from "./tag";
 import { ActionEntity } from "./action";
@@ -23,32 +23,32 @@ export class ProjectEntity extends BaseEntity {
         unique: true,
         nullable: false
     })
-    public key!: string;
+    public key?: string;
 
     /**
      * 项目名称
      */
     @Column()
-    public projectName!: string;
+    public projectName?: string;
 
     /**
      * 描述
      */
     @Column()
-    public description!: string;
+    public description?: string;
 
     /**
      * 项目下的所有的tag
      */
     @OneToMany(() => TagEntity, tag => tag.project)
-    @JoinColumn()
+    @JoinTable()
     public tags?: TagEntity[];
 
     /**
      * 项目下的所有的state
      */
     @OneToMany(() => StateEntity, state => state.project)
-    @JoinColumn()
+    @JoinTable()
     public states?: StateEntity[];
 
     /**

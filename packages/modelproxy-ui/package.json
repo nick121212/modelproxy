@@ -8,7 +8,7 @@
     "classnames": "^2.2.5",
     "fx-schema-form-core": "^3.0.73",
     "fx-schema-form-extension": "^3.0.88",
-    "fx-schema-form-react": "^3.0.87",
+    "fx-schema-form-react": "^3.0.91",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "json-schema": "^0.2.3",

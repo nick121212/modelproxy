@@ -1,7 +1,7 @@
-import { JsonController, Body, Get, Post, Put, Delete } from "routing-controllers";
+import { JsonController, Body, Get, Post, Put, Delete, QueryParam, Params } from "routing-controllers";
 import { injectable } from "inversify";
 import { EntityFromParam, EntityFromBody } from "typeorm-routing-controllers-extensions";
-import { Repository, UpdateResult } from "typeorm";
+import { Repository, UpdateResult, Equal } from "typeorm";
 
 import { Respository } from "../decorator/repository";
 import { StateEntity } from "../entity/state";
@@ -12,6 +12,7 @@ import { ProjectEntity } from "../entity/project";
  */
 @injectable()
 @JsonController("/states")
+@JsonController("/projects/:projectId/states")
 export class ProjectController {
     constructor() {
 
@@ -20,18 +21,25 @@ export class ProjectController {
      * 获取所有的数据
      */
     @Get("/")
-    async getAll(@Respository({
-        type: StateEntity
-    }) repo: Repository<StateEntity>) {
-        let data = await repo.findAndCount({
+    async getAll(
+        @Respository({
+            type: StateEntity
+        }) repo: Repository<StateEntity>,
+        @Params() params: any,
+        @QueryParam("page", { required: false }) page: number = 1,
+        @QueryParam("pageSize", { required: false }) pageSize: number = 10
+    ) {
+        const [models, total] = await repo.findAndCount({
             where: {
-
-            }
+                projectId: params.projectId ? Equal(params.projectId) : null
+            },
+            skip: (page - 1) * pageSize,
+            take: pageSize
         });
 
         return {
-            models: data[0],
-            total: data[1]
+            models,
+            total
         };
     }
 
@@ -40,9 +48,12 @@ export class ProjectController {
      * @param entity 
      */
     @Get("/:id")
-    getOne(@Respository({
-        type: StateEntity
-    }) repo: Repository<StateEntity>, @EntityFromParam("id") entity: StateEntity) {
+    getOne(
+        @Respository({
+            type: StateEntity
+        }) repo: Repository<StateEntity>,
+        @EntityFromParam("id") entity: StateEntity
+    ) {
 
         if (!entity) {
             throw new Error("没有找到相对应的项目!");
