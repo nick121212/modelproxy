@@ -25,8 +25,10 @@ export let currentApiCount = 0;
  *   (api: MiddlewareAPI<D, S>): (next: Dispatch<AnyAction>) => (action: any) => any;
  */
 export default (settings: { proxy: ModelProxy }): Middleware => {
-    return ({ dispatch, getState }: MiddlewareAPI) => {
-        return (next: Dispatch<AnyAction>) => {
+    return ({ dispatch:enhanceDispatch, getState }: MiddlewareAPI) => {
+
+        return (dispatch: Dispatch<AnyAction>) => {
+
             return async<A extends Action>(action: A & IModelProxyAction) => {
                 const { ns, key, func = "", msg = "", args = [] } =
                     action.meta || { ns: "", key: "", func: "" };
@@ -37,7 +39,7 @@ export default (settings: { proxy: ModelProxy }): Middleware => {
                     let promise;
 
                     if (!currentApiCount) {
-                        dispatch(showLoading());
+                        enhanceDispatch(showLoading());
                     }
                     currentApiCount++;
                     if (api && api[func]) {
@@ -47,7 +49,7 @@ export default (settings: { proxy: ModelProxy }): Middleware => {
                     }
 
                     // 调用接口
-                    dispatch({
+                    enhanceDispatch({
                         type: action.type + "Proxy",
                         payload: promise.then((data: any) => {
                             if (msg) {
@@ -55,26 +57,26 @@ export default (settings: { proxy: ModelProxy }): Middleware => {
                             }
                             currentApiCount--;
                             if (!currentApiCount) {
-                                dispatch(resetLoading());
+                                enhanceDispatch(resetLoading());
                             }
                             return data;
                         }).catch((err: Error) => {
                             // 触发错误消息处理机制
                             currentApiCount--;
                             if (!currentApiCount) {
-                                dispatch(resetLoading());
+                                enhanceDispatch(resetLoading());
                             }
                             throw err;
                         })
                     } as any);
 
-                    return next(Object.assign({}, action, {
+                    return dispatch(Object.assign({}, action, {
                         payload: promise
                     }));
                 }
 
                 // 调用下层的拦截器
-                return next(action);
+                return dispatch(action);
             };
         };
     };

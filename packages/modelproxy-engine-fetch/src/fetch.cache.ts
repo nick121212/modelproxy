@@ -14,8 +14,8 @@ const promiseFactory = new BaseFactory<Promise<any>>();
  * @returns {Promise<any>}
  */
 export const fetchCacheDec = (fetchPromise: () => Promise<any>, ctx: IProxyCtx, fullPath: string) => {
-    const { executeInfo = {} } = ctx;
-    const { settings, instance } = executeInfo;
+    const { executeInfo = {}, instance } = ctx;
+    const { settings } = executeInfo;
     let { cache = false } = settings || {},
         { method = "" } = instance || {},
         proKey = fullPath + method;

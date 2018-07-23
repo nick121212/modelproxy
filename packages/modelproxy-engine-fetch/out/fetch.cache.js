@@ -11,8 +11,8 @@ const promiseFactory = new modelproxy_1.BaseFactory();
  * @returns {Promise<any>}
  */
 exports.fetchCacheDec = (fetchPromise, ctx, fullPath) => {
-    const { executeInfo = {} } = ctx;
-    const { settings, instance } = executeInfo;
+    const { executeInfo = {}, instance } = ctx;
+    const { settings } = executeInfo;
     let { cache = false } = settings || {}, { method = "" } = instance || {}, proKey = fullPath + method;
     // 只有get才能缓存
     if (method.toString().toUpperCase() !== "GET") {

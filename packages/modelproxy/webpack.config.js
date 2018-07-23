@@ -10,7 +10,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
     entry: {
-        index: "./src/index.ts",
+        index: ['core-js/es6/promise', "./src/index.ts"],
     },
     mode: "development",
     devtool: 'source-map',

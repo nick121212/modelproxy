@@ -22,6 +22,7 @@ export declare class ModelProxy extends Compose<any> {
         [key: string]: () => Promise<any>;
     }): Promise<any>;
     race(inters: Array<NormalExecuteInfo | Promise<any>>): Promise<any>;
+    hasNs(ns: string): boolean;
     getNs(ns: string): InterfaceFactory;
     minix(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null;
     mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null;

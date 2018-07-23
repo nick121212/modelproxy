@@ -2,7 +2,7 @@ import { ResolveLib } from "fx-schema-form-core";
 import schemaFormReact from "fx-schema-form-react";
 import schemaEditor from "json-schema-editor-visual/dist/main";
 import React from "react";
-import { compose, defaultProps } from "recompose";
+import { compose, defaultProps, lifecycle } from "recompose";
 
 import { curAjv } from "../../schemaform";
 import { DashboardTestComponent } from "./form";
@@ -14,6 +14,8 @@ const SchemaEditor = schemaEditor({
 });
 
 export default class Component extends React.PureComponent<any, any>{
+    private ddd: boolean = true;
+
     constructor(props: any) {
         super(props);
 
@@ -64,12 +66,24 @@ export default class Component extends React.PureComponent<any, any>{
                 schemaId: jsonSchema.$id,
                 reducerKey: "schemaForm",
                 formKey: "dashboard",
-                shouldResetForm: true
+                shouldResetForm: this.ddd,
+                keepData: true
             }),
             schemaFormDec({
                 rootReducerKey: ["schemaForm"],
                 parentKeys: ["dashboard"]
+            }),
+            lifecycle({
+                componentDidMount: () => {
+                    console.log("djfkadfaldf");
+                    
+                    // reducerFactory.get("schemaForm").actions.createForm({
+                    //     key: "dashboard"
+                    // });
+                }
             }))(DashboardTestComponent);
+
+            this.ddd = false;
 
         return (
             <div className=" flex-auto overflow-auto h-100 flex-column">

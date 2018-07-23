@@ -6,7 +6,7 @@ import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 export declare class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngine {
     constructor();
-    validate(instance: IInterfaceModel, options: IExecute): Promise<boolean>;
+    validate(_instance: IInterfaceModel, _options: IExecute): Promise<boolean>;
     proxy(instance: IInterfaceModel, options: IExecute, ...otherOptions: any[]): Promise<any>;
     getStatePath(instance: IInterfaceModel): string;
     replacePath(instance: IInterfaceModel, {params, data}: IExecute): string;
