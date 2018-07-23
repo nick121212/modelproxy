@@ -1,6 +1,6 @@
 {
   "name": "modelproxy",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "接口配置建模框架",
   "main": "out/index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "babel-loader": "^7.1.4",
     "bluebird": "^3.5.0",
     "chai": "~3.4.1",
+    "core-js": "^2.5.7",
     "mocha": "~2.3.4",
     "mochawesome": "~1.2.1",
     "ts-loader": "^4.4.1",
