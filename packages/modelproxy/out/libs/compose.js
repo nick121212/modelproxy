@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Compose {
-    constructor() {
-        this.middlewares = [];
+    constructor(...wares) {
+        this.middlewares = [...wares];
     }
     use(func) {
         if (typeof func !== "function") {
@@ -25,36 +25,43 @@ class Compose {
         return (context, next) => {
             return new Promise((resolve, reject) => {
                 let index = -1;
-                const dispatch = (i) => {
-                    return new Promise(async (resolve1) => {
-                        let fn = this.middlewares[i];
-                        if (i <= index) {
-                            return reject(new Error("next() called multiple times" + i + "-" + index));
-                        }
-                        index = i;
-                        if (i === this.middlewares.length) {
-                            fn = next;
-                        }
-                        if (!fn) {
-                            return resolve1(context);
-                        }
-                        try {
-                            await fn(context, async (key) => {
-                                if (key === "abort") {
-                                    return resolve(context);
-                                }
-                                await dispatch(i + 1);
-                                resolve1();
-                            });
-                        }
-                        catch (err) {
-                            reject(err);
-                        }
-                    });
+                const dispatch = async (i) => {
+                    let fn = this.middlewares[i];
+                    if (i <= index) {
+                        return reject(new Error("next() called multiple times" + i + "-" + index));
+                    }
+                    index = i;
+                    if (i === this.middlewares.length) {
+                        fn = next;
+                    }
+                    if (!fn) {
+                        return context;
+                    }
+                    try {
+                        await fn(context, async (key) => {
+                            if (key === "abort") {
+                                return resolve(context);
+                            }
+                            await dispatch(i + 1);
+                        });
+                    }
+                    catch (e) {
+                        reject(e);
+                    }
                 };
                 return dispatch(0).then(resolve.bind(context));
             });
         };
+    }
+    getMiddlewares() {
+        return this.middlewares.concat([]);
+    }
+    merge(c) {
+        const middles = c.getMiddlewares();
+        middles.forEach((m) => {
+            this.use(m);
+        });
+        return this;
     }
     errorHandle(ctx, err) {
         ctx.isError = true;
@@ -62,17 +69,20 @@ class Compose {
     }
     callback(complete) {
         const fn = this.compose();
-        return (options) => {
+        return async (options) => {
             let ctx = Object.assign(options || {}, {});
-            let promise = fn(ctx, async (content, next) => {
-                await next();
-            }).then(() => {
-                return ctx;
-            }).catch((err) => {
+            try {
+                await fn(ctx, async (content, next) => {
+                    await next();
+                    if (ctx.isError) {
+                        throw ctx.err;
+                    }
+                });
+            }
+            catch (err) {
                 this.errorHandle(ctx, err);
-                return ctx;
-            });
-            return promise;
+            }
+            return ctx;
         };
     }
 }

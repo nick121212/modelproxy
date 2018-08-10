@@ -1,8 +1,8 @@
-import { IEngine } from "../models/engine";
 import { IInterfaceModel } from "../models/interface";
 import { BaseEngine } from "./engine.base";
 import { IExecute } from "../models/execute";
 import { IProxyCtx } from "../models/proxyctx";
+import { Compose } from "../libs/compose";
 
 /**
  * 默认的engine
@@ -27,18 +27,27 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
      * @param   {any[]}            otherOptions 额外的接口参数
      * @returns {Promise<any>}
      */
-    public async proxy(instance: IInterfaceModel, options: IExecute, ...otherOptions: any[]): Promise<any> {
-        const res: IProxyCtx = await this.callback()({
-            executeInfo: options,
-            instance: instance,
+    public async proxy(instance: IInterfaceModel, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
+        const c = new Compose<IProxyCtx>();
+        const { before, after } = executeInfo;
+
+        if (before) {
+            c.merge(before);
+        }
+        c.merge(this);
+        if (after) {
+            c.merge(after);
+        }
+        const ctx = await c.callback()({
+            executeInfo,
+            instance,
             ...otherOptions
         });
 
-        if (res.isError) {
-            throw res.err;
+        if (ctx.isError) {
+            throw ctx.err;
         }
 
-        return instance;
-        // return this.getFullPath(instance, options);
+        return ctx;
     }
 }

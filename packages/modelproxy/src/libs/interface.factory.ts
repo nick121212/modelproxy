@@ -21,8 +21,9 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         Object.assign(instance, {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
-            get: this.custom.bind(this, instance, "GET"),
+            get: this.custom.bind(this, instance, "GET", null),
             getFullPath: this.getFullPath.bind(this, instance),
+            getOne: this.custom.bind(this, instance, "GET"),
             getPath: this.getPath.bind(this, instance),
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
@@ -44,7 +45,13 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         let { instance: extraInstance = {} } = options;
 
         iinstance = this.megreInstance(instance, extraInstance);
-        engine = engineFactory.use(iinstance.engine as string);
+
+        // 判断engine是否存在
+        if (!engineFactory.has(iinstance.engine || "")) {
+            throw new Error(`没有发现engine[${iinstance.engine}]`);
+        }
+        // 获取engine
+        engine = engineFactory.use(iinstance.engine || "default");
 
         try {
             // 验证数据的准确性
@@ -53,6 +60,11 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
             throw e;
         }
 
+        // const compose = new Compose();
+
+        // compose
+
+        // 调用engine的proxy方法
         return engine.proxy(iinstance, options, ...otherOptions);
     }
 

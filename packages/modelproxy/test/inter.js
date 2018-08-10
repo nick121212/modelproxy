@@ -67,13 +67,13 @@ describe("modelproxy interface", function () {
             expect(article).to.be.a("object");
             expect(path).to.be.equal("http://www.baidu.com/articles");
 
-            article.get(null, {}, { a: 1 }).then(function (articles) {
+            article.get({}, { a: 1 }).then(function (articles) {
                 expect(articles).to.be.a("object");
                 expect(articles.constructor).to.be.equal({}.constructor);
 
                 return article.post({ data: { title: "测试文章标题", content: "测试文章内容" } });
             }).then(function (art) {
-                expect(art.method).to.equal("POST");
+                expect(art.instance.method).to.equal("POST");
             }).then(done.bind(null, null));
         });
     });

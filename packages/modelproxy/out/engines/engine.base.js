@@ -6,7 +6,9 @@ const compose_1 = require("../libs/compose");
 const errors_1 = require("../libs/errors");
 class BaseEngine extends compose_1.Compose {
     constructor() {
-        super();
+        super(...arguments);
+        this.beforeMiddlewares = [];
+        this.afterMiddlewares = [];
     }
     async validate(_instance, _options) {
         return true;

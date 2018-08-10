@@ -3,15 +3,14 @@ import "url-search-params-polyfill";
 
 import { IEngine } from "../models/engine";
 import { IExecute } from "../models/execute";
-import { Compose } from "../libs/compose";
+import { Compose, MiddleFunc } from "../libs/compose";
 import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";
 
 export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngine {
-    constructor() {
-        super();
-    }
+    protected beforeMiddlewares: MiddleFunc<IProxyCtx>[] = [];
+    protected afterMiddlewares: MiddleFunc<IProxyCtx>[] = [];
 
     /**
      * 验证数据的准确性

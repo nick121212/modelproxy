@@ -9,8 +9,9 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
         Object.assign(instance, {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
-            get: this.custom.bind(this, instance, "GET"),
+            get: this.custom.bind(this, instance, "GET", null),
             getFullPath: this.getFullPath.bind(this, instance),
+            getOne: this.custom.bind(this, instance, "GET"),
             getPath: this.getPath.bind(this, instance),
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
@@ -22,7 +23,10 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
         let iinstance;
         let { instance: extraInstance = {} } = options;
         iinstance = this.megreInstance(instance, extraInstance);
-        engine = engine_factory_1.engineFactory.use(iinstance.engine);
+        if (!engine_factory_1.engineFactory.has(iinstance.engine || "")) {
+            throw new Error(`没有发现engine[${iinstance.engine}]`);
+        }
+        engine = engine_factory_1.engineFactory.use(iinstance.engine || "default");
         try {
             await engine.validate(iinstance, options);
         }

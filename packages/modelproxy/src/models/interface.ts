@@ -22,14 +22,6 @@ export interface IInterfaceModelCommon extends ICommon {
      * 接口配置
      */
     config?: Object;
-    // /**
-    //  * data字段 JSONSCHEMA，用于验证data的数据准确性
-    //  */
-    // dataSchema?: tv4.JsonSchema;
-    // /**
-    //  * params字段 JSONSCHEMA，用于验证params的数据准确性
-    //  */
-    // paramsSchema?: tv4.JsonSchema;
 }
 
 export interface IInterfaceModel extends IInterfaceModelCommon {
@@ -45,11 +37,18 @@ export interface IInterfaceModel extends IInterfaceModelCommon {
      * 获取接口的执行路径
      */
     getFullPath(options?: IExecute): string;
+    /**
+     * 替换路径
+     */
     replacePath(options?: IExecute): string;
     /**
      * 执行接口，修改method为get
      */
-    get(id?: string | number | null, options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    get(options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    /**
+     * 执行接口，修改method为get
+     */
+    getOne(id?: string | number | null, options?: IExecute, ...otherOptions: any[]): Promise<any>;
     /**
      * 执行接口，修改method为post
      */

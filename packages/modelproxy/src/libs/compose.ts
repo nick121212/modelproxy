@@ -15,8 +15,8 @@ export interface MiddleRtnFunc<T extends IProxyCtx> {
 export class Compose<T extends IProxyCtx>  {
     private middlewares: Array<MiddleFunc<T>>;
 
-    constructor() {
-        this.middlewares = [];
+    constructor(...wares: MiddleFunc<T>[]) {
+        this.middlewares = [...wares];
     }
 
     /**
@@ -43,7 +43,7 @@ export class Compose<T extends IProxyCtx>  {
      * 生成中间件执行函数
      * @return {Function}
      */
-    public compose(): Function {
+    public compose(): (context: T, next: MiddleFunc<T>) => Promise<any> {
         if (!Array.isArray(this.middlewares)) {
             throw new TypeError("Middleware stack must be an array!");
         }
@@ -56,38 +56,58 @@ export class Compose<T extends IProxyCtx>  {
         return (context: T, next: MiddleFunc<T>): Promise<any> => {
             return new Promise((resolve, reject) => {
                 let index = -1;
-                const dispatch = (i: number) => {
-                    return new Promise(async (resolve1) => {
-                        let fn: MiddleFunc<T> = this.middlewares[i];
+                const dispatch = async (i: number) => {
+                    let fn: MiddleFunc<T> = this.middlewares[i];
 
-                        if (i <= index) {
-                            return reject(new Error("next() called multiple times" + i + "-" + index));
-                        }
-                        index = i;
-                        if (i === this.middlewares.length) {
-                            fn = next;
-                        }
-                        if (!fn) {
-                            return resolve1(context);
-                        }
-                        try {
-                            await fn(context, async (key?: string) => {
-                                if (key === "abort") {
-                                    return resolve(context);
-                                }
-                                await dispatch(i + 1);
-                                resolve1();
-                            });
-                        } catch (err) {
-                            // console.log("compose error" + err);
-                            reject(err);
-                        }
-                    });
+                    if (i <= index) {
+                        return reject(new Error("next() called multiple times" + i + "-" + index));
+                    }
+                    index = i;
+                    if (i === this.middlewares.length) {
+                        fn = next;
+                    }
+                    if (!fn) {
+                        return context;
+                    }
+                    try {
+
+                        await fn(context, async (key?: string) => {
+                            if (key === "abort") {
+                                return resolve(context);
+                            }
+                            await dispatch(i + 1);
+                        });
+                    } catch (e) {
+                        reject(e);
+                    }
                 };
 
                 return dispatch(0).then(resolve.bind(context));
             });
         };
+    }
+
+    /**
+     * 获取当前的所有中间件方法
+     * @returns {Array<MiddleFunc<T>>}
+     */
+    public getMiddlewares(): Array<MiddleFunc<T>> {
+        return this.middlewares.concat([]);
+    }
+
+    /**
+     * 两个compose类的中间件合并
+     * @param {Compose<T>}  c 被合并的compose
+     * @return {Compose<T>}
+     */
+    public merge(c: Compose<T>): Compose<T> {
+        const middles = c.getMiddlewares();
+
+        middles.forEach((m: MiddleFunc<T>) => {
+            this.use(m);
+        });
+
+        return this;
     }
 
     /**
@@ -109,19 +129,22 @@ export class Compose<T extends IProxyCtx>  {
     public callback(complete?: MiddleRtnFunc<T>): (options: any) => Promise<IProxyCtx> {
         const fn = this.compose();
 
-        return (options: any): Promise<any> => {
+        return async (options: any): Promise<any> => {
             let ctx: T = Object.assign(options || {}, {}) as T;
-            let promise = fn(ctx, async (content: any, next: MiddleRtnFunc<T>) => {
-                await next();
-            }).then(() => {
-                return ctx;
-            }).catch((err: Error) => {
+
+            try {
+                await fn(ctx, async (content: T, next: (symbol?: string) => Promise<void>) => {
+                    await next();
+
+                    if (ctx.isError) {
+                        throw ctx.err;
+                    }
+                });
+            } catch (err) {
                 this.errorHandle(ctx, err);
+            }
 
-                return ctx;
-            });
-
-            return promise;
+            return ctx;
         };
     }
 }

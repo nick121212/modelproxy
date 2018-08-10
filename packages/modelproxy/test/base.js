@@ -47,15 +47,6 @@ describe('modelproxy base', function () {
 
     });
 
-    // - [constructor](#constructor)
-    // - [loadConfig](#loadConfig)
-    // - [addEngines](#addEngines)
-    // - [execute](#execute)
-    // - [executeAll](#executeAll)
-    // - [race](#race)
-    // - [getNs](#getNs)
-    // - [minix](#minix)
-
     describe("命名空间", function () {
         it('测试命名空间test', function () {
             expect(proxy.getNs("test")).to.be.a("object");
@@ -79,7 +70,7 @@ describe('modelproxy base', function () {
             let article = proxy.getNs("test").get("article");
 
             proxy.executeAll({
-                login: login.get.bind(login, null, {
+                login: login.get.bind(login, {
                     params: {
                         tag: "nora"
                     }
@@ -96,7 +87,7 @@ describe('modelproxy base', function () {
 
             proxy.race([
                 login.post(),
-                article.get(1)
+                article.getOne(1)
             ]).then(done.bind(null, null));
         });
     });
@@ -118,6 +109,25 @@ describe('modelproxy base', function () {
                     a: 1
                 }
             })).to.be.equal("http://www.baidu.com/users?a=1");
+        });
+    });
+
+    describe('compose 方法的测试', () => {
+        it('混入单个compose', async () => {
+            const user = proxy.getNs("test").get("user");
+            const dd = await user.get({
+                before: new modelProxy.Compose(async (ctx, next) => {
+                    ctx.result = [1];
+                    await next();
+                    ctx.result.push(2);
+                }, async (ctx, next) => {
+                    ctx.result.push(3);
+                    await next();
+                    ctx.result.push(4);
+                })
+            });
+
+            expect(dd.result.join()).to.eq("1,3,4,2");
         });
     });
 

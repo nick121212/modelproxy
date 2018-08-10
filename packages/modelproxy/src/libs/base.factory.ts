@@ -21,6 +21,26 @@ export class BaseFactory<T> {
     }
 
     /**
+     * 删除当前实例
+     * @param   {string} name 实例名
+     * @return  {Boolean}
+     */
+    public remove(name: string): void {
+        if (this.has(name)) {
+            delete this.instances[name];
+        }
+    }
+
+    /**
+     * 判断是否有当前实例
+     * @param   {string} name 实例名
+     * @return  {Boolean}
+     */
+    public has(name: string): boolean {
+        return !!this.get(name);
+    }
+
+    /**
      * 获取一个实例
      * @param   {string} name 实例标志
      * @returns {T|null} 实例

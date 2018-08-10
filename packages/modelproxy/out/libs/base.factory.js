@@ -11,6 +11,14 @@ class BaseFactory {
         }
         this.instances[name] = intance;
     }
+    remove(name) {
+        if (this.has(name)) {
+            delete this.instances[name];
+        }
+    }
+    has(name) {
+        return !!this.get(name);
+    }
     get(name) {
         if (this.instances.hasOwnProperty(name)) {
             return this.instances[name];
