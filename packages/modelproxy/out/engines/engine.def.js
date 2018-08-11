@@ -9,9 +9,9 @@ class DefaultEngine extends engine_base_1.BaseEngine {
             await next("");
         });
     }
-    async proxy(instance, options, ...otherOptions) {
-        const { before, after } = options;
+    async proxy(instance, executeInfo, ...otherOptions) {
         const c = new compose_1.Compose();
+        const { before, after } = executeInfo;
         if (before) {
             c.merge(before);
         }
@@ -19,7 +19,8 @@ class DefaultEngine extends engine_base_1.BaseEngine {
         if (after) {
             c.merge(after);
         }
-        const ctx = await c.callback()(Object.assign({ executeInfo: options, instance }, otherOptions));
+        const ctx = await c.callback()(Object.assign({ executeInfo,
+            instance }, otherOptions));
         if (ctx.isError) {
             throw ctx.err;
         }

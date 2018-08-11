@@ -1,8 +1,5 @@
-import { ModelProxy, BaseEngine } from "modelproxy";
+import { BaseEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
-import { IInterfaceModel } from "modelproxy/out/models/interface";
-import { IExecute } from "modelproxy/out/models/execute";
-import { MiddleFunc } from "modelproxy/out/libs/compose";
 import * as fetch from "isomorphic-fetch";
 
 import { fetchCacheDec } from "./fetch.cache";
@@ -15,10 +12,19 @@ const defaultHeaders = {
 
 export class FetchEngine<T extends IProxyCtx> extends BaseEngine<T> {
 
-    public init() {
+    /**
+     * 初始化
+     */
+    public init(): void {
         this.use(this.fetch);
     }
 
+    /**
+     * 发起请求
+     * @param  {IProxyCtx}                     ctx  上下文
+     * @param  {(s?: string) => Promise<any>}  next 下一个中间件
+     * @return {Promise<any>}
+     */
     public async fetch(ctx: IProxyCtx, next: (s?: string) => Promise<any>) {
         let formData = new URLSearchParams(),
             bodyParams = new URLSearchParams(),
@@ -42,17 +48,20 @@ export class FetchEngine<T extends IProxyCtx> extends BaseEngine<T> {
                 break;
         }
 
+        // 合并headers
         headers = Object.assign({}, headers || {}, originHeaders);
 
+        // 处理数据
         for (const key in executeInfo.data) {
             if (executeInfo.data.hasOwnProperty(key)) {
-                let data = executeInfo.data[key];
+                const data = executeInfo.data[key];
 
                 formData.append(key, data);
                 bodyParams.append(key, data);
             }
         }
 
+        // 调用解耦请求
         const fetchFunc: () => Promise<any> = fetch.bind(fetch, fullPath, Object.assign({}, {
             body: ["GET", "OPTIONS", "HEAD"].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
             credentials: "same-origin",

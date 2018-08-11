@@ -11,11 +11,19 @@ const defaultHeaders = {
 };
 class FetchEngine extends modelproxy_1.BaseEngine {
     /**
-     * 初始化中间件
-     * 处理参数params，data，header等数据
+     * 初始化
      */
     init() {
-        this.use((ctx, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.use(this.fetch);
+    }
+    /**
+     * 发起请求
+     * @param  {IProxyCtx}                     ctx  上下文
+     * @param  {(s?: string) => Promise<any>}  next 下一个中间件
+     * @return {Promise<any>}
+     */
+    fetch(ctx, next) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let formData = new URLSearchParams(), bodyParams = new URLSearchParams(), { executeInfo = {}, instance = {} } = ctx, body, headers = { "X-Requested-With": "XMLHttpRequest" }, { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {}, fullPath = this.getFullPath(instance, executeInfo);
             // 根据type来设置不同的header
             switch (type) {
@@ -31,14 +39,17 @@ class FetchEngine extends modelproxy_1.BaseEngine {
                     body = JSON.stringify(executeInfo.data || {});
                     break;
             }
+            // 合并headers
             headers = Object.assign({}, headers || {}, originHeaders);
+            // 处理数据
             for (const key in executeInfo.data) {
                 if (executeInfo.data.hasOwnProperty(key)) {
-                    let data = executeInfo.data[key];
+                    const data = executeInfo.data[key];
                     formData.append(key, data);
                     bodyParams.append(key, data);
                 }
             }
+            // 调用解耦请求
             const fetchFunc = fetch.bind(fetch, fullPath, Object.assign({}, {
                 body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null,
                 credentials: "same-origin",
@@ -48,25 +59,6 @@ class FetchEngine extends modelproxy_1.BaseEngine {
             // 发送请求
             ctx.result = yield fetch_decorator_1.fetchDec(fetch_cache_1.fetchCacheDec(fetchFunc, ctx, fullPath), timeout);
             yield next();
-        }));
-    }
-    /**
-     * 调用接口代理方法
-     * @param   {IInterfaceModel} instance      接口的信息
-     * @param   {IExecute}        options       调用接口的参数
-     * @param   {any[]}           otherOptions  调用接口的参数
-     * @returns {Promise<any>}                  返回数据
-     */
-    proxy(instance, options, ...otherOptions) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const ctx = yield this.callback()(Object.assign({
-                executeInfo: options,
-                instance: instance,
-            }, ...otherOptions));
-            if (ctx.isError) {
-                throw ctx.err;
-            }
-            return ctx.result;
         });
     }
 }
