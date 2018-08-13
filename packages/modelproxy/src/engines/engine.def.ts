@@ -13,9 +13,6 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
         super();
 
         this.use(async (ctx: IProxyCtx, next: Function) => {
-            // console.log((ctx.instance as any).title, (ctx.instance as any).method,
-            //     this.getFullPath(ctx.instance as any, ctx.executeInfo as any));
-
             await next("");
         });
     }
