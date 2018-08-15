@@ -4,5 +4,5 @@
     "packages/modelproxy",
     "packages/modelproxy-engine-fetch"
   ],
-  "version": "1.0.33"
+  "version": "2.0.1"
 }
