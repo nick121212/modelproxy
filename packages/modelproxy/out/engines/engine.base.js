@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pathToRegexp = require("path-to-regexp");
-require("url-search-params-polyfill");
+const URLSearchParams = require("url-search-params");
 const compose_1 = require("../libs/compose");
 const errors_1 = require("../libs/errors");
 class BaseEngine extends compose_1.Compose {

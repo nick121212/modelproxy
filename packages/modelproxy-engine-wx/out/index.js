@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const modelproxy_1 = require("modelproxy");
 // import { fetchCacheDec } from "./fetch.cache";
 // import { fetchDec } from "./fetch.decorator";
-class FetchEngine extends modelproxy_1.BaseEngine {
+class FetchEngine extends modelproxy_1.DefaultEngine {
     constructor(fetchFunc) {
         super();
         this.fetchFunc = fetchFunc;

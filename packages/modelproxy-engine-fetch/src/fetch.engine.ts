@@ -1,4 +1,4 @@
-import { BaseEngine } from "modelproxy";
+import { DefaultEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import * as fetch from "isomorphic-fetch";
 
@@ -10,7 +10,7 @@ const defaultHeaders = {
     "Content-Type": "application/json"
 };
 
-export class FetchEngine<T extends IProxyCtx> extends BaseEngine<T> {
+export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
 
     /**
      * 初始化

@@ -9,7 +9,7 @@ const defaultHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/json"
 };
-class FetchEngine extends modelproxy_1.BaseEngine {
+class FetchEngine extends modelproxy_1.DefaultEngine {
     /**
      * 初始化
      */

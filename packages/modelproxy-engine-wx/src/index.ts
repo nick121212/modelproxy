@@ -1,10 +1,10 @@
-import { BaseEngine } from "modelproxy";
+import { DefaultEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 
 // import { fetchCacheDec } from "./fetch.cache";
 // import { fetchDec } from "./fetch.decorator";
 
-export class FetchEngine<T extends IProxyCtx> extends BaseEngine<T> {
+export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
 
     constructor(private fetchFunc: (s: any) => Promise<any>) {
         super();

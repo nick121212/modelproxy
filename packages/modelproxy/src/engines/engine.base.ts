@@ -1,5 +1,5 @@
 import * as pathToRegexp from "path-to-regexp";
-import "url-search-params-polyfill";
+import * as URLSearchParams from "url-search-params";
 
 import { IEngine } from "../models/engine";
 import { IExecute } from "../models/execute";
