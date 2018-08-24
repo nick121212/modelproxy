@@ -5,6 +5,7 @@ class BaseFactory {
     constructor() {
         this.instances = {};
     }
+    
     add(name, intance, override = false) {
         if (override && this.instances.hasOwnProperty(name)) {
             return console.error(`已经存在name=【${name}】的engine！`);

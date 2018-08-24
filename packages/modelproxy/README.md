@@ -431,7 +431,8 @@ if (login && article) {
 ```
 
 ## 9. ChangeList
-
+- 2.0.8
+  - 添加了before，after，error中間件處理邏輯  
 - 1.0.21
   - 修复了bug;
 - 1.0.20
