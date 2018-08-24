@@ -9,9 +9,9 @@ class DefaultEngine extends engine_base_1.BaseEngine {
             await next("");
         });
     }
-    async proxy(instance, executeInfo, ...otherOptions) {
+    async doProxy(instance, executeInfo, ...otherOptions) {
         const c = new compose_1.Compose();
-        const { before, after } = executeInfo;
+        const { before, after, error } = executeInfo;
         if (before) {
             c.merge(before);
         }
@@ -22,9 +22,15 @@ class DefaultEngine extends engine_base_1.BaseEngine {
         const ctx = await c.callback()(Object.assign({ executeInfo,
             instance }, otherOptions));
         if (ctx.isError) {
+            if (error) {
+                await error.callback()(ctx).catch(() => { });
+            }
             throw ctx.err;
         }
         return ctx;
+    }
+    async proxy(instance, executeInfo, ...otherOptions) {
+        return this.doProxy(instance, executeInfo, ...otherOptions);
     }
 }
 exports.DefaultEngine = DefaultEngine;

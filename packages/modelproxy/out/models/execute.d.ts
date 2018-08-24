@@ -7,8 +7,7 @@ export interface IExecute {
     params?: any;
     settings?: any;
     query?: boolean;
-    globalBefore?: Compose<IProxyCtx>;
-    globalAfter?: Compose<IProxyCtx>;
     before?: Compose<IProxyCtx>;
     after?: Compose<IProxyCtx>;
+    error?: Compose<IProxyCtx>;
 }

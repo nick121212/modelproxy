@@ -89,7 +89,7 @@ export class Compose<T extends IProxyCtx>  {
 
     /**
      * 获取当前的所有中间件方法
-     * @returns {Array<MiddleFunc<T>>}
+     * @return  {Array<MiddleFunc<T>>}
      */
     public getMiddlewares(): Array<MiddleFunc<T>> {
         return this.middlewares.concat([]);
@@ -112,19 +112,19 @@ export class Compose<T extends IProxyCtx>  {
 
     /**
      * 错误的判断
-     * @param {Object}  ctx    执行上下文
-     * @param {Object}  err    错误数据
+     * @param  {Object}  ctx    执行上下文
+     * @param  {Object}  err    错误数据
+     * @return {void}
      */
     public errorHandle(ctx: T, err: Error) {
         ctx.isError = true;
         ctx.err = err;
-        // console.error("compose--", err);
     }
 
     /**
      * 包装compose函数
      * @param   {MiddleRtnFunc} complete  执行完毕后回调函数
-     * @returns {MiddleRtnFunc}
+     * @return  {MiddleRtnFunc}
      */
     public callback(complete?: MiddleRtnFunc<T>): (options: any) => Promise<IProxyCtx> {
         const fn = this.compose();

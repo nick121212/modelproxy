@@ -15,10 +15,14 @@ export class ModelProxy extends Compose<any> {
     // tslint:disable-next-line:member-ordering
     public forEach = this.nsFactory.forEach.bind(this.nsFactory);
 
+    constructor(private defaultExecuteInfo?: IExecute) {
+        super();
+    }
+
     /**
      * 添加engines
      * @param   { { [id: string]: IEngine; } } engines   引擎对象
-     * @returns {ModelProxy}
+     * @return  {ModelProxy}
      */
     public addEngines(engines: { [id: string]: IEngine; }): ModelProxy {
         for (let key in engines) {
@@ -56,7 +60,7 @@ export class ModelProxy extends Compose<any> {
      * @param   {String}    ns       接口的命名空间
      * @param   {String}    key      接口的key
      * @param   {IExecute}  options  调用接口所需的参数
-     * @returns {Promise<any>}
+     * @return  {Promise<any>}
      */
     public async execute(ns: string, key: string, options: IExecute = {}, ...otherOptions: any[]) {
         const interfaces = this.getNs(ns),
@@ -66,13 +70,13 @@ export class ModelProxy extends Compose<any> {
             throw new ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
         }
 
-        return instance.execute(options, ...otherOptions);
+        return instance.execute(Object.assign({}, this.defaultExecuteInfo || {}, options), ...otherOptions);
     }
 
     /**
      * 执行多个接口请求
      * @param   {{ [key: string]: () => Promise<any> }} inters 接口以key:value的形式
-     * @returns {Promise<any>}
+     * @return  {Promise<any>}
      * @example
      *  proxy.executeAll({
      *      a: proxy.execute.bind(proxy, nsA, keyA, {}),
@@ -107,7 +111,7 @@ export class ModelProxy extends Compose<any> {
     /**
      * race 比赛，快的先返回
      * @param   {Array<NormalExecuteInfo | Promise<any>>}  inters 接口们
-     * @returns {Promise<any>}
+     * @return  {Promise<any>}
      */
     public async race(inters: Array<NormalExecuteInfo | Promise<any>>): Promise<any> {
         const maps: any[] = inters.map((inter: NormalExecuteInfo | Promise<any>) => {
@@ -137,21 +141,20 @@ export class ModelProxy extends Compose<any> {
      */
     public getNs(ns: string): InterfaceFactory {
         if (!this.hasNs(ns)) {
-            // let nses = [];
-
-            // for (let key in this.nsFactory) {
-            //     if (this.nsFactory.hasOwnProperty(key)) {
-            //         let element = this.nsFactory.use(key);
-            //         nses.push(key);
-            //     }
-            // }
-
             throw new ModelProxyMissingError(`没有找到${ns}空间;`);
         }
 
         return this.nsFactory.use(ns);
     }
 
+    /**
+     * 生成N级的rest风格接口
+     * @param   {string}   ns    命名空间
+     * @param   {string[]} keys  需要合并的接口的key
+     * @return  {(...ids: any[]) : IInterfaceModel}
+     * @example
+     *     proxy.mixin("test","users","articles")(1000).get(10) => GET /users/1000/articles/10
+     */
     public minix(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null {
         return this.mixin(ns, ...keys);
     }
@@ -160,7 +163,7 @@ export class ModelProxy extends Compose<any> {
      * 生成N级的rest风格接口
      * @param   {string}   ns    命名空间
      * @param   {string[]} keys  需要合并的接口的key
-     * @returns {(...ids: any[]) : IInterfaceModel}
+     * @return  {(...ids: any[]) : IInterfaceModel}
      * @example
      *     proxy.mixin("test","users","articles")(1000).get(10) => GET /users/1000/articles/10
      */
@@ -215,18 +218,20 @@ export class ModelProxy extends Compose<any> {
     /**
      * 初始化配置文件中的接口信息
      * @param   {IProxyConfig}      config  配置信息
-     * @returns {InterfaceFactory}
+     * @return  {InterfaceFactory}
      */
     private initInterfaces(ifFactory: InterfaceFactory, config: IProxyConfig,
         overrideInterfaceConfig: IInterfaceModelCommon = {}): InterfaceFactory {
         config.interfaces.forEach((i: IInterfaceModelCommon) => {
-            ifFactory.add(i.key as string, Object.assign({}, {
+            const interModel: IInterfaceModel = Object.assign({}, {
                 engine: config.engine,
                 mockDir: config.mockDir,
                 ns: config.key,
                 state: config.state,
                 states: config.states,
-            }, i, overrideInterfaceConfig || {}) as IInterfaceModel, true);
+            }, i, overrideInterfaceConfig || {}) as IInterfaceModel;
+
+            ifFactory.add(i.key as string, interModel, true);
         });
 
         return ifFactory;

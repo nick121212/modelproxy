@@ -6,8 +6,9 @@ const compose_1 = require("./compose");
 const errors_1 = require("./errors");
 const base_factory_1 = require("./base.factory");
 class ModelProxy extends compose_1.Compose {
-    constructor() {
-        super(...arguments);
+    constructor(defaultExecuteInfo) {
+        super();
+        this.defaultExecuteInfo = defaultExecuteInfo;
         this.nsFactory = new base_factory_1.BaseFactory();
         this.forEach = this.nsFactory.forEach.bind(this.nsFactory);
     }
@@ -33,7 +34,7 @@ class ModelProxy extends compose_1.Compose {
         if (!instance) {
             throw new errors_1.ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
         }
-        return instance.execute(options, ...otherOptions);
+        return instance.execute(Object.assign({}, this.defaultExecuteInfo || {}, options), ...otherOptions);
     }
     async executeAll(inters) {
         const maps = [];
@@ -113,13 +114,14 @@ class ModelProxy extends compose_1.Compose {
     }
     initInterfaces(ifFactory, config, overrideInterfaceConfig = {}) {
         config.interfaces.forEach((i) => {
-            ifFactory.add(i.key, Object.assign({}, {
+            const interModel = Object.assign({}, {
                 engine: config.engine,
                 mockDir: config.mockDir,
                 ns: config.key,
                 state: config.state,
                 states: config.states,
-            }, i, overrideInterfaceConfig || {}), true);
+            }, i, overrideInterfaceConfig || {});
+            ifFactory.add(i.key, interModel, true);
         });
         return ifFactory;
     }

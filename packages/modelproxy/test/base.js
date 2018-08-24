@@ -129,6 +129,48 @@ describe('modelproxy base', function () {
 
             expect(dd.result.join()).to.eq("1,3,4,2");
         });
+
+        it('混入单个默認compose', async () => {
+            proxy = new modelProxy.ModelProxy({
+                before: new modelProxy.Compose(async (ctx, next) => {
+                    console.log("dfadfad");
+
+                    ctx.result = [1];
+                    await next();
+                    ctx.result.push(2);
+                }, async (ctx, next) => {
+                    ctx.result.push(3);
+                    await next();
+                    ctx.result.push(4);
+                })
+            });
+            proxy.loadConfig(config);
+
+            const dd = await proxy.execute("test", "user");
+
+            expect(dd.result.join()).to.eq("1,3,4,2");
+        });
+
+        it('混入单个錯誤compose', async (done) => {
+            proxy = new modelProxy.ModelProxy({
+                before: new modelProxy.Compose(async (ctx, next) => {
+                    throw new Error("nick test");
+                }),
+                error: new modelProxy.Compose(async (ctx, next) => {
+                    console.log(ctx.isError);
+                    ctx.isError = false;
+                })
+            });
+            proxy.loadConfig(config);
+
+            try {
+                await proxy.execute("test", "user")
+            } catch (e) {
+                expect(e.message).eq("nick test");
+            } finally {
+                done();
+            }
+        });
     });
 
 });

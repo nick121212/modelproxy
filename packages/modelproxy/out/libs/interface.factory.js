@@ -5,8 +5,7 @@ const engine_factory_1 = require("./engine.factory");
 class InterfaceFactory extends base_factory_1.BaseFactory {
     constructor() { super(); }
     add(name, instance, override = false) {
-        super.add(name, instance, override);
-        Object.assign(instance, {
+        super.add(name, Object.assign(instance, {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
             get: this.custom.bind(this, instance, "GET", null),
@@ -16,7 +15,7 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
             post: this.custom.bind(this, instance, "POST", null),
             put: this.custom.bind(this, instance, "PUT"),
             replacePath: this.replacePath.bind(this, instance)
-        });
+        }), override);
     }
     async execute(instance, options, ...otherOptions) {
         let engine;

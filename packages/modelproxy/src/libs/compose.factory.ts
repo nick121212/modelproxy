@@ -3,5 +3,5 @@ import { BaseFactory } from "./base.factory";
 import { Compose } from "./compose";
 
 export class ComposeFactory extends BaseFactory<Compose<any>> {
-    constructor() { super(); }
+    
 }

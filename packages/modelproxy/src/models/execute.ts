@@ -9,9 +9,10 @@ export interface IExecute {
     settings?: any;
     query?: boolean;
 
-    globalBefore?: Compose<IProxyCtx>;
-    globalAfter?: Compose<IProxyCtx>;
+    // globalBefore?: Compose<IProxyCtx>;
+    // globalAfter?: Compose<IProxyCtx>;
 
     before?: Compose<IProxyCtx>;
     after?: Compose<IProxyCtx>;
+    error?: Compose<IProxyCtx>;
 }

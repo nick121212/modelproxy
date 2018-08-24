@@ -11,8 +11,10 @@ export declare type NormalExecuteInfo = {
     otherOptions?: any[];
 };
 export declare class ModelProxy extends Compose<any> {
+    private defaultExecuteInfo?;
     private nsFactory;
     forEach: any;
+    constructor(defaultExecuteInfo?: IExecute | undefined);
     addEngines(engines: {
         [id: string]: IEngine;
     }): ModelProxy;

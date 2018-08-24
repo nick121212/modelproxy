@@ -16,7 +16,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * 验证数据的准确性
      * @param   {IInterfaceModel}  instance     接口模型
      * @param   {IExecute}         options      参数
-     * @returns {Promise<boolean>}              返回数据是否合法
+     * @return  {Promise<boolean>}              返回数据是否合法
      */
     public async validate(_instance: IInterfaceModel, _options: IExecute): Promise<boolean> {
         // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
@@ -55,7 +55,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * 替换path中的变量
      * @param   {IInterfaceModel} instance     接口模型
      * @param   {IExecute}        options      参数
-     * @returns {string}                       返回替换过后的路径
+     * @return  {string}                       返回替换过后的路径
      */
     public replacePath(instance: IInterfaceModel, { params = [], data = {} }: IExecute): string {
         const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string)),
@@ -84,7 +84,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * 获取接口的全路径
      * @param   {IInterfaceModel}  instance     接口模型
      * @param   {IExecute}         options      参数
-     * @returns {string}                        返回路径
+     * @return  {string}                        返回路径
      */
     public getFullPath(instance: IInterfaceModel, options: IExecute): string {
         const url = [this.getStatePath(instance), this.replacePath(instance, options)],
