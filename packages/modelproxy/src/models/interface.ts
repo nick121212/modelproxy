@@ -26,6 +26,10 @@ export interface IInterfaceModelCommon extends ICommon {
 
 export interface IInterfaceModel extends IInterfaceModelCommon {
     /**
+     * 默认的执行参数
+     */
+    defaultExecuteInfo?: IExecute;
+    /**
      * 执行接口
      */
     execute(options: IExecute, ...otherOptions: any[]): Promise<any>;

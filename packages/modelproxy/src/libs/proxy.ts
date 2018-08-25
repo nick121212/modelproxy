@@ -70,7 +70,7 @@ export class ModelProxy extends Compose<any> {
             throw new ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
         }
 
-        return instance.execute(Object.assign({}, this.defaultExecuteInfo || {}, options), ...otherOptions);
+        return instance.execute(options, ...otherOptions);
     }
 
     /**
@@ -93,6 +93,7 @@ export class ModelProxy extends Compose<any> {
             });
         }
 
+        // 处理所有的key
         Object.keys(inters).forEach((key: string) => {
             maps.push(inters[key]().then((data: any) => {
                 return {
@@ -101,6 +102,7 @@ export class ModelProxy extends Compose<any> {
             }));
         });
 
+        // 返回promise
         return Promise.all(maps).then((data: any[]) => {
             return data.reduce((prev: any, next: any) => {
                 return Object.assign({}, prev, next);
@@ -134,6 +136,7 @@ export class ModelProxy extends Compose<any> {
     public hasNs(ns: string): boolean {
         return !!this.nsFactory.get(ns);
     }
+
     /**
      * 获取namespace
      * @param  {string}             ns     空间名
@@ -229,6 +232,7 @@ export class ModelProxy extends Compose<any> {
                 ns: config.key,
                 state: config.state,
                 states: config.states,
+                defaultExecuteInfo: this.defaultExecuteInfo
             }, i, overrideInterfaceConfig || {}) as IInterfaceModel;
 
             ifFactory.add(i.key as string, interModel, true);

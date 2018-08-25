@@ -8,6 +8,7 @@ export interface IInterfaceModelCommon extends ICommon {
     config?: Object;
 }
 export interface IInterfaceModel extends IInterfaceModelCommon {
+    defaultExecuteInfo?: IExecute;
     execute(options: IExecute, ...otherOptions: any[]): Promise<any>;
     getPath(extendInterface?: IInterfaceModelCommon): string;
     getFullPath(options?: IExecute): string;

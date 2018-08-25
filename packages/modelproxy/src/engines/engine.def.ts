@@ -32,12 +32,15 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
         if (before) {
             c.merge(before);
         }
+
         // 合併當前的compose
         c.merge(this);
+
         // 判斷是否需要在後面加入compose
         if (after) {
             c.merge(after);
         }
+        
         // 執行當前的中間件
         const ctx = await c.callback()({
             executeInfo,

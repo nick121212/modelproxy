@@ -133,8 +133,6 @@ describe('modelproxy base', function () {
         it('混入单个默認compose', async () => {
             proxy = new modelProxy.ModelProxy({
                 before: new modelProxy.Compose(async (ctx, next) => {
-                    console.log("dfadfad");
-
                     ctx.result = [1];
                     await next();
                     ctx.result.push(2);
@@ -146,7 +144,7 @@ describe('modelproxy base', function () {
             });
             proxy.loadConfig(config);
 
-            const dd = await proxy.execute("test", "user");
+            const dd =  await proxy.getNs("test").get("user").get();
 
             expect(dd.result.join()).to.eq("1,3,4,2");
         });
@@ -157,7 +155,6 @@ describe('modelproxy base', function () {
                     throw new Error("nick test");
                 }),
                 error: new modelProxy.Compose(async (ctx, next) => {
-                    console.log(ctx.isError);
                     ctx.isError = false;
                 })
             });

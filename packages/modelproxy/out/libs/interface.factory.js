@@ -22,17 +22,18 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
         let iinstance;
         let { instance: extraInstance = {} } = options;
         iinstance = this.megreInstance(instance, extraInstance);
-        if (!engine_factory_1.engineFactory.has(iinstance.engine || "")) {
-            throw new Error(`没有发现engine[${iinstance.engine}]`);
+        const { engine: engineName, defaultExecuteInfo = {} } = iinstance;
+        if (!engine_factory_1.engineFactory.has(engineName || "")) {
+            throw new Error(`没有发现engine[${engineName}]`);
         }
-        engine = engine_factory_1.engineFactory.use(iinstance.engine || "default");
+        engine = engine_factory_1.engineFactory.use(engineName || "default");
         try {
             await engine.validate(iinstance, options);
         }
         catch (e) {
             throw e;
         }
-        return engine.proxy(iinstance, options, ...otherOptions);
+        return engine.proxy(iinstance, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
     }
     async custom(instance, type, id, options = {}, ...otherOptions) {
         let { instance: extraInstance = {}, params = {} } = options, iiinstance;

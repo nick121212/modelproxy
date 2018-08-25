@@ -34,7 +34,7 @@ class ModelProxy extends compose_1.Compose {
         if (!instance) {
             throw new errors_1.ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
         }
-        return instance.execute(Object.assign({}, this.defaultExecuteInfo || {}, options), ...otherOptions);
+        return instance.execute(options, ...otherOptions);
     }
     async executeAll(inters) {
         const maps = [];
@@ -120,6 +120,7 @@ class ModelProxy extends compose_1.Compose {
                 ns: config.key,
                 state: config.state,
                 states: config.states,
+                defaultExecuteInfo: this.defaultExecuteInfo
             }, i, overrideInterfaceConfig || {});
             ifFactory.add(i.key, interModel, true);
         });

@@ -9,8 +9,8 @@ import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";
 
 export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngine {
-    protected beforeMiddlewares: MiddleFunc<IProxyCtx>[] = [];
-    protected afterMiddlewares: MiddleFunc<IProxyCtx>[] = [];
+    // protected beforeMiddlewares: MiddleFunc<IProxyCtx>[] = [];
+    // protected afterMiddlewares: MiddleFunc<IProxyCtx>[] = [];
 
     /**
      * 验证数据的准确性

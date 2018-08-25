@@ -43,12 +43,14 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         // 合并配置instance和传入的instance
         iinstance = this.megreInstance(instance, extraInstance);
 
+        const { engine: engineName, defaultExecuteInfo = {} } = iinstance;
+
         // 判断engine是否存在
-        if (!engineFactory.has(iinstance.engine || "")) {
-            throw new Error(`没有发现engine[${iinstance.engine}]`);
+        if (!engineFactory.has(engineName || "")) {
+            throw new Error(`没有发现engine[${engineName}]`);
         }
         // 获取engine
-        engine = engineFactory.use(iinstance.engine || "default");
+        engine = engineFactory.use(engineName || "default");
 
         try {
             // 验证数据的准确性
@@ -58,7 +60,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
         }
 
         // 调用engine的proxy方法
-        return engine.proxy(iinstance, options, ...otherOptions);
+        return engine.proxy(iinstance, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
     }
 
     /**
