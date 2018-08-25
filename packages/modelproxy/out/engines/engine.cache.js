@@ -9,7 +9,7 @@ exports.cacheDec = (fetchPromise, ctx, fullPath) => {
     if (!cache) {
         return fetchPromise();
     }
-    if (!reload) {
+    if (reload) {
         exports.promiseFactory.remove(proKey);
     }
     const dataInCache = exports.promiseFactory.get(proKey);
@@ -21,6 +21,7 @@ exports.cacheDec = (fetchPromise, ctx, fullPath) => {
         }
     }
     if (promiseInCache) {
+        ctx.fromCache = true;
         return promiseInCache;
     }
     const promise = fetchPromise();

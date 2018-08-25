@@ -15,3 +15,6 @@ var engine_def_1 = require("./engines/engine.def");
 exports.DefaultEngine = engine_def_1.DefaultEngine;
 var base_factory_1 = require("./libs/base.factory");
 exports.BaseFactory = base_factory_1.BaseFactory;
+var engine_cache_1 = require("./engines/engine.cache");
+exports.cacheDec = engine_cache_1.cacheDec;
+exports.promiseFactory = engine_cache_1.promiseFactory;

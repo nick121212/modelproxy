@@ -4,4 +4,5 @@ export interface IProxyCtx extends IExecute {
     err?: Error;
     result?: any;
     executeInfo?: IExecute;
+    fromCache?: boolean;
 }

@@ -22,6 +22,7 @@
   - [race](#race)
   - [getNs](#getNs)
   - [mixin](#mixin)
+- [Cache](@Cache)
 - [Engines](#Engines)
   - [proxy](#proxy)
   - [validate](#validate)
@@ -238,6 +239,16 @@ export class WxAppEngine extends BaseEngine {
     userArticles.get(5); // GET /users/1/articles/5
     users.get(); // GET /users
 ```
+
+## Cache
+
+缓存设置;
+
+- cacheDec: (func:()=>Promise<any>,ctx,fullPath)=>Promise<any>;
+- settings: 
+  - cache:  是否需要缓存
+  - reload: 强制失效缓存
+  - expire: 缓存过期时间（单位毫秒）
 
 ## 5. InterfaceFactory
 

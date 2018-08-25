@@ -29,7 +29,7 @@ export const cacheDec = (fetchPromise: () => Promise<any>, ctx: IProxyCtx, fullP
     }
 
     // 删除缓存
-    if (!reload) {
+    if (reload) {
         promiseFactory.remove(proKey);
     }
 
@@ -46,8 +46,10 @@ export const cacheDec = (fetchPromise: () => Promise<any>, ctx: IProxyCtx, fullP
 
     // 命中缓存
     if (promiseInCache) {
+        ctx.fromCache = true;
+        
         return promiseInCache;
-    }
+    }    
 
     const promise = fetchPromise();
 
