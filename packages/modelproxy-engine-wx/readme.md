@@ -1,6 +1,7 @@
 # modelproxy-engine-fetch
 
-使用fetch来调用接口的engine。
+使用微信小程序提供的调用接口的方法来调用接口的engine。
+构造函数中默认传入一个方法，这个方法必须返回promise。
 
 ## 支持的设置
 
@@ -10,45 +11,31 @@
 ## 安装
 
 ```javascript
-npm i modelproxy-engine-fetch
+npm i modelproxy-engine-wx
 ```
 
 ## demo
 
 ```typescript
 
-    import { FetchEngine } from 'modelproxy-engine-fetch';
+    import { FetchEngine } from 'modelproxy-engine-wx';
 
-    const reactEngine = new FetchEngine();
+    const engine = new FetchEngine(wepy.request);
 
-    reactEngine.init();
+    engine.init();
+
     /**
     * 请求真正的数据接口
-    * 判断http的状态码，如果不是200，直接抛出错误
-    * 判断数据的code字段，如果不是200，抛出错误
     * 返回数据
     */
-    reactEngine.use(async (ctx, next) => {
-        if (ctx.result.status !== 200) {
-            throw new Error(ctx.result.statusText);
-        }
-
-        // 这里需要clone一个fetch，不然多次调用会报错（body stream already read）
-        ctx.result = await ctx.result.clone();
-
-        // 检测服务器端的错误
-        const serData = await ctx.result.json();
-
-        if (serData.code !== 200) {
-            throw new Error(serData.message);
-        }
+    engine.use(async (ctx, next) => {
+        // 处理想要的逻辑
         await next();
     });
 
     const proxy = new modelProxy.Proxy();
-    const proxyDefault = { engine: "react", mockDir: "/mock", state: __DEV__ ? "dev" : "prod" };
 
-    proxy.addEngines({"react":reactEngine});
+    proxy.addEngines({"wx":engine});
 
 ```
 

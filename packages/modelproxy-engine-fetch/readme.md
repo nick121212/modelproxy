@@ -5,7 +5,9 @@
 ## 支持的设置
 
 1. settings.timeout 设置超时时间，默认为5s。
-2. settings.cache   设置缓存，key为fullPath+method，类型为Promise。没有持久化。只有GET才能缓存
+2. settings.cache   设置缓存，key为fullPath+method，类型为Promise。没有持久化。
+3. settings.expire  设置缓存过期时间，单位为毫秒。
+4. settings.reload  强制不使用缓存
 
 ## 安装
 
