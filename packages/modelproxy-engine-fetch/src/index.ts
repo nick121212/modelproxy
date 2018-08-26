@@ -1,6 +1,7 @@
 import { DefaultEngine, cacheDec } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import * as fetch from "isomorphic-fetch";
+import * as URLSearchParams from "url-search-params";
 
 const defaultHeaders = {
     "Accept": "application/json",
@@ -13,7 +14,7 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
      * 初始化
      */
     public init(): void {
-        this.use(this.fetch);
+        this.use(this.fetch.bind(this));
     }
 
     /**

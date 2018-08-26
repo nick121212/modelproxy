@@ -4,7 +4,7 @@
   "description": "modelproxy中fetch的engine",
   "main": "out/index.js",
   "scripts": {
-    "test": "mocha test/**/*.js",
+    "test": "mocha -t 10000 test/**/*.js",
     "build": "tsc -d"
   },
   "typings": "./out/index.d.ts",
@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "0.0.34",
+    "@types/url-search-params": "^0.10.2",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "bluebird": "^3.5.0",

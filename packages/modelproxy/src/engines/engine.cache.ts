@@ -47,9 +47,9 @@ export const cacheDec = (fetchPromise: () => Promise<any>, ctx: IProxyCtx, fullP
     // 命中缓存
     if (promiseInCache) {
         ctx.fromCache = true;
-        
+
         return promiseInCache;
-    }    
+    }
 
     const promise = fetchPromise();
 

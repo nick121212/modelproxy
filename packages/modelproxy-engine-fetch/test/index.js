@@ -15,7 +15,7 @@ var config = {
         "dev": "/tvmaze",
         "stag": "http://api.tvmaze.com"
     },
-    "state": "dev",
+    "state": "stag",
     "interfaces": [{
         "key": "search.shows",
         "title": "搜索所有的电影数据",
@@ -39,6 +39,13 @@ describe('modelproxy cache------', function () {
 
         engine.init();
 
+        engine.use(async (ctx, next) => {
+            ctx.result = ctx.result.clone();
+            ctx.result = await ctx.result.json();
+
+            await next();
+        });
+
         proxy.addEngines({
             fetch: engine
         });
@@ -47,9 +54,17 @@ describe('modelproxy cache------', function () {
         });
     });
 
-    describe("测试cache", function () {
-        it("正常cache", async () => {
-            const dd4 = await proxy.execute("tvmaze", "singlesearch.shows", {
+    describe("测试cache", function (done) {
+        it("接口的返回值不为空", async () => {
+            const dd = await proxy.execute("tvmaze", "singlesearch.shows", {
+                params: {
+                    q: "batman"
+                },
+                settings: {
+                    cache: true
+                }
+            });
+            const dd1 = await proxy.execute("tvmaze", "singlesearch.shows", {
                 params: {
                     q: "batman"
                 },
@@ -58,10 +73,10 @@ describe('modelproxy cache------', function () {
                 }
             });
 
-            // expect(dd.result).eq(dd1.result);
-            // expect(dd1.result).not.eq(dd2.result);
-            // expect(dd.result).not.eq(dd3.result);
-            // expect(dd3.result).not.eq(dd4.result);
+            expect(dd.result.id).not.to.be.null;
+            expect(dd1.result.id).not.to.be.null;
+            expect(dd1.fromCache).eq(true);
+            expect(dd.fromCache).eq(undefined);
         });
     });
 });

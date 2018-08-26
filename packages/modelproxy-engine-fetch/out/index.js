@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const modelproxy_1 = require("modelproxy");
 const fetch = require("isomorphic-fetch");
+const URLSearchParams = require("url-search-params");
 const defaultHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/json"
@@ -12,7 +13,7 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
      * 初始化
      */
     init() {
-        this.use(this.fetch);
+        this.use(this.fetch.bind(this));
     }
     /**
      * 发起请求
