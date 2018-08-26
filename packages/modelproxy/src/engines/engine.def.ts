@@ -9,14 +9,6 @@ import { Compose } from "../libs/compose";
  * 返回接口的实例
  */
 export class DefaultEngine extends BaseEngine<IProxyCtx> {
-    constructor() {
-        super();
-
-        this.use(async (ctx: IProxyCtx, next: Function) => {
-            await next("");
-        });
-    }
-
     /**
      * 调用接口，这里触发一次中间件方法
      * @param   {IInterfaceModel}  instance     接口的实例
@@ -40,7 +32,7 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
         if (after) {
             c.merge(after);
         }
-        
+
         // 執行當前的中間件
         const ctx = await c.callback()({
             executeInfo,
@@ -51,7 +43,7 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
         // 錯誤處理，如果有錯誤，則調用錯誤處理中間件
         if (ctx.isError) {
             if (error) {
-                await error.callback()(ctx).catch(() => { });
+                await error.callback()(ctx).catch(() => void (0));
             }
 
             throw ctx.err;

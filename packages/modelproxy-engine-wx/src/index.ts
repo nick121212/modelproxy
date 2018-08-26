@@ -1,4 +1,4 @@
-import { DefaultEngine } from "modelproxy";
+import { DefaultEngine, cacheDec } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 
 // import { fetchCacheDec } from "./fetch.cache";
@@ -26,20 +26,27 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
     public async fetch(ctx: IProxyCtx, next: (s?: string) => Promise<any>): Promise<any> {
         const { instance, executeInfo = {}, settings = {} } = ctx;
         const { method = "" } = instance || {};
-        const { header = {} } = settings;
+        const { header = {}, timeout = 5000 } = settings;
         const fullPath = this.getFullPath(instance as any, executeInfo);
 
         if (!this.fetchFunc) {
             throw new Error("fetch function is null.");
         }
 
-        // 发布request请求
-        ctx.result = await this.fetchFunc({
+        const fetchFunc = this.fetchFunc.bind(this.fetchFunc, {
             data: executeInfo.data,
             header: header || {},
-            method: method,
+            method,
             url: fullPath,
         });
+
+        // 发布request请求
+        ctx.result = await Promise.race([
+            this.delay(timeout || 5000).then(() => {
+                throw new Error(`接口请求超时！(${timeout})`);
+            }),
+            cacheDec(fetchFunc, ctx, fullPath),
+        ]);
 
         await next();
     }

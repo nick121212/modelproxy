@@ -1,9 +1,6 @@
-import { DefaultEngine } from "modelproxy";
+import { DefaultEngine, cacheDec } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import * as fetch from "isomorphic-fetch";
-
-import { fetchCacheDec } from "./fetch.cache";
-import { fetchDec } from "./fetch.decorator";
 
 const defaultHeaders = {
     "Accept": "application/json",
@@ -70,7 +67,12 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
         }, fetchOptions));
 
         // 发送请求
-        ctx.result = await fetchDec(fetchCacheDec(fetchFunc, ctx, fullPath), timeout);
+        ctx.result = await Promise.race([
+            this.delay(timeout || 5000).then(() => {
+                throw new Error(`接口请求超时！(${timeout})`);
+            }),
+            cacheDec(fetchFunc, ctx, fullPath)
+        ]);
 
         await next();
     }

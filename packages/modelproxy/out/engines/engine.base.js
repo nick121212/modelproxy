@@ -8,6 +8,13 @@ class BaseEngine extends compose_1.Compose {
     async validate(_instance, _options) {
         return true;
     }
+    async delay(interval) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, interval);
+        });
+    }
     async proxy(instance, options, ...otherOptions) {
         instance.getPath(options.instance);
         return {};

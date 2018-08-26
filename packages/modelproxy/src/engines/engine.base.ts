@@ -26,6 +26,19 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
     }
 
     /**
+     * 延时一段时间（单位毫秒）
+     * @param  {number}        interval 需要延时的毫秒数
+     * @return {Promise<any>}
+     */
+    public async delay(interval: number): Promise<any> {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, interval);
+        });
+    }
+
+    /**
      * 代理接口
      * @param   {IInterfaceModel}  instance     接口模型
      * @param   {IExecute}         options      参数

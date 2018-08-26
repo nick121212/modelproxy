@@ -25,18 +25,24 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { instance, executeInfo = {}, settings = {} } = ctx;
             const { method = "" } = instance || {};
-            const { header = {} } = settings;
+            const { header = {}, timeout = 5000 } = settings;
             const fullPath = this.getFullPath(instance, executeInfo);
             if (!this.fetchFunc) {
                 throw new Error("fetch function is null.");
             }
-            // 发布request请求
-            ctx.result = yield this.fetchFunc({
+            const fetchFunc = this.fetchFunc.bind(this.fetchFunc, {
                 data: executeInfo.data,
                 header: header || {},
-                method: method,
+                method,
                 url: fullPath,
             });
+            // 发布request请求
+            ctx.result = yield Promise.race([
+                this.delay(timeout || 5000).then(() => {
+                    throw new Error(`接口请求超时！(${timeout})`);
+                }),
+                modelproxy_1.cacheDec(fetchFunc, ctx, fullPath),
+            ]);
             yield next();
         });
     }

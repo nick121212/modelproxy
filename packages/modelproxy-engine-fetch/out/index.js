@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const modelproxy_1 = require("modelproxy");
 const fetch = require("isomorphic-fetch");
-const fetch_cache_1 = require("./fetch.cache");
-const fetch_decorator_1 = require("./fetch.decorator");
 const defaultHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/json"
@@ -57,10 +55,15 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
                 method: instance.method,
             }, fetchOptions));
             // 发送请求
-            ctx.result = yield fetch_decorator_1.fetchDec(fetch_cache_1.fetchCacheDec(fetchFunc, ctx, fullPath), timeout);
+            ctx.result = yield Promise.race([
+                this.delay(timeout || 5000).then(() => {
+                    throw new Error(`接口请求超时！(${timeout})`);
+                }),
+                modelproxy_1.cacheDec(fetchFunc, ctx, fullPath)
+            ]);
             yield next();
         });
     }
 }
 exports.FetchEngine = FetchEngine;
-//# sourceMappingURL=fetch.engine.js.map
+//# sourceMappingURL=index.js.map
