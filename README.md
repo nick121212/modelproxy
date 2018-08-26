@@ -10,6 +10,10 @@ modelproxy主项目
 
 扩展engine，用fetch来拉取数据，适用于前端。
 
+## [modelproxy-engine-wx](./packages/modelproxy-engine-wx/readme.md)
+
+扩展engine，用微信中的方法来拉取数据，适用于微信小程序。
+
 ## Licence
 
 MIT
