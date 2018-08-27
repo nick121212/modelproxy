@@ -5,6 +5,84 @@
  通过配置文件，自动生成接口的调用方法，参考[modelproxy](https://github.com/papertiger8848/modelproxy)。
  在具体的实践过程中，总觉得很多的不满意，修改一下使得满足更多的场景。
 
+ ![小程序登陆流程](https://developers.weixin.qq.com/miniprogram/dev/image/api-login.jpg?t=18082414)
+
+上图为小程序的登陆流程。假设我们要发起请求，必须获取上图中的自定义登陆态，而且还需要判定登陆是否过期。
+
+假设我们发起一次接口请求,如何自动登陆，添加自定义登录态数据：
+
+```js
+const authCompose = (reload=false)=> new modelProxy.Compose(async (ctx, next) => {
+    // 登陆来获取code，并进行缓存
+    // 这里对wx的api进行了统一封装，参考自定义engine
+    const data = await proxy.execute("wx","login",{
+        settings:{
+            cache:true,
+            reload
+        },
+        instance:{
+            engine:"wx"
+        }
+    });
+
+    ctx.result = data.data.code;
+
+    await next();
+}, async (ctx, next) => {
+    // 用code换取 token，并进行缓存
+    const data = await proxy.execute("test","login",{
+        params:{code: ctx.result},
+        settings:{
+            cache,
+            reload
+        }
+    });
+
+    ctx.result = data.data.token;
+
+    await next();
+}, async (ctx, next) => {
+    let {settings={}} = ctx;
+    let {header={}} = settings;
+
+    // 将token加入到请求头
+    header["token"] = ctx.token;
+
+    ctx.settings = {
+        ...settings,
+        header
+    };
+
+    await next();
+}, async (ctx, next) => {
+    // 进行session的校验
+    // 这里对wx的api进行了统一封装，参考自定义engine
+    const data = await proxy.execute("wx","checkSession",{
+        instance:{
+            engine:"wx"
+        }
+    });
+
+    // 登陆过期
+    if(ctx.isError){
+        ctx.result = await proxy.execute(ctx.instance.ns,ctx.instance.key,{
+            ...ctx.executeInfo,
+            // 强制刷新缓存
+            before:authCompose(true)
+        });
+
+        return next("abort");
+    }
+
+    await next();
+})
+
+// 这里获取登陆的用户信息，不用考虑登陆的问题
+const userInfo = await proxy.execute("test", "userInfo", {
+    before: authCompose()
+});
+```
+
 ## 2. 安装和依赖
 
 ```js
