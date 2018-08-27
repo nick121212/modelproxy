@@ -9,7 +9,7 @@
 
 上图为小程序的登陆流程。假设我们要发起请求，必须获取上图中的自定义登陆态，而且还需要判定登陆是否过期。
 
-假设我们发起一次接口请求,如何自动登陆，添加自定义登录态数据：
+假设我们发起一次接口请求,如何自动登陆，添加自定义登录态数据：
 
 ```js
 const authCompose = (reload=false)=> new modelProxy.Compose(async (ctx, next) => {
@@ -171,7 +171,7 @@ proxy.addEngines({
 });
 ```
 
-实例engine，本例中是一个微信小程序的engine。
+实例engine，本例中是一个微信小程序的engine。
 
 ```typescript
 import { ModelProxy,BaseEngine } from 'modelproxy';
