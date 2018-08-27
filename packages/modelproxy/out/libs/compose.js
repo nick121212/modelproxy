@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 class Compose {
     constructor(...wares) {
         this.middlewares = [...wares];
@@ -25,7 +26,7 @@ class Compose {
         return (context, next) => {
             return new Promise((resolve, reject) => {
                 let index = -1;
-                const dispatch = async (i) => {
+                const dispatch = (i) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                     let fn = this.middlewares[i];
                     if (i <= index) {
                         return reject(new Error("next() called multiple times" + i + "-" + index));
@@ -38,17 +39,17 @@ class Compose {
                         return context;
                     }
                     try {
-                        await fn(context, async (key) => {
+                        yield fn(context, (key) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                             if (key === "abort") {
                                 return resolve(context);
                             }
-                            await dispatch(i + 1);
-                        });
+                            yield dispatch(i + 1);
+                        }));
                     }
                     catch (e) {
                         reject(e);
                     }
-                };
+                });
                 return dispatch(0).then(resolve.bind(context));
             });
         };
@@ -69,21 +70,21 @@ class Compose {
     }
     callback(complete) {
         const fn = this.compose();
-        return async (options) => {
+        return (options) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             let ctx = Object.assign(options || {}, {});
             try {
-                await fn(ctx, async (content, next) => {
-                    await next();
+                yield fn(ctx, (content, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                    yield next();
                     if (ctx.isError) {
                         throw ctx.err;
                     }
-                });
+                }));
             }
             catch (err) {
                 this.errorHandle(ctx, err);
             }
             return ctx;
-        };
+        });
     }
 }
 exports.Compose = Compose;

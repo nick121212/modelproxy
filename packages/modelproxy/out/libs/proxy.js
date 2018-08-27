@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const interface_factory_1 = require("./interface.factory");
 const engine_factory_1 = require("./engine.factory");
 const compose_1 = require("./compose");
@@ -29,42 +30,48 @@ class ModelProxy extends compose_1.Compose {
         this.nsFactory.add(config.key, this.initInterfaces(nsFactory, config, overrideInterfaceConfig));
         return this;
     }
-    async execute(ns, key, options = {}, ...otherOptions) {
-        const interfaces = this.getNs(ns), instance = interfaces.get(key);
-        if (!instance) {
-            throw new errors_1.ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
-        }
-        return instance.execute(options, ...otherOptions);
-    }
-    async executeAll(inters) {
-        const maps = [];
-        if (!inters || !Object.keys(inters).length) {
-            return new Promise((resolve) => {
-                resolve(null);
-            });
-        }
-        Object.keys(inters).forEach((key) => {
-            maps.push(inters[key]().then((data) => {
-                return {
-                    [key]: data
-                };
-            }));
-        });
-        return Promise.all(maps).then((data) => {
-            return data.reduce((prev, next) => {
-                return Object.assign({}, prev, next);
-            });
-        });
-    }
-    async race(inters) {
-        const maps = inters.map((inter) => {
-            if (inter.then) {
-                return inter;
+    execute(ns, key, options = {}, ...otherOptions) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const interfaces = this.getNs(ns), instance = interfaces.get(key);
+            if (!instance) {
+                throw new errors_1.ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
             }
-            const { ns = "", key = "", options = {}, otherOptions = [] } = inter;
-            return this.execute(ns, key, options, ...otherOptions);
+            return instance.execute(options, ...otherOptions);
         });
-        return Promise.race(maps);
+    }
+    executeAll(inters) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const maps = [];
+            if (!inters || !Object.keys(inters).length) {
+                return new Promise((resolve) => {
+                    resolve(null);
+                });
+            }
+            Object.keys(inters).forEach((key) => {
+                maps.push(inters[key]().then((data) => {
+                    return {
+                        [key]: data
+                    };
+                }));
+            });
+            return Promise.all(maps).then((data) => {
+                return data.reduce((prev, next) => {
+                    return Object.assign({}, prev, next);
+                });
+            });
+        });
+    }
+    race(inters) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const maps = inters.map((inter) => {
+                if (inter.then) {
+                    return inter;
+                }
+                const { ns = "", key = "", options = {}, otherOptions = [] } = inter;
+                return this.execute(ns, key, options, ...otherOptions);
+            });
+            return Promise.race(maps);
+        });
     }
     hasNs(ns) {
         return !!this.nsFactory.get(ns);

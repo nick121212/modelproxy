@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const base_factory_1 = require("./base.factory");
 const engine_factory_1 = require("./engine.factory");
 class InterfaceFactory extends base_factory_1.BaseFactory {
@@ -17,34 +18,38 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
             replacePath: this.replacePath.bind(this, instance)
         }), override);
     }
-    async execute(instance, options, ...otherOptions) {
-        let engine;
-        let iinstance;
-        let { instance: extraInstance = {} } = options;
-        iinstance = this.megreInstance(instance, extraInstance);
-        const { engine: engineName, defaultExecuteInfo = {} } = iinstance;
-        if (!engine_factory_1.engineFactory.has(engineName || "")) {
-            throw new Error(`没有发现engine[${engineName}]`);
-        }
-        engine = engine_factory_1.engineFactory.use(engineName || "default");
-        try {
-            await engine.validate(iinstance, options);
-        }
-        catch (e) {
-            throw e;
-        }
-        return engine.proxy(iinstance, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
+    execute(instance, options, ...otherOptions) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let engine;
+            let iinstance;
+            let { instance: extraInstance = {} } = options;
+            iinstance = this.megreInstance(instance, extraInstance);
+            const { engine: engineName, defaultExecuteInfo = {} } = iinstance;
+            if (!engine_factory_1.engineFactory.has(engineName || "")) {
+                throw new Error(`没有发现engine[${engineName}]`);
+            }
+            engine = engine_factory_1.engineFactory.use(engineName || "default");
+            try {
+                yield engine.validate(iinstance, options);
+            }
+            catch (e) {
+                throw e;
+            }
+            return engine.proxy(iinstance, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
+        });
     }
-    async custom(instance, type, id, options = {}, ...otherOptions) {
-        let { instance: extraInstance = {}, params = {} } = options, iiinstance;
-        extraInstance.method = type;
-        if (id) {
-            extraInstance.path = (extraInstance.path || instance.path) + "/:__id__";
-            params.__id__ = id;
-        }
-        options.instance = extraInstance;
-        options.params = params;
-        return await this.execute(instance, options, ...otherOptions);
+    custom(instance, type, id, options = {}, ...otherOptions) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let { instance: extraInstance = {}, params = {} } = options, iiinstance;
+            extraInstance.method = type;
+            if (id) {
+                extraInstance.path = (extraInstance.path || instance.path) + "/:__id__";
+                params.__id__ = id;
+            }
+            options.instance = extraInstance;
+            options.params = params;
+            return yield this.execute(instance, options, ...otherOptions);
+        });
     }
     megreInstance(instance, extendInstance = {}) {
         return Object.assign({}, instance, extendInstance);

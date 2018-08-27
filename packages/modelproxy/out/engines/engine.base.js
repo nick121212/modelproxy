@@ -1,23 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const pathToRegexp = require("path-to-regexp");
 const URLSearchParams = require("url-search-params");
 const compose_1 = require("../libs/compose");
 const errors_1 = require("../libs/errors");
 class BaseEngine extends compose_1.Compose {
-    async validate(_instance, _options) {
-        return true;
-    }
-    async delay(interval) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve();
-            }, interval);
+    validate(_instance, _options) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return true;
         });
     }
-    async proxy(instance, options, ...otherOptions) {
-        instance.getPath(options.instance);
-        return {};
+    delay(interval) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve();
+                }, interval);
+            });
+        });
+    }
+    proxy(instance, options, ...otherOptions) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            instance.getPath(options.instance);
+            return {};
+        });
     }
     getStatePath(instance) {
         if (instance.states && instance.state) {

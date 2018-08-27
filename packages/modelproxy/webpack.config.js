@@ -9,10 +9,8 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
-    entry: {
-        index: ['core-js/es6/promise', "./src/index.ts"],
-    },
-    mode: "development",
+    entry: resolveApp("src/index.ts"),
+    mode: "production",
     devtool: 'source-map',
     module: {
         rules: [{
@@ -33,9 +31,9 @@ module.exports = {
         ]
     },
     plugins: [
-        // new UglifyJsPlugin({
-        //     sourceMap: true
-        // })
+        new UglifyJsPlugin({
+            sourceMap: true
+        })
     ],
     output: {
         path: path.resolve('./dist'),
