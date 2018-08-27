@@ -46,7 +46,7 @@ const authCompose = (reload=false)=> new modelProxy.Compose(async (ctx, next) =>
     let {header={}} = settings;
 
     // 将token加入到请求头
-    header["token"] = ctx.token;
+    header["token"] = ctx.result;
 
     ctx.settings = {
         ...settings,
