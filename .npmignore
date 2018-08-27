@@ -1,5 +1,6 @@
 .vscode
 .history
+.idea
 lerna-debug.log
 /packages/**/package-lock.json
 /packages/**/images

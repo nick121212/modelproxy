@@ -5,8 +5,10 @@ var base_factory_1 = require("./base.factory");
 var engine_factory_1 = require("./engine.factory");
 var InterfaceFactory = (function (_super) {
     tslib_1.__extends(InterfaceFactory, _super);
-    function InterfaceFactory() {
-        return _super.call(this) || this;
+    function InterfaceFactory(overrideInterfaceConfig) {
+        var _this = _super.call(this) || this;
+        _this.overrideInterfaceConfig = overrideInterfaceConfig;
+        return _this;
     }
     InterfaceFactory.prototype.add = function (name, instance, override) {
         if (override === void 0) { override = false; }

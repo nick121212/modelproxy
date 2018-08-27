@@ -34,7 +34,6 @@ describe('modelproxy cache------', function () {
     var data = { "username": "nick", "password": "111111" };
 
     before(function () {
-        console.log("-----");
         defEngine = new modelProxy.DefaultEngine();
         proxy = new modelProxy.ModelProxy();
         proxy.addEngines({
@@ -49,8 +48,6 @@ describe('modelproxy cache------', function () {
         it("正常cache", async () => {
             const article = proxy.getNs("test").get("article");
             const fetch1 = (ctx, next) => {
-                console.log("---------------------------------");
-
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         return resolve(Date.now());

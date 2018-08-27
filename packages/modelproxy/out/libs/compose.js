@@ -20,11 +20,12 @@ var Compose = (function () {
     };
     Compose.prototype.compose = function () {
         var _this = this;
-        if (!Array.isArray(this.middlewares)) {
+        var middlewares = this.middlewares;
+        if (!Array.isArray(middlewares)) {
             throw new TypeError("Middleware stack must be an array!");
         }
-        for (var _i = 0, _a = this.middlewares; _i < _a.length; _i++) {
-            var fn = _a[_i];
+        for (var _i = 0, middlewares_1 = middlewares; _i < middlewares_1.length; _i++) {
+            var fn = middlewares_1[_i];
             if (typeof fn !== "function") {
                 throw new TypeError("Middleware must be composed of functions!");
             }
@@ -33,17 +34,17 @@ var Compose = (function () {
             return new Promise(function (resolve, reject) {
                 var index = -1;
                 var dispatch = function (i) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-                    var _this = this;
                     var fn, e_1;
+                    var _this = this;
                     return tslib_1.__generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                fn = this.middlewares[i];
+                                fn = middlewares[i];
                                 if (i <= index) {
                                     return [2, reject(new Error("next() called multiple times" + i + "-" + index))];
                                 }
                                 index = i;
-                                if (i === this.middlewares.length) {
+                                if (i === middlewares.length) {
                                     fn = next;
                                 }
                                 if (!fn) {
@@ -106,8 +107,8 @@ var Compose = (function () {
         var _this = this;
         var fn = this.compose();
         return function (options) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var _this = this;
             var ctx, err_1;
+            var _this = this;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:

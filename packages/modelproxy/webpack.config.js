@@ -23,6 +23,20 @@ module.exports = {
             exclude: /node_modules/
         }]
     },
+    externals: {
+        'path-to-regexp':{
+            root: 'pathToRegexp',
+            amd: 'pathToRegexp',
+            commonjs2: 'pathToRegexp',
+            commonjs: 'pathToRegexp'
+        },
+        'url-search-params':{
+            root: 'URLSearchParams',
+            amd: 'URLSearchParams',
+            commonjs2: 'URLSearchParams',
+            commonjs: 'URLSearchParams'
+        }
+    },
     target: "web",
     resolve: {
         extensions: ['.ts', '.js'],

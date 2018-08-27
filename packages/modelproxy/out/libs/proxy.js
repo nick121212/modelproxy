@@ -24,12 +24,12 @@ var ModelProxy = (function (_super) {
         return this;
     };
     ModelProxy.prototype.loadConfig = function (config, overrideInterfaceConfig) {
+        if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
         var nsFactory = this.nsFactory.get(config.key);
         if (!nsFactory) {
-            this.nsFactory.add(config.key, this.initInterfaces(new interface_factory_1.InterfaceFactory(), config, overrideInterfaceConfig));
-            return this;
+            nsFactory = new interface_factory_1.InterfaceFactory(overrideInterfaceConfig);
         }
-        this.nsFactory.add(config.key, this.initInterfaces(nsFactory, config, overrideInterfaceConfig));
+        this.nsFactory.add(config.key, this.initInterfaces(nsFactory, config, Object.assign({}, nsFactory.overrideInterfaceConfig || {}, overrideInterfaceConfig)));
         return this;
     };
     ModelProxy.prototype.execute = function (ns, key, options) {
@@ -61,10 +61,10 @@ var ModelProxy = (function (_super) {
                 }
                 Object.keys(inters).forEach(function (key) {
                     maps.push(inters[key]().then(function (data) {
+                        var _a;
                         return _a = {},
                             _a[key] = data,
                             _a;
-                        var _a;
                     }));
                 });
                 return [2, Promise.all(maps).then(function (data) {
@@ -77,8 +77,8 @@ var ModelProxy = (function (_super) {
     };
     ModelProxy.prototype.race = function (inters) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var _this = this;
             var maps;
+            var _this = this;
             return tslib_1.__generator(this, function (_a) {
                 maps = inters.map(function (inter) {
                     if (inter.then) {
@@ -95,17 +95,10 @@ var ModelProxy = (function (_super) {
         return !!this.nsFactory.get(ns);
     };
     ModelProxy.prototype.getNs = function (ns) {
-        if (!this.hasNs(ns)) {
+        if (!this.nsFactory.has(ns)) {
             throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;");
         }
         return this.nsFactory.use(ns);
-    };
-    ModelProxy.prototype.minix = function (ns) {
-        var keys = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            keys[_i - 1] = arguments[_i];
-        }
-        return this.mixin.apply(this, [ns].concat(keys));
     };
     ModelProxy.prototype.mixin = function (ns) {
         var keys = [];
@@ -136,6 +129,7 @@ var ModelProxy = (function (_super) {
             }
             var paths = [];
             idKeys.forEach(function (k, idx) {
+                var _a;
                 paths.push(k.replacePath({
                     instance: {
                         path: k.path + "/:" + k.key
@@ -144,7 +138,6 @@ var ModelProxy = (function (_super) {
                         _a[k.key] = ids[idx],
                         _a)
                 }));
-                var _a;
             });
             lastInterface.path = paths.concat([lastInterface.path]).join("");
             return lastInterface;

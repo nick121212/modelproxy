@@ -8,6 +8,6 @@ export declare class BaseEngine<T extends IProxyCtx> extends Compose<T> implemen
     delay(interval: number): Promise<any>;
     proxy(instance: IInterfaceModel, options: IExecute, ...otherOptions: any[]): Promise<any>;
     getStatePath(instance: IInterfaceModel): string;
-    replacePath(instance: IInterfaceModel, {params, data}: IExecute): string;
+    replacePath(instance: IInterfaceModel, { params, data }: IExecute): string;
     getFullPath(instance: IInterfaceModel, options: IExecute): string;
 }

@@ -44,10 +44,12 @@ export class Compose<T extends IProxyCtx>  {
      * @return {Function}
      */
     public compose(): (context: T, next: MiddleFunc<T>) => Promise<any> {
-        if (!Array.isArray(this.middlewares)) {
+        const {middlewares} = this;
+
+        if (!Array.isArray(middlewares)) {
             throw new TypeError("Middleware stack must be an array!");
         }
-        for (const fn of this.middlewares) {
+        for (const fn of middlewares) {
             if (typeof fn !== "function") {
                 throw new TypeError("Middleware must be composed of functions!");
             }
@@ -57,13 +59,13 @@ export class Compose<T extends IProxyCtx>  {
             return new Promise((resolve, reject) => {
                 let index = -1;
                 const dispatch = async (i: number) => {
-                    let fn: MiddleFunc<T> = this.middlewares[i];
+                    let fn: MiddleFunc<T> = middlewares[i];
 
                     if (i <= index) {
                         return reject(new Error("next() called multiple times" + i + "-" + index));
                     }
                     index = i;
-                    if (i === this.middlewares.length) {
+                    if (i === middlewares.length) {
                         fn = next;
                     }
                     if (!fn) {

@@ -39,18 +39,18 @@ export class ModelProxy extends Compose<any> {
      * @param  {overrideInterfaceConfig} overrideInterfaceConfig   覆盖的参数
      * @return {ModelProxy}                                        当前实例
     */
-    public loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon): ModelProxy {
-        // this.nsFactory[config.key as string] = this.initInterfaces(config, overrideInterfaceConfig);
+    public loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon = {}): ModelProxy {
         let nsFactory = this.nsFactory.get(config.key as string);
 
         if (!nsFactory) {
-            this.nsFactory.add(config.key as string,
-                this.initInterfaces(new InterfaceFactory(), config, overrideInterfaceConfig));
-
-            return this;
+            nsFactory = new InterfaceFactory(overrideInterfaceConfig);
+            // this.nsFactory.add(config.key as string,
+            //     this.initInterfaces(new InterfaceFactory(), config, overrideInterfaceConfig));
+            // return this;
         }
 
-        this.nsFactory.add(config.key as string, this.initInterfaces(nsFactory, config, overrideInterfaceConfig));
+        this.nsFactory.add(config.key as string, this.initInterfaces(nsFactory, config,
+            Object.assign({}, nsFactory.overrideInterfaceConfig || {}, overrideInterfaceConfig)));
 
         return this;
     }
@@ -129,7 +129,7 @@ export class ModelProxy extends Compose<any> {
     }
 
     /**
-     * 是否有命名空间
+     * 是否有命名空间(废弃)
      * @param  {string}    ns 空间名
      * @return { boolean }
      */
@@ -143,23 +143,11 @@ export class ModelProxy extends Compose<any> {
      * @return { InterfaceFactory }
      */
     public getNs(ns: string): InterfaceFactory {
-        if (!this.hasNs(ns)) {
+        if (!this.nsFactory.has(ns)) {
             throw new ModelProxyMissingError(`没有找到${ns}空间;`);
         }
 
         return this.nsFactory.use(ns);
-    }
-
-    /**
-     * 生成N级的rest风格接口
-     * @param   {string}   ns    命名空间
-     * @param   {string[]} keys  需要合并的接口的key
-     * @return  {(...ids: any[]) : IInterfaceModel}
-     * @example
-     *     proxy.mixin("test","users","articles")(1000).get(10) => GET /users/1000/articles/10
-     */
-    public minix(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null {
-        return this.mixin(ns, ...keys);
     }
 
     /**

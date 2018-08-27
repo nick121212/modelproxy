@@ -94,7 +94,7 @@ describe('modelproxy base', function () {
 
     describe('minix function', () => {
         it('合并user和article接口', () => {
-            const userArticles = proxy.minix("test", "user", "article")(1);
+            const userArticles = proxy.mixin("test", "user", "article")(1);
 
             expect(userArticles.path).to.be.equal("/users/1/articles");
         });

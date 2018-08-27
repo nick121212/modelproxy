@@ -1,12 +1,14 @@
 import { IEngine } from "../models/engine";
 import { IInterfaceModel, IInterfaceModelCommon } from "../models/interface";
-import { MethodType } from "../models/method";
+// import { MethodType } from "../models/method";
 import { BaseFactory } from "./base.factory";
 import { engineFactory } from "./engine.factory";
 import { IExecute } from "../models/execute";
 
 export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
-    constructor() { super(); }
+    constructor(public readonly overrideInterfaceConfig: IInterfaceModelCommon) {
+        super();
+    }
 
     /**
     * 添加一个实例
