@@ -1,12 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const base_factory_1 = require("./base.factory");
-const engine_factory_1 = require("./engine.factory");
-class InterfaceFactory extends base_factory_1.BaseFactory {
-    constructor() { super(); }
-    add(name, instance, override = false) {
-        super.add(name, Object.assign(instance, {
+var tslib_1 = require("tslib");
+var base_factory_1 = require("./base.factory");
+var engine_factory_1 = require("./engine.factory");
+var InterfaceFactory = (function (_super) {
+    tslib_1.__extends(InterfaceFactory, _super);
+    function InterfaceFactory() {
+        return _super.call(this) || this;
+    }
+    InterfaceFactory.prototype.add = function (name, instance, override) {
+        if (override === void 0) { override = false; }
+        _super.prototype.add.call(this, name, Object.assign(instance, {
             delete: this.custom.bind(this, instance, "DELETE"),
             execute: this.execute.bind(this, instance),
             get: this.custom.bind(this, instance, "GET", null),
@@ -17,45 +21,72 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
             put: this.custom.bind(this, instance, "PUT"),
             replacePath: this.replacePath.bind(this, instance)
         }), override);
-    }
-    execute(instance, options, ...otherOptions) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let engine;
-            let iinstance;
-            let { instance: extraInstance = {} } = options;
-            iinstance = this.megreInstance(instance, extraInstance);
-            const { engine: engineName, defaultExecuteInfo = {} } = iinstance;
-            if (!engine_factory_1.engineFactory.has(engineName || "")) {
-                throw new Error(`没有发现engine[${engineName}]`);
-            }
-            engine = engine_factory_1.engineFactory.use(engineName || "default");
-            try {
-                yield engine.validate(iinstance, options);
-            }
-            catch (e) {
-                throw e;
-            }
-            return engine.proxy(iinstance, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
+    };
+    InterfaceFactory.prototype.execute = function (instance, options) {
+        var otherOptions = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            otherOptions[_i - 2] = arguments[_i];
+        }
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var engine, iinstance, _a, extraInstance, engineName, _b, defaultExecuteInfo, e_1;
+            return tslib_1.__generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = options.instance, extraInstance = _a === void 0 ? {} : _a;
+                        iinstance = this.megreInstance(instance, extraInstance);
+                        engineName = iinstance.engine, _b = iinstance.defaultExecuteInfo, defaultExecuteInfo = _b === void 0 ? {} : _b;
+                        if (!engine_factory_1.engineFactory.has(engineName || "")) {
+                            throw new Error("\u6CA1\u6709\u53D1\u73B0engine[" + engineName + "]");
+                        }
+                        engine = engine_factory_1.engineFactory.use(engineName || "default");
+                        _c.label = 1;
+                    case 1:
+                        _c.trys.push([1, 3, , 4]);
+                        return [4, engine.validate(iinstance, options)];
+                    case 2:
+                        _c.sent();
+                        return [3, 4];
+                    case 3:
+                        e_1 = _c.sent();
+                        throw e_1;
+                    case 4: return [2, engine.proxy.apply(engine, [iinstance, Object.assign({}, defaultExecuteInfo, options)].concat(otherOptions))];
+                }
+            });
         });
-    }
-    custom(instance, type, id, options = {}, ...otherOptions) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let { instance: extraInstance = {}, params = {} } = options, iiinstance;
-            extraInstance.method = type;
-            if (id) {
-                extraInstance.path = (extraInstance.path || instance.path) + "/:__id__";
-                params.__id__ = id;
-            }
-            options.instance = extraInstance;
-            options.params = params;
-            return yield this.execute(instance, options, ...otherOptions);
+    };
+    InterfaceFactory.prototype.custom = function (instance, type, id, options) {
+        if (options === void 0) { options = {}; }
+        var otherOptions = [];
+        for (var _i = 4; _i < arguments.length; _i++) {
+            otherOptions[_i - 4] = arguments[_i];
+        }
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var _a, extraInstance, _b, params, iiinstance;
+            return tslib_1.__generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = options.instance, extraInstance = _a === void 0 ? {} : _a, _b = options.params, params = _b === void 0 ? {} : _b;
+                        extraInstance.method = type;
+                        if (id) {
+                            extraInstance.path = (extraInstance.path || instance.path) + "/:__id__";
+                            params.__id__ = id;
+                        }
+                        options.instance = extraInstance;
+                        options.params = params;
+                        return [4, this.execute.apply(this, [instance, options].concat(otherOptions))];
+                    case 1: return [2, _c.sent()];
+                }
+            });
         });
-    }
-    megreInstance(instance, extendInstance = {}) {
+    };
+    InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
+        if (extendInstance === void 0) { extendInstance = {}; }
         return Object.assign({}, instance, extendInstance);
-    }
-    executeEngineMethod(instance, extendInstance = {}, method, options = {}) {
-        let engine, methodFunc, iinstance;
+    };
+    InterfaceFactory.prototype.executeEngineMethod = function (instance, extendInstance, method, options) {
+        if (extendInstance === void 0) { extendInstance = {}; }
+        if (options === void 0) { options = {}; }
+        var engine, methodFunc, iinstance;
         iinstance = this.megreInstance(instance, extendInstance);
         engine = engine_factory_1.engineFactory.use("default");
         methodFunc = engine[method];
@@ -63,20 +94,24 @@ class InterfaceFactory extends base_factory_1.BaseFactory {
             return methodFunc.call(engine, iinstance, options);
         }
         return "";
-    }
-    getPath(instance, extendInstance = {}) {
-        let engine, iinstance;
+    };
+    InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
+        if (extendInstance === void 0) { extendInstance = {}; }
+        var engine, iinstance;
         iinstance = this.megreInstance(instance, extendInstance);
         return this.executeEngineMethod(instance, extendInstance, "getStatePath") + iinstance.path;
-    }
-    getFullPath(instance, options = {}) {
+    };
+    InterfaceFactory.prototype.getFullPath = function (instance, options) {
+        if (options === void 0) { options = {}; }
         return this.executeEngineMethod(instance, options.instance, "getFullPath", options);
-    }
-    replacePath(instance, options = {}) {
-        let engine, iinstance;
+    };
+    InterfaceFactory.prototype.replacePath = function (instance, options) {
+        if (options === void 0) { options = {}; }
+        var engine, iinstance;
         iinstance = this.megreInstance(instance, options.instance);
         engine = engine_factory_1.engineFactory.use("default");
         return engine.replacePath(iinstance, options);
-    }
-}
+    };
+    return InterfaceFactory;
+}(base_factory_1.BaseFactory));
 exports.InterfaceFactory = InterfaceFactory;

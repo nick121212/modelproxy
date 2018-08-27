@@ -9,10 +9,8 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
-    entry: {
-        index: "./src/fetch.engine.ts",
-    },
-    mode: "development",
+    entry: resolveApp("src/index.ts"),
+    mode: "production",
     devtool: 'source-map',
     module: {
         rules: [{
@@ -26,6 +24,12 @@ module.exports = {
         }]
     },
     target: "web",
+    resolve: {
+        extensions: ['.ts', '.js'],
+        plugins: [
+            new TsconfigPathsPlugin({ configFile: resolveApp("tsconfig.prd.json") }),
+        ]
+    },
     externals: {
         "modelproxy": {
             root: 'modelproxy',
@@ -34,16 +38,10 @@ module.exports = {
             commonjs: 'modelproxy'
         }
     },
-    resolve: {
-        extensions: ['.ts', '.js'],
-        plugins: [
-            new TsconfigPathsPlugin({ configFile: resolveApp("tsconfig.prd.json") }),
-        ]
-    },
     plugins: [
-        // new UglifyJsPlugin({
-        //     sourceMap: true
-        // })
+        new UglifyJsPlugin({
+            sourceMap: true
+        })
     ],
     output: {
         path: path.resolve('./dist'),
@@ -51,6 +49,6 @@ module.exports = {
         libraryTarget: "umd",
         strictModuleExceptionHandling: true,
         sourceMapFilename: "index.map",
-        library: "modelproxy-engine-fetch",
+        library: "modelproxy",
     }
 };

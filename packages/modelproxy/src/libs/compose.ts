@@ -97,14 +97,19 @@ export class Compose<T extends IProxyCtx>  {
 
     /**
      * 两个compose类的中间件合并
-     * @param {Compose<T>}  c 被合并的compose
+     * @param {Compose<T>}  c   被合并的compose
+     * @param {boolean}     top 放在头部
      * @return {Compose<T>}
      */
-    public merge(c: Compose<T>): Compose<T> {
+    public merge(c: Compose<T>, top = false): Compose<T> {
         const middles = c.getMiddlewares();
 
         middles.forEach((m: MiddleFunc<T>) => {
-            this.use(m);
+            if (top) {
+                this.middlewares.unshift(m);
+            } else {
+                this.use(m);
+            }
         });
 
         return this;

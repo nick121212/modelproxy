@@ -13,7 +13,7 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
      * 初始化
      */
     init() {
-        this.use(this.fetch);
+        this.use(this.fetch.bind(this));
     }
     /**
      * 发起请求

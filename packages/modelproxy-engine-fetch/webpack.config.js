@@ -9,10 +9,8 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = {
-    entry: {
-        index: "./src/fetch.engine.ts",
-    },
-    mode: "development",
+    entry: resolveApp("src/index.ts"),
+    mode: "production",
     devtool: 'source-map',
     module: {
         rules: [{
@@ -26,24 +24,36 @@ module.exports = {
         }]
     },
     target: "web",
-    externals: {
-        "modelproxy": {
-            root: 'modelproxy',
-            amd: 'modelproxy',
-            commonjs2: 'modelproxy',
-            commonjs: 'modelproxy'
-        }
-    },
     resolve: {
         extensions: ['.ts', '.js'],
         plugins: [
             new TsconfigPathsPlugin({ configFile: resolveApp("tsconfig.prd.json") }),
         ]
     },
+    externals: {
+        "modelproxy": {
+            root: 'modelproxy',
+            amd: 'modelproxy',
+            commonjs2: 'modelproxy',
+            commonjs: 'modelproxy'
+        },
+        'isomorphic-fetch':{
+            root: 'fetch',
+            amd: 'fetch',
+            commonjs2: 'fetch',
+            commonjs: 'fetch'
+        },
+        'url-search-params':{
+            root: 'URLSearchParams',
+            amd: 'URLSearchParams',
+            commonjs2: 'URLSearchParams',
+            commonjs: 'URLSearchParams'
+        }
+    },
     plugins: [
-        // new UglifyJsPlugin({
-        //     sourceMap: true
-        // })
+        new UglifyJsPlugin({
+            sourceMap: true
+        })
     ],
     output: {
         path: path.resolve('./dist'),
@@ -51,6 +61,6 @@ module.exports = {
         libraryTarget: "umd",
         strictModuleExceptionHandling: true,
         sourceMapFilename: "index.map",
-        library: "modelproxy-engine-fetch",
+        library: "modelproxy",
     }
 };

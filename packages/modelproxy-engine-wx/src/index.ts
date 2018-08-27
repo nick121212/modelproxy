@@ -14,7 +14,7 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
      * 初始化
      */
     public init(): void {
-        this.use(this.fetch);
+        this.use(this.fetch.bind(this));
     }
 
     /**

@@ -1,35 +1,59 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const engine_base_1 = require("./engine.base");
-const compose_1 = require("../libs/compose");
-class DefaultEngine extends engine_base_1.BaseEngine {
-    doProxy(instance, executeInfo, ...otherOptions) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const c = new compose_1.Compose();
-            const { before, after, error } = executeInfo;
-            if (before) {
-                c.merge(before);
-            }
-            c.merge(this);
-            if (after) {
-                c.merge(after);
-            }
-            const ctx = yield c.callback()(Object.assign({ executeInfo,
-                instance }, otherOptions));
-            if (ctx.isError) {
-                if (error) {
-                    yield error.callback()(ctx).catch(() => void (0));
+var tslib_1 = require("tslib");
+var engine_base_1 = require("./engine.base");
+var compose_1 = require("../libs/compose");
+var DefaultEngine = (function (_super) {
+    tslib_1.__extends(DefaultEngine, _super);
+    function DefaultEngine() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    DefaultEngine.prototype.doProxy = function (instance, executeInfo) {
+        var otherOptions = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            otherOptions[_i - 2] = arguments[_i];
+        }
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var c, before, after, error, ctx;
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        c = new compose_1.Compose();
+                        before = executeInfo.before, after = executeInfo.after, error = executeInfo.error;
+                        if (before) {
+                            c.merge(before);
+                        }
+                        c.merge(this);
+                        if (after) {
+                            c.merge(after);
+                        }
+                        return [4, c.callback()(tslib_1.__assign({ executeInfo: executeInfo,
+                                instance: instance }, otherOptions))];
+                    case 1:
+                        ctx = _a.sent();
+                        if (!ctx.isError) return [3, 4];
+                        if (!error) return [3, 3];
+                        return [4, error.callback()(ctx).catch(function () { return void (0); })];
+                    case 2:
+                        _a.sent();
+                        _a.label = 3;
+                    case 3: throw ctx.err;
+                    case 4: return [2, ctx];
                 }
-                throw ctx.err;
-            }
-            return ctx;
+            });
         });
-    }
-    proxy(instance, executeInfo, ...otherOptions) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return this.doProxy(instance, executeInfo, ...otherOptions);
+    };
+    DefaultEngine.prototype.proxy = function (instance, executeInfo) {
+        var otherOptions = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            otherOptions[_i - 2] = arguments[_i];
+        }
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                return [2, this.doProxy.apply(this, [instance, executeInfo].concat(otherOptions))];
+            });
         });
-    }
-}
+    };
+    return DefaultEngine;
+}(engine_base_1.BaseEngine));
 exports.DefaultEngine = DefaultEngine;

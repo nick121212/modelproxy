@@ -12,7 +12,7 @@ export declare class Compose<T extends IProxyCtx> {
     clear(): void;
     compose(): (context: T, next: MiddleFunc<T>) => Promise<any>;
     getMiddlewares(): Array<MiddleFunc<T>>;
-    merge(c: Compose<T>): Compose<T>;
+    merge(c: Compose<T>, top?: boolean): Compose<T>;
     errorHandle(ctx: T, err: Error): void;
     callback(complete?: MiddleRtnFunc<T>): (options: any) => Promise<IProxyCtx>;
 }

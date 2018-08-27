@@ -1,90 +1,145 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-class Compose {
-    constructor(...wares) {
-        this.middlewares = [...wares];
+var tslib_1 = require("tslib");
+var Compose = (function () {
+    function Compose() {
+        var wares = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            wares[_i] = arguments[_i];
+        }
+        this.middlewares = wares.slice();
     }
-    use(func) {
+    Compose.prototype.use = function (func) {
         if (typeof func !== "function") {
             throw new TypeError("middleware must be a function！");
         }
         this.middlewares.push(func);
-    }
-    clear() {
+    };
+    Compose.prototype.clear = function () {
         this.middlewares.length = 0;
-    }
-    compose() {
+    };
+    Compose.prototype.compose = function () {
+        var _this = this;
         if (!Array.isArray(this.middlewares)) {
             throw new TypeError("Middleware stack must be an array!");
         }
-        for (const fn of this.middlewares) {
+        for (var _i = 0, _a = this.middlewares; _i < _a.length; _i++) {
+            var fn = _a[_i];
             if (typeof fn !== "function") {
                 throw new TypeError("Middleware must be composed of functions!");
             }
         }
-        return (context, next) => {
-            return new Promise((resolve, reject) => {
-                let index = -1;
-                const dispatch = (i) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                    let fn = this.middlewares[i];
-                    if (i <= index) {
-                        return reject(new Error("next() called multiple times" + i + "-" + index));
-                    }
-                    index = i;
-                    if (i === this.middlewares.length) {
-                        fn = next;
-                    }
-                    if (!fn) {
-                        return context;
-                    }
-                    try {
-                        yield fn(context, (key) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                            if (key === "abort") {
-                                return resolve(context);
-                            }
-                            yield dispatch(i + 1);
-                        }));
-                    }
-                    catch (e) {
-                        reject(e);
-                    }
-                });
+        return function (context, next) {
+            return new Promise(function (resolve, reject) {
+                var index = -1;
+                var dispatch = function (i) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+                    var _this = this;
+                    var fn, e_1;
+                    return tslib_1.__generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                fn = this.middlewares[i];
+                                if (i <= index) {
+                                    return [2, reject(new Error("next() called multiple times" + i + "-" + index))];
+                                }
+                                index = i;
+                                if (i === this.middlewares.length) {
+                                    fn = next;
+                                }
+                                if (!fn) {
+                                    return [2, context];
+                                }
+                                _a.label = 1;
+                            case 1:
+                                _a.trys.push([1, 3, , 4]);
+                                return [4, fn(context, function (key) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+                                        return tslib_1.__generator(this, function (_a) {
+                                            switch (_a.label) {
+                                                case 0:
+                                                    if (key === "abort") {
+                                                        return [2, resolve(context)];
+                                                    }
+                                                    return [4, dispatch(i + 1)];
+                                                case 1:
+                                                    _a.sent();
+                                                    return [2];
+                                            }
+                                        });
+                                    }); })];
+                            case 2:
+                                _a.sent();
+                                return [3, 4];
+                            case 3:
+                                e_1 = _a.sent();
+                                reject(e_1);
+                                return [3, 4];
+                            case 4: return [2];
+                        }
+                    });
+                }); };
                 return dispatch(0).then(resolve.bind(context));
             });
         };
-    }
-    getMiddlewares() {
+    };
+    Compose.prototype.getMiddlewares = function () {
         return this.middlewares.concat([]);
-    }
-    merge(c) {
-        const middles = c.getMiddlewares();
-        middles.forEach((m) => {
-            this.use(m);
+    };
+    Compose.prototype.merge = function (c, top) {
+        var _this = this;
+        if (top === void 0) { top = false; }
+        var middles = c.getMiddlewares();
+        middles.forEach(function (m) {
+            if (top) {
+                _this.middlewares.unshift(m);
+            }
+            else {
+                _this.use(m);
+            }
         });
         return this;
-    }
-    errorHandle(ctx, err) {
+    };
+    Compose.prototype.errorHandle = function (ctx, err) {
         ctx.isError = true;
         ctx.err = err;
-    }
-    callback(complete) {
-        const fn = this.compose();
-        return (options) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let ctx = Object.assign(options || {}, {});
-            try {
-                yield fn(ctx, (content, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                    yield next();
-                    if (ctx.isError) {
-                        throw ctx.err;
-                    }
-                }));
-            }
-            catch (err) {
-                this.errorHandle(ctx, err);
-            }
-            return ctx;
-        });
-    }
-}
+    };
+    Compose.prototype.callback = function (complete) {
+        var _this = this;
+        var fn = this.compose();
+        return function (options) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+            var _this = this;
+            var ctx, err_1;
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        ctx = Object.assign(options || {}, {});
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4, fn(ctx, function (content, next) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+                                return tslib_1.__generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4, next()];
+                                        case 1:
+                                            _a.sent();
+                                            if (ctx.isError) {
+                                                throw ctx.err;
+                                            }
+                                            return [2];
+                                    }
+                                });
+                            }); })];
+                    case 2:
+                        _a.sent();
+                        return [3, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        this.errorHandle(ctx, err_1);
+                        return [3, 4];
+                    case 4: return [2, ctx];
+                }
+            });
+        }); };
+    };
+    return Compose;
+}());
 exports.Compose = Compose;
