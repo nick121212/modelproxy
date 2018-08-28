@@ -27,8 +27,10 @@ var DefaultEngine = (function (_super) {
                         if (after) {
                             c.merge(after);
                         }
-                        return [4, c.callback()(tslib_1.__assign({ executeInfo: executeInfo,
-                                instance: instance }, otherOptions))];
+                        return [4, c.callback()(Object.assign.apply(Object, [{}].concat(otherOptions, [{
+                                    executeInfo: executeInfo,
+                                    instance: instance,
+                                }])))];
                     case 1:
                         ctx = _a.sent();
                         if (!ctx.isError) return [3, 4];

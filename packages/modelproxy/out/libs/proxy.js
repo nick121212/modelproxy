@@ -61,10 +61,10 @@ var ModelProxy = (function (_super) {
                 }
                 Object.keys(inters).forEach(function (key) {
                     maps.push(inters[key]().then(function (data) {
-                        var _a;
                         return _a = {},
                             _a[key] = data,
                             _a;
+                        var _a;
                     }));
                 });
                 return [2, Promise.all(maps).then(function (data) {
@@ -77,8 +77,8 @@ var ModelProxy = (function (_super) {
     };
     ModelProxy.prototype.race = function (inters) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var maps;
             var _this = this;
+            var maps;
             return tslib_1.__generator(this, function (_a) {
                 maps = inters.map(function (inter) {
                     if (inter.then) {
@@ -129,7 +129,6 @@ var ModelProxy = (function (_super) {
             }
             var paths = [];
             idKeys.forEach(function (k, idx) {
-                var _a;
                 paths.push(k.replacePath({
                     instance: {
                         path: k.path + "/:" + k.key
@@ -138,6 +137,7 @@ var ModelProxy = (function (_super) {
                         _a[k.key] = ids[idx],
                         _a)
                 }));
+                var _a;
             });
             lastInterface.path = paths.concat([lastInterface.path]).join("");
             return lastInterface;

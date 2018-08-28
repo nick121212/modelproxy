@@ -34,11 +34,10 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
         }
 
         // 執行當前的中間件
-        const ctx = await c.callback()({
+        const ctx = await c.callback()(Object.assign({}, ...otherOptions, {
             executeInfo,
             instance,
-            ...otherOptions
-        });
+        }));
 
         // 錯誤處理，如果有錯誤，則調用錯誤處理中間件
         if (ctx.isError) {
