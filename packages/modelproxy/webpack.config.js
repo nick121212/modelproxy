@@ -26,15 +26,15 @@ module.exports = {
     externals: {
         'path-to-regexp':{
             root: 'pathToRegexp',
-            amd: 'pathToRegexp',
-            commonjs2: 'pathToRegexp',
-            commonjs: 'pathToRegexp'
+            amd: 'path-to-regexp',
+            commonjs2: 'path-to-regexp',
+            commonjs: 'path-to-regexp'
         },
         'url-search-params':{
             root: 'URLSearchParams',
-            amd: 'URLSearchParams',
-            commonjs2: 'URLSearchParams',
-            commonjs: 'URLSearchParams'
+            amd: 'url-search-param',
+            commonjs2: 'url-search-param',
+            commonjs: 'url-search-param'
         }
     },
     target: "web",
