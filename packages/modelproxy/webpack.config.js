@@ -32,9 +32,9 @@ module.exports = {
         },
         'url-search-params':{
             root: 'URLSearchParams',
-            amd: 'url-search-param',
-            commonjs2: 'url-search-param',
-            commonjs: 'url-search-param'
+            amd: 'url-search-params',
+            commonjs2: 'url-search-params',
+            commonjs: 'url-search-params'
         }
     },
     target: "web",
