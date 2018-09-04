@@ -39,15 +39,15 @@ module.exports = {
         },
         'isomorphic-fetch':{
             root: 'fetch',
-            amd: 'fetch',
-            commonjs2: 'fetch',
-            commonjs: 'fetch'
+            amd: 'isomorphic-fetch',
+            commonjs2: 'isomorphic-fetch',
+            commonjs: 'isomorphic-fetch'
         },
         'url-search-params':{
             root: 'URLSearchParams',
-            amd: 'URLSearchParams',
-            commonjs2: 'URLSearchParams',
-            commonjs: 'URLSearchParams'
+            amd: 'url-search-params',
+            commonjs2: 'url-search-params',
+            commonjs: 'url-search-params'
         }
     },
     plugins: [

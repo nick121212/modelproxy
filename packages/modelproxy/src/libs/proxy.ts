@@ -43,7 +43,11 @@ export class ModelProxy extends Compose<any> {
         let nsFactory = this.nsFactory.get(config.key as string);
 
         if (!nsFactory) {
-            nsFactory = new InterfaceFactory(overrideInterfaceConfig);
+            nsFactory = new InterfaceFactory(Object.assign({
+                state: config.state,
+                states: config.states,
+                version: config.version
+            }, overrideInterfaceConfig));
             // this.nsFactory.add(config.key as string,
             //     this.initInterfaces(new InterfaceFactory(), config, overrideInterfaceConfig));
             // return this;
@@ -120,6 +124,7 @@ export class ModelProxy extends Compose<any> {
             if ((inter as Promise<any>).then) {
                 return inter;
             }
+
             const { ns = "", key = "", options = {}, otherOptions = [] } = inter as NormalExecuteInfo;
 
             return this.execute(ns, key, options, ...otherOptions);
@@ -215,12 +220,12 @@ export class ModelProxy extends Compose<any> {
         overrideInterfaceConfig: IInterfaceModelCommon = {}): InterfaceFactory {
         config.interfaces.forEach((i: IInterfaceModelCommon) => {
             const interModel: IInterfaceModel = Object.assign({}, {
+                defaultExecuteInfo: this.defaultExecuteInfo,
                 engine: config.engine,
                 mockDir: config.mockDir,
                 ns: config.key,
                 state: config.state,
                 states: config.states,
-                defaultExecuteInfo: this.defaultExecuteInfo
             }, i, overrideInterfaceConfig || {}) as IInterfaceModel;
 
             ifFactory.add(i.key as string, interModel, true);
