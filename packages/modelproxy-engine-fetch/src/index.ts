@@ -31,6 +31,10 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
             { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
             fullPath = this.getFullPath(instance as any, executeInfo);
 
+        if (typeof FormData !== "undefined") {
+            formData = new FormData();
+        }
+
         // 根据type来设置不同的header
         switch (type) {
             case "params":

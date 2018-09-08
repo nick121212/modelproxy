@@ -24,6 +24,9 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
     fetch(ctx, next) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let formData = new URLSearchParams(), bodyParams = new URLSearchParams(), { executeInfo = {}, instance = {} } = ctx, body, headers = { "X-Requested-With": "XMLHttpRequest" }, { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {}, fullPath = this.getFullPath(instance, executeInfo);
+            if (typeof FormData !== "undefined") {
+                formData = new FormData();
+            }
             // 根据type来设置不同的header
             switch (type) {
                 case "params":
