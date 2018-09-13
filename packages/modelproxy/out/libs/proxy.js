@@ -27,7 +27,11 @@ var ModelProxy = (function (_super) {
         if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
         var nsFactory = this.nsFactory.get(config.key);
         if (!nsFactory) {
-            nsFactory = new interface_factory_1.InterfaceFactory(overrideInterfaceConfig);
+            nsFactory = new interface_factory_1.InterfaceFactory(Object.assign({
+                state: config.state,
+                states: config.states,
+                version: config.version
+            }, overrideInterfaceConfig));
         }
         this.nsFactory.add(config.key, this.initInterfaces(nsFactory, config, Object.assign({}, nsFactory.overrideInterfaceConfig || {}, overrideInterfaceConfig)));
         return this;
@@ -148,12 +152,12 @@ var ModelProxy = (function (_super) {
         if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
         config.interfaces.forEach(function (i) {
             var interModel = Object.assign({}, {
+                defaultExecuteInfo: _this.defaultExecuteInfo,
                 engine: config.engine,
                 mockDir: config.mockDir,
                 ns: config.key,
                 state: config.state,
                 states: config.states,
-                defaultExecuteInfo: _this.defaultExecuteInfo
             }, i, overrideInterfaceConfig || {});
             ifFactory.add(i.key, interModel, true);
         });

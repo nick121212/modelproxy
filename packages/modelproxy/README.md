@@ -42,13 +42,13 @@ const authCompose = (reload=false)=> new modelProxy.Compose(async (ctx, next) =>
 
     await next();
 }, async (ctx, next) => {
-    let {settings={}} = ctx;
+    let {settings={}} = ctx.executeInfo;
     let {header={}} = settings;
 
     // 将token加入到请求头
     header["token"] = ctx.result;
 
-    ctx.settings = {
+    ctx.executeInfo.settings = {
         ...settings,
         header
     };
@@ -106,6 +106,7 @@ const userInfo = await proxy.execute("test", "userInfo", {
   - [validate](#validate)
 - [InterfaceFactory](#InterfaceFactory)
   - [get](#get)
+  - [getOne](#getOne)
   - [post](#post)
   - [delete](#delete)
   - [put](#put)
@@ -338,8 +339,15 @@ export class WxAppEngine extends BaseEngine {
     // 获取文章列表
     proxy.getNs("test").get("article").get();
     // 发送请求 GET http://www.baidu.com/articles
+```
+
+### getOne
+
+通过get调用接口。这里会覆盖配置文件中配置的method属性。
+
+```typescript
     // 获取文章的详情，id为1
-    proxy.getNs("test").get("article").get(1);
+    proxy.getNs("test").get("article").getOne(1);
     // 发送请求 GET http://www.baidu.com/articles/1
 ```
 
@@ -430,6 +438,10 @@ export class WxAppEngine extends BaseEngine {
 ### errorHandle
 
 错误处理方法
+
+### merge
+
+合并多个compose的中间件
 
 ## 8. DEMO
 
