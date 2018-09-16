@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const modelproxy_1 = require("modelproxy");
-// import { fetchCacheDec } from "./fetch.cache";
-// import { fetchDec } from "./fetch.decorator";
-class FetchEngine extends modelproxy_1.DefaultEngine {
+const engine_def_1 = require("modelproxy/out/engines/engine.def");
+const engine_cache_1 = require("modelproxy/out/engines/engine.cache");
+class FetchEngine extends engine_def_1.DefaultEngine {
     constructor(fetchFunc) {
         super();
         this.fetchFunc = fetchFunc;
@@ -41,7 +40,7 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
                 this.delay(timeout || 5000).then(() => {
                     throw new Error(`接口请求超时！(${timeout})`);
                 }),
-                modelproxy_1.cacheDec(fetchFunc, ctx, fullPath),
+                engine_cache_1.cacheDec(fetchFunc, ctx, fullPath),
             ]);
             yield next();
         });

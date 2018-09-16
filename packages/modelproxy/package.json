@@ -13,7 +13,10 @@
     "type": "git",
     "url": "git+https://github.com/nick121212/modelproxy.git"
   },
-  "typings": "./out/index.d.ts",
+  "typings": [
+    "./out/index.d.ts",
+    "./dist/out/index.d.ts"
+  ],
   "keywords": [
     "nodejs",
     "modelproxy",

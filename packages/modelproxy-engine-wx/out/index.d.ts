@@ -1,5 +1,5 @@
-import { DefaultEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
+import { DefaultEngine } from "modelproxy/out/engines/engine.def";
 export declare class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
     private fetchFunc;
     constructor(fetchFunc: (s: any) => Promise<any>);

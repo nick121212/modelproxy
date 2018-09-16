@@ -1,8 +1,7 @@
 import { DefaultEngine, cacheDec } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
-
-// import { fetchCacheDec } from "./fetch.cache";
-// import { fetchDec } from "./fetch.decorator";
+// import { DefaultEngine } from "modelproxy/out/engines/engine.def";
+// import { cacheDec } from "modelproxy/out/engines/engine.cache";
 
 export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
 
