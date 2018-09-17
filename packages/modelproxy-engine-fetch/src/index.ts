@@ -1,4 +1,4 @@
-import { DefaultEngine, cacheDec } from "modelproxy";
+import { DefaultEngine, cacheDec, BaseError } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import * as fetch from "isomorphic-fetch";
 import * as URLSearchParams from "url-search-params";
@@ -74,7 +74,11 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
         // 发送请求
         ctx.result = await Promise.race([
             this.delay(timeout || 5000).then(() => {
-                throw new Error(`接口请求超时！(${timeout})`);
+                const err = new Error(`接口请求超时！(${timeout})`);
+
+                err.name = "timeout";
+
+                throw err;
             }),
             cacheDec(fetchFunc, ctx, fullPath)
         ]);
