@@ -42,7 +42,11 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
         // 发布request请求
         ctx.result = await Promise.race([
             this.delay(timeout || 5000).then(() => {
-                throw new Error(`接口请求超时！(${timeout})`);
+                const err = new Error(`接口请求超时！(${timeout})`);
+
+                err.name = "timeout";
+
+                throw err;
             }),
             cacheDec(fetchFunc, ctx, fullPath),
         ]);

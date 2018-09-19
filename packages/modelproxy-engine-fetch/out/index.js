@@ -61,7 +61,9 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
             // 发送请求
             ctx.result = yield Promise.race([
                 this.delay(timeout || 5000).then(() => {
-                    throw new Error(`接口请求超时！(${timeout})`);
+                    const err = new Error(`接口请求超时！(${timeout})`);
+                    err.name = "timeout";
+                    throw err;
                 }),
                 modelproxy_1.cacheDec(fetchFunc, ctx, fullPath)
             ]);
