@@ -1,6 +1,6 @@
 {
   "name": "modelproxy-engine-wx",
-  "version": "2.0.28",
+  "version": "2.0.29",
   "description": "modelproxy中微信小程序的engine",
   "main": "out/index.js",
   "scripts": {
