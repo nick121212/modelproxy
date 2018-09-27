@@ -1,6 +1,6 @@
 import { DefaultEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
-export declare class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
+export declare class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
     /**
      * 初始化
      */
@@ -11,5 +11,5 @@ export declare class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
      * @param  {(s?: string) => Promise<any>}  next 下一个中间件
      * @return {Promise<any>}
      */
-    fetch(ctx: IProxyCtx, next: (s?: string) => Promise<any>): Promise<void>;
+    fetch(ctx: T, next: (s?: string) => Promise<any>): Promise<void>;
 }

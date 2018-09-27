@@ -8,7 +8,7 @@ const defaultHeaders = {
     "Content-Type": "application/json"
 };
 
-export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
+export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
 
     /**
      * 初始化
@@ -23,7 +23,7 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
      * @param  {(s?: string) => Promise<any>}  next 下一个中间件
      * @return {Promise<any>}
      */
-    public async fetch(ctx: IProxyCtx, next: (s?: string) => Promise<any>) {
+    public async fetch(ctx: T, next: (s?: string) => Promise<any>) {
         let formData = new URLSearchParams(),
             bodyParams = new URLSearchParams(),
             { executeInfo = {}, instance = {} } = ctx,

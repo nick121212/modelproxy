@@ -8,8 +8,6 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
-console.log(path.join(__dirname, '/node_modules/modelproxy/dist/index'))
-
 module.exports = {
     entry: resolveApp("src/index.ts"),
     mode: "production",

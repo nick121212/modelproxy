@@ -8,7 +8,7 @@ import { Compose } from "../libs/compose";
  * 默认的engine
  * 返回接口的实例
  */
-export class DefaultEngine extends BaseEngine<IProxyCtx> {
+export class DefaultEngine<T extends IProxyCtx> extends BaseEngine<T> {
     /**
      * 调用接口，这里触发一次中间件方法
      * @param   {IInterfaceModel}  instance     接口的实例
@@ -26,7 +26,7 @@ export class DefaultEngine extends BaseEngine<IProxyCtx> {
         }
 
         // 合併當前的compose
-        c.merge(this);
+        c.merge(this as any);
 
         // 判斷是否需要在後面加入compose
         if (after) {
