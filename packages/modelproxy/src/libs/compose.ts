@@ -105,14 +105,17 @@ export class Compose<T extends IProxyCtx>  {
      */
     public merge(c: Compose<T>, top = false): Compose<T> {
         const middles = c.getMiddlewares();
+        const topMiddles: Array<MiddleFunc<T>> = [];
 
         middles.forEach((m: MiddleFunc<T>) => {
             if (top) {
-                this.middlewares.unshift(m);
+                topMiddles.push(m);
             } else {
                 this.use(m);
             }
         });
+
+        this.middlewares = topMiddles.concat(this.middlewares);
 
         return this;
     }

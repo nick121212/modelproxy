@@ -89,14 +89,16 @@ var Compose = (function () {
         var _this = this;
         if (top === void 0) { top = false; }
         var middles = c.getMiddlewares();
+        var topMiddles = [];
         middles.forEach(function (m) {
             if (top) {
-                _this.middlewares.unshift(m);
+                topMiddles.push(m);
             }
             else {
                 _this.use(m);
             }
         });
+        this.middlewares = topMiddles.concat(this.middlewares);
         return this;
     };
     Compose.prototype.errorHandle = function (ctx, err) {
