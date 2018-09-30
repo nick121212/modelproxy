@@ -136,7 +136,7 @@ export class Compose<T extends IProxyCtx>  {
      * @param   {MiddleRtnFunc} complete  执行完毕后回调函数
      * @return  {MiddleRtnFunc}
      */
-    public callback(complete?: MiddleRtnFunc<T>): (options: any) => Promise<IProxyCtx> {
+    public callback(complete?: MiddleRtnFunc<T>): (options: any) => Promise<T> {
         const fn = this.compose();
 
         return async (options: any): Promise<any> => {
