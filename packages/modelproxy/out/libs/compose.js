@@ -34,8 +34,8 @@ var Compose = (function () {
             return new Promise(function (resolve, reject) {
                 var index = -1;
                 var dispatch = function (i) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-                    var _this = this;
                     var fn, e_1;
+                    var _this = this;
                     return tslib_1.__generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
@@ -109,8 +109,8 @@ var Compose = (function () {
         var _this = this;
         var fn = this.compose();
         return function (options) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var _this = this;
             var ctx, err_1;
+            var _this = this;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:

@@ -48,7 +48,7 @@ describe('modelproxy timeout------', function () {
             defEngine.use(async (ctx, next) => {
                 ctx.result = await Promise.race([
                     delay(100).then(() => {
-                        throw (new Error("timeout"));
+                        throw new Error("timeout");
                     }),
                     new Promise((resolve) => {
                         setTimeout(() => {
@@ -56,19 +56,18 @@ describe('modelproxy timeout------', function () {
                         }, 200);
                     }),
                 ]);
+
+                await next();
             });
 
-           await proxy.execute("test", "article", {
+            proxy.execute("test", "article", {
                 settings: {
                     cache: true
                 }
             }).catch((e) => {
                 expect(e.message).eq("timeout");
-
                 done();
             });
-
-
             // expect(dd1.result).not.eq(dd2.result);
             // expect(dd.result).not.eq(dd3.result);
             // expect(dd3.result).not.eq(dd4.result);

@@ -11,7 +11,7 @@ export declare type NormalExecuteInfo = {
     otherOptions?: any[];
 };
 export declare class ModelProxy extends Compose<any> {
-    private defaultExecuteInfo;
+    private defaultExecuteInfo?;
     private nsFactory;
     forEach: any;
     constructor(defaultExecuteInfo?: IExecute | undefined);
@@ -27,5 +27,5 @@ export declare class ModelProxy extends Compose<any> {
     hasNs(ns: string): boolean;
     getNs(ns: string): InterfaceFactory;
     mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null;
-    private initInterfaces(ifFactory, config, overrideInterfaceConfig?);
+    private initInterfaces;
 }
