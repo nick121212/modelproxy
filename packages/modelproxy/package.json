@@ -5,6 +5,7 @@
   "main": "out/index.js",
   "scripts": {
     "test": "mocha test/**/*.js",
+    "test1": "mocha test/error.js",
     "dist": "webpack",
     "build": "tsc -d",
     "watch": "tsc -d -w"

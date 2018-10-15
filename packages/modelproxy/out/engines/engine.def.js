@@ -14,7 +14,7 @@ var DefaultEngine = (function (_super) {
             otherOptions[_i - 2] = arguments[_i];
         }
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var c, before, after, error, ctx;
+            var c, before, after, error, ctx, err;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -29,17 +29,22 @@ var DefaultEngine = (function (_super) {
                         }
                         return [4, c.callback()(Object.assign.apply(Object, [{}].concat(otherOptions, [{
                                     executeInfo: executeInfo,
-                                    instance: instance,
+                                    instance: instance
                                 }])))];
                     case 1:
                         ctx = _a.sent();
                         if (!ctx.isError) return [3, 4];
+                        err = ctx.err;
                         if (!error) return [3, 3];
-                        return [4, error.callback()(ctx).catch(function () { return void (0); })];
+                        return [4, error.callback()(ctx)];
                     case 2:
-                        _a.sent();
+                        ctx = _a.sent();
                         _a.label = 3;
-                    case 3: throw ctx.err;
+                    case 3:
+                        if (ctx.isError) {
+                            throw err || ctx.err;
+                        }
+                        _a.label = 4;
                     case 4: return [2, ctx];
                 }
             });
