@@ -1,11 +1,11 @@
 {
   "name": "modelproxy",
-  "version": "2.0.34",
+  "version": "2.0.35",
   "description": "接口配置建模框架",
   "main": "out/index.js",
   "scripts": {
     "test": "mocha test/**/*.js",
-    "test1": "mocha test/error.js",
+    "test1": "mocha test/timeout.js",
     "dist": "webpack",
     "build": "tsc -d",
     "watch": "tsc -d -w"
