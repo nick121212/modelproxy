@@ -3,7 +3,7 @@ import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 // import { DefaultEngine } from "modelproxy/out/engines/engine.def";
 // import { cacheDec } from "modelproxy/out/engines/engine.cache";
 
-export class FetchEngine<T extends IProxyCtx> extends DefaultEngine {
+export class WXFetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
 
     constructor(private fetchFunc: (s: any) => Promise<any>) {
         super();
