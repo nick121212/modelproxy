@@ -61,6 +61,10 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
             throw e;
         }
 
+        // if (beforeProxy) {
+        //     beforeProxy(options);
+        // }
+
         // 调用engine的proxy方法
         return engine.proxy(iinstance, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
     }

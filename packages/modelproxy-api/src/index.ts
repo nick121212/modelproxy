@@ -47,6 +47,6 @@ createConnection().then(async (_conn: Connection) => {
 
     // 启动应用
     app.listen(config.get("site.port") || 3004, config.get("site.host") || "0.0.0.0", () => {
-        console.log("server listen on 3004");
+        console.log(`server listen on ${config.get("site.port") || 3004}`);
     });
 }).catch(error => console.log(error));

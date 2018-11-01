@@ -22,7 +22,7 @@ export class DefaultEngine<T extends IProxyCtx> extends BaseEngine<T> {
     ...otherOptions: any[]
   ): Promise<any> {
     const c = new Compose<IProxyCtx>();
-    const { before, after, error } = executeInfo;
+    const { before, after, error, beforeProxy, afterProxy } = executeInfo;
 
     // 判斷是否需要在前面加入compose
     if (before) {
@@ -37,13 +37,26 @@ export class DefaultEngine<T extends IProxyCtx> extends BaseEngine<T> {
       c.merge(after);
     }
 
+    let ctx = Object.assign({}, ...otherOptions, {
+      executeInfo,
+      instance
+    });
+
+    if (beforeProxy) {
+      beforeProxy(ctx);
+    }
+
     // 執行當前的中間件
-    let ctx = await c.callback()(
+    ctx = await c.callback()(
       Object.assign({}, ...otherOptions, {
         executeInfo,
         instance
       })
     );
+
+    if (afterProxy) {
+      afterProxy(ctx);
+    }
 
     // 錯誤處理，如果有錯誤，則調用錯誤處理中間件
     if (ctx.isError) {

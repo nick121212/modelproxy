@@ -10,4 +10,6 @@ export interface IExecute {
     before?: Compose<IProxyCtx>;
     after?: Compose<IProxyCtx>;
     error?: Compose<IProxyCtx>;
+    beforeProxy?: (ctx: IProxyCtx) => void;
+    afterProxy?: (ctx: IProxyCtx) => void;
 }

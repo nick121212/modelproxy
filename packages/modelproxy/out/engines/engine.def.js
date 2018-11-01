@@ -14,12 +14,12 @@ var DefaultEngine = (function (_super) {
             otherOptions[_i - 2] = arguments[_i];
         }
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var c, before, after, error, ctx, err;
+            var c, before, after, error, beforeProxy, afterProxy, ctx, err;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         c = new compose_1.Compose();
-                        before = executeInfo.before, after = executeInfo.after, error = executeInfo.error;
+                        before = executeInfo.before, after = executeInfo.after, error = executeInfo.error, beforeProxy = executeInfo.beforeProxy, afterProxy = executeInfo.afterProxy;
                         if (before) {
                             c.merge(before);
                         }
@@ -27,12 +27,22 @@ var DefaultEngine = (function (_super) {
                         if (after) {
                             c.merge(after);
                         }
+                        ctx = Object.assign.apply(Object, [{}].concat(otherOptions, [{
+                                executeInfo: executeInfo,
+                                instance: instance
+                            }]));
+                        if (beforeProxy) {
+                            beforeProxy(ctx);
+                        }
                         return [4, c.callback()(Object.assign.apply(Object, [{}].concat(otherOptions, [{
                                     executeInfo: executeInfo,
                                     instance: instance
                                 }])))];
                     case 1:
                         ctx = _a.sent();
+                        if (afterProxy) {
+                            afterProxy(ctx);
+                        }
                         if (!ctx.isError) return [3, 4];
                         err = ctx.err;
                         if (!error) return [3, 3];
