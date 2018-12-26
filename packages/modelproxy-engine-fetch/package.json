@@ -1,6 +1,6 @@
 {
   "name": "modelproxy-engine-fetch",
-  "version": "2.0.38",
+  "version": "2.0.39",
   "description": "modelproxy中fetch的engine",
   "main": "out/index.js",
   "scripts": {
