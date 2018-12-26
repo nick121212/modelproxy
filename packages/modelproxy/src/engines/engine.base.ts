@@ -71,7 +71,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @return  {string}                       返回替换过后的路径
      */
     public replacePath(instance: IInterfaceModel, { params = [], data = {} }: IExecute): string {
-        const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string)),
+        const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string || "/")),
             paths: Array<string> = [];
 
         // 处理path中的变量

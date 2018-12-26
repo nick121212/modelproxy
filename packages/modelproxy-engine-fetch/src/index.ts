@@ -27,7 +27,7 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
         let formData = new URLSearchParams(),
             bodyParams = new URLSearchParams(),
             { executeInfo = {}, instance = {} } = ctx,
-            body, headers: any = { "X-Requested-With": "XMLHttpRequest" },
+            body, headers: any = { },
             { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
             fullPath = this.getFullPath(instance as any, executeInfo);
 
