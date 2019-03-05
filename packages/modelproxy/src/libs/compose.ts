@@ -1,5 +1,4 @@
 import { IProxyCtx } from "../models/proxyctx";
-// import * as Bluebird from "bluebird";
 
 export interface MiddleFunc<T extends IProxyCtx> {
     (ctx: T, next: (symbol?: string) => Promise<void>): void;
@@ -12,11 +11,11 @@ export interface MiddleRtnFunc<T extends IProxyCtx> {
 /**
  * koa中间件方法
  */
-export class Compose<T extends IProxyCtx>  {
+export class Compose<T extends IProxyCtx> {
     private middlewares: Array<MiddleFunc<T>>;
 
     constructor(...wares: MiddleFunc<T>[]) {
-        this.middlewares = [...wares];
+        this.middlewares = [ ...wares ];
     }
 
     /**
@@ -44,7 +43,7 @@ export class Compose<T extends IProxyCtx>  {
      * @return {Function}
      */
     public compose(): (context: T, next: MiddleFunc<T>) => Promise<any> {
-        const {middlewares} = this;
+        const { middlewares } = this;
 
         if (!Array.isArray(middlewares)) {
             throw new TypeError("Middleware stack must be an array!");
@@ -72,10 +71,9 @@ export class Compose<T extends IProxyCtx>  {
                         return context;
                     }
                     try {
-
                         await fn(context, async (key?: string) => {
                             if (key === "abort") {
-                                return resolve(context);
+                                return;
                             }
                             await dispatch(i + 1);
                         });

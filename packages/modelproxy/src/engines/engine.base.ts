@@ -3,7 +3,7 @@ import * as URLSearchParams from "url-search-params";
 
 import { IEngine } from "../models/engine";
 import { IExecute } from "../models/execute";
-import { Compose, MiddleFunc } from "../libs/compose";
+import { Compose } from "../libs/compose";
 import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";

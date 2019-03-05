@@ -56,7 +56,7 @@ describe('modelproxy cache------', function () {
             }
 
             defEngine.use(async (ctx, next) => {
-                ctx.result = await modelProxy.cacheDec(fetch1, ctx, "/test/cache");
+                ctx.result = await modelProxy.cacheDec(fetch1, ctx, "/test/cache")();
                 next();
             });
 

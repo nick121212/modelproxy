@@ -5,5 +5,5 @@ export declare enum MethodType {
     PUT = 3,
     HEAD = 4,
     PATCH = 5,
-    OPTIONS = 6
+    OPTIONS = 6,
 }

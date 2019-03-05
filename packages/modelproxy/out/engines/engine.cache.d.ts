@@ -5,4 +5,4 @@ export declare const promiseFactory: BaseFactory<{
     promise: Promise<any>;
     expire?: number | undefined;
 }>;
-export declare const cacheDec: (fetchPromise: () => Promise<any>, ctx: IProxyCtx, fullPath: string) => Promise<any>;
+export declare const cacheDec: (func: (...args: any[]) => Promise<any>, ctx: IProxyCtx, fullPath: string) => (...args: any[]) => Promise<any>;

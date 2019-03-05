@@ -4,57 +4,59 @@ import { BaseFactory } from "../libs/base.factory";
 export const promiseFactory = new BaseFactory<{ cacheIn: number; promise: Promise<any>; expire?: number }>();
 
 /**
- * 为fetch增加cache的功能
+ * cache的高阶函数
  * 返回新的promise
- * @param fetchPromise {Promise<any>} fetch的promise
+ * @param func         {Promise<any>} 需要被高阶的函数
  * @param options      {IExecute}     请求参数
  * @param fullPath     {string}       请求路径
  * @returns {Promise<any>}
  */
-export const cacheDec = (fetchPromise: () => Promise<any>, ctx: IProxyCtx, fullPath: string) => {
+export const cacheDec = (func: (...args: any[]) => Promise<any>, ctx: IProxyCtx, fullPath: string) => {
     const { executeInfo = {}, instance } = ctx;
     const { settings } = executeInfo;
     const { cache = false, reload = false, expire = undefined } = settings || {},
         { method = "" } = instance || {},
         proKey = fullPath + method;
 
-    // 只有get才能缓存
-    // if (method.toString().toUpperCase() !== "GET") {
-    //     cache = false;
-    // }
-
-    // 如果不缓存直接调用方法
-    if (!cache) {
-        return fetchPromise();
-    }
-
-    // 删除缓存
-    if (reload) {
-        promiseFactory.remove(proKey);
-    }
-
-    const dataInCache = promiseFactory.get(proKey);
-    let { promise: promiseInCache = null, expire: expireInCache = null, cacheIn = 0 } = dataInCache || {};
-
-    // 处理失效时间
-    if (expireInCache && cacheIn) {
-        if (cacheIn + expireInCache < Date.now()) {
-            promiseFactory.remove(proKey);
-            promiseInCache = null;
+    return function(...args: any[]): Promise<any> {
+        // 如果不缓存直接调用方法
+        if (!cache) {
+            return func.apply(null, args);
         }
-    }
 
-    // 命中缓存
-    if (promiseInCache) {
-        ctx.fromCache = true;
+        // 删除缓存
+        if (reload) {
+            promiseFactory.remove(proKey);
+        }
 
-        return promiseInCache;
-    }
+        const dataInCache = promiseFactory.get(proKey);
+        let { promise: promiseInCache = null, expire: expireInCache = null, cacheIn = 0 } = dataInCache || {};
 
-    const promise = fetchPromise();
+        // 处理失效时间
+        if (expireInCache && cacheIn) {
+            if (cacheIn + expireInCache < Date.now()) {
+                promiseFactory.remove(proKey);
+                promiseInCache = null;
+            }
+        }
 
-    // 添加缓存
-    promiseFactory.add(proKey, { promise, expire, cacheIn: Date.now() });
+        // 命中缓存
+        if (promiseInCache) {
+            ctx.fromCache = true;
 
-    return promise;
+            return promiseInCache;
+        }
+
+        // 如果错误的话，清除掉缓存
+        const promise = func.apply(null, args).catch((e: Error) => {
+            promiseFactory.remove(proKey);
+
+            throw e;
+        });
+
+        // 添加缓存
+        promiseFactory.add(proKey, { promise, expire, cacheIn: Date.now() });
+
+        return promise;
+    };
 };

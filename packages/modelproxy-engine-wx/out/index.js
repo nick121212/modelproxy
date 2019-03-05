@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const modelproxy_1 = require("modelproxy");
 // import { DefaultEngine } from "modelproxy/out/engines/engine.def";
 // import { cacheDec } from "modelproxy/out/engines/engine.cache";
-class FetchEngine extends modelproxy_1.DefaultEngine {
+class WXFetchEngine extends modelproxy_1.DefaultEngine {
     constructor(fetchFunc) {
         super();
         this.fetchFunc = fetchFunc;
@@ -49,5 +49,5 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
         });
     }
 }
-exports.FetchEngine = FetchEngine;
+exports.WXFetchEngine = WXFetchEngine;
 //# sourceMappingURL=index.js.map
