@@ -11,7 +11,7 @@ export const promiseFactory = new BaseFactory<{ cacheIn: number; promise: Promis
  * @param fullPath     {string}       请求路径
  * @returns {Promise<any>}
  */
-export const cacheDec = (func: (...args: any[]) => Promise<any>, ctx: IProxyCtx, fullPath: string) => {
+export const cacheDec = <T extends Function>(func: T, ctx: IProxyCtx, fullPath: string) => {
     const { executeInfo = {}, instance } = ctx;
     const { settings } = executeInfo;
     const { cache = false, reload = false, expire = undefined } = settings || {},
