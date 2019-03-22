@@ -1,6 +1,4 @@
-var path = require("path");
 var expect = require("chai").expect;
-var assert = require("chai").assert;
 var modelProxy = require("../out/index");
 
 var config = {
