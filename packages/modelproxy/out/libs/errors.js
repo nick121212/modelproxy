@@ -5,7 +5,7 @@ var BaseError = (function () {
     function BaseError(message) {
         this.name = "";
         this.message = message ? message : "";
-        this.stack = (new Error()).stack;
+        this.stack = new Error().stack;
     }
     return BaseError;
 }());

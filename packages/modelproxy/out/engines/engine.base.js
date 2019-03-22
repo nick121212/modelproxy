@@ -48,7 +48,7 @@ var BaseEngine = (function (_super) {
     };
     BaseEngine.prototype.replacePath = function (instance, _a) {
         var _b = _a.params, params = _b === void 0 ? [] : _b, _c = _a.data, data = _c === void 0 ? {} : _c;
-        var tokens = pathToRegexp.parse((instance.path || "/")), paths = [];
+        var tokens = pathToRegexp.parse(instance.path || "/"), paths = [];
         tokens.forEach(function (token) {
             var name = token.name;
             if (!name) {

@@ -71,13 +71,13 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @return  {string}                       返回替换过后的路径
      */
     public replacePath(instance: IInterfaceModel, { params = [], data = {} }: IExecute): string {
-        const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string || "/")),
+        const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string) || "/"),
             paths: Array<string> = [];
 
         // 处理path中的变量
         // 遍历所有的tokens
         tokens.forEach((token: pathToRegexp.Key | string) => {
-            let { name } = (token as pathToRegexp.Key);
+            let { name } = token as pathToRegexp.Key;
 
             if (!name) {
                 paths.push(token as string);
@@ -100,7 +100,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @return  {string}                        返回路径
      */
     public getFullPath(instance: IInterfaceModel, options: IExecute): string {
-        const url = [this.getStatePath(instance), this.replacePath(instance, options)],
+        const url = [ this.getStatePath(instance), this.replacePath(instance, options) ],
             searchParams: URLSearchParams = new URLSearchParams();
 
         if (options.params) {

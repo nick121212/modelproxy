@@ -25,7 +25,7 @@ var ModelProxy = (function (_super) {
     };
     ModelProxy.prototype.loadConfig = function (config, overrideInterfaceConfig) {
         if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
-        var nsFactory = this.nsFactory.get(config.key);
+        var nsFactory = this.nsFactory.getItem(config.key);
         if (!nsFactory) {
             nsFactory = new interface_factory_1.InterfaceFactory(Object.assign({
                 state: config.state,
@@ -45,7 +45,7 @@ var ModelProxy = (function (_super) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             var interfaces, instance;
             return tslib_1.__generator(this, function (_a) {
-                interfaces = this.getNs(ns), instance = interfaces.get(key);
+                interfaces = this.getNs(ns), instance = interfaces.getItem(key);
                 if (!instance) {
                     throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u53D1\u73B0/" + ns + "/" + key + "\u7684\u63A5\u53E3\u65B9\u6CD5\uFF01");
                 }
@@ -96,13 +96,13 @@ var ModelProxy = (function (_super) {
         });
     };
     ModelProxy.prototype.hasNs = function (ns) {
-        return !!this.nsFactory.get(ns);
+        return !!this.nsFactory.getItem(ns);
     };
     ModelProxy.prototype.getNs = function (ns) {
         if (!this.nsFactory.has(ns)) {
             throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;");
         }
-        return this.nsFactory.use(ns);
+        return this.nsFactory.getItem(ns);
     };
     ModelProxy.prototype.mixin = function (ns) {
         var keys = [];
@@ -112,12 +112,12 @@ var ModelProxy = (function (_super) {
         if (!keys.length) {
             throw new errors_1.ModelProxyMissingError("\u5FC5\u987B\u5236\u5B9A\u81F3\u5C11\u4E00\u4E2AKey\uFF01");
         }
-        var interfaces = this.getNs(ns), idKeys = [], lastKey = keys.pop(), lastInterface = interfaces.get(lastKey);
+        var interfaces = this.getNs(ns), idKeys = [], lastKey = keys.pop(), lastInterface = interfaces.getItem(lastKey);
         if (!lastInterface) {
             return null;
         }
         keys.forEach(function (k) {
-            var instance = interfaces.get(k);
+            var instance = interfaces.getItem(k);
             if (!instance) {
                 throw new errors_1.ModelProxyMissingError(k + "\u4E0D\u5B58\u5728\u4E8E\u7A7A\u95F4" + ns + "\uFF01");
             }
@@ -157,7 +157,7 @@ var ModelProxy = (function (_super) {
                 mockDir: config.mockDir,
                 ns: config.key,
                 state: config.state,
-                states: config.states,
+                states: config.states
             }, i, overrideInterfaceConfig || {});
             ifFactory.add(i.key, interModel, true);
         });

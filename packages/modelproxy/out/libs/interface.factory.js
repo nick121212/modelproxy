@@ -30,28 +30,28 @@ var InterfaceFactory = (function (_super) {
             otherOptions[_i - 2] = arguments[_i];
         }
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var engine, iinstance, _a, extraInstance, engineName, _b, defaultExecuteInfo, e_1;
+            var engine, instanceMerge, _a, extraInstance, engineName, _b, defaultExecuteInfo, e_1;
             return tslib_1.__generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         _a = options.instance, extraInstance = _a === void 0 ? {} : _a;
-                        iinstance = this.megreInstance(instance, extraInstance);
-                        engineName = iinstance.engine, _b = iinstance.defaultExecuteInfo, defaultExecuteInfo = _b === void 0 ? {} : _b;
+                        instanceMerge = this.mergeInstance(instance, extraInstance);
+                        engineName = instanceMerge.engine, _b = instanceMerge.defaultExecuteInfo, defaultExecuteInfo = _b === void 0 ? {} : _b;
                         if (!engine_factory_1.engineFactory.has(engineName || "")) {
                             throw new Error("\u6CA1\u6709\u53D1\u73B0engine[" + engineName + "]");
                         }
-                        engine = engine_factory_1.engineFactory.use(engineName || "default");
+                        engine = engine_factory_1.engineFactory.getItem(engineName || "default");
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 3, , 4]);
-                        return [4, engine.validate(iinstance, options)];
+                        return [4, engine.validate(instanceMerge, options)];
                     case 2:
                         _c.sent();
                         return [3, 4];
                     case 3:
                         e_1 = _c.sent();
                         throw e_1;
-                    case 4: return [2, engine.proxy.apply(engine, [iinstance, Object.assign({}, defaultExecuteInfo, options)].concat(otherOptions))];
+                    case 4: return [2, engine.proxy.apply(engine, [instanceMerge, Object.assign({}, defaultExecuteInfo, options)].concat(otherOptions))];
                 }
             });
         });
@@ -63,7 +63,7 @@ var InterfaceFactory = (function (_super) {
             otherOptions[_i - 4] = arguments[_i];
         }
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var _a, extraInstance, _b, params, iiinstance;
+            var _a, extraInstance, _b, params;
             return tslib_1.__generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -81,27 +81,27 @@ var InterfaceFactory = (function (_super) {
             });
         });
     };
-    InterfaceFactory.prototype.megreInstance = function (instance, extendInstance) {
+    InterfaceFactory.prototype.mergeInstance = function (instance, extendInstance) {
         if (extendInstance === void 0) { extendInstance = {}; }
         return Object.assign({}, instance, extendInstance);
     };
     InterfaceFactory.prototype.executeEngineMethod = function (instance, extendInstance, method, options) {
         if (extendInstance === void 0) { extendInstance = {}; }
         if (options === void 0) { options = {}; }
-        var engine, methodFunc, iinstance;
-        iinstance = this.megreInstance(instance, extendInstance);
-        engine = engine_factory_1.engineFactory.use("default");
+        var engine, methodFunc, instanceMerge;
+        instanceMerge = this.mergeInstance(instance, extendInstance);
+        engine = engine_factory_1.engineFactory.getItem("default");
         methodFunc = engine[method];
         if (methodFunc) {
-            return methodFunc.call(engine, iinstance, options);
+            return methodFunc.call(engine, instanceMerge, options);
         }
         return "";
     };
     InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
         if (extendInstance === void 0) { extendInstance = {}; }
-        var engine, iinstance;
-        iinstance = this.megreInstance(instance, extendInstance);
-        return this.executeEngineMethod(instance, extendInstance, "getStatePath") + iinstance.path;
+        var engine, instanceMerge;
+        instanceMerge = this.mergeInstance(instance, extendInstance);
+        return this.executeEngineMethod(instance, extendInstance, "getStatePath") + instanceMerge.path;
     };
     InterfaceFactory.prototype.getFullPath = function (instance, options) {
         if (options === void 0) { options = {}; }
@@ -109,10 +109,10 @@ var InterfaceFactory = (function (_super) {
     };
     InterfaceFactory.prototype.replacePath = function (instance, options) {
         if (options === void 0) { options = {}; }
-        var engine, iinstance;
-        iinstance = this.megreInstance(instance, options.instance);
-        engine = engine_factory_1.engineFactory.use("default");
-        return engine.replacePath(iinstance, options);
+        var engine, instanceMerge;
+        instanceMerge = this.mergeInstance(instance, options.instance);
+        engine = engine_factory_1.engineFactory.getItem("default");
+        return engine.replacePath(instanceMerge, options);
     };
     return InterfaceFactory;
 }(base_factory_1.BaseFactory));

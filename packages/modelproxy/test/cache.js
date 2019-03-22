@@ -4,36 +4,45 @@ var assert = require("chai").assert;
 var modelProxy = require("../out/index");
 
 var config = {
-    "key": "test",
-    "title": "p-uc",
-    "engine": "default",
-    "mockDir": "/mocks/",
-    "states": {
-        "dev": "http://www.baidu.com"
+    key: "test",
+    title: "p-uc",
+    engine: "default",
+    mockDir: "/mocks/",
+    states: {
+        dev: "http://www.baidu.com"
     },
-    "state": "dev",
-    "interfaces": [{
-        "key": "article",
-        "title": "文章接口",
-        "method": "GET",
-        "path": "/articles"
-    }, {
-        "key": "login",
-        "title": "登陆接口",
-        "method": "POST",
-        "path": "/passport/login",
-        "engine": "default",
-        "config": {
-            "test": "test-1"
+    state: "dev",
+    interfaces: [
+        {
+            key: "article",
+            title: "文章接口",
+            method: "GET",
+            path: "/articles"
+        },
+        {
+            key: "login",
+            title: "登陆接口",
+            method: "POST",
+            path: "/passport/login",
+            engine: "default",
+            config: {
+                test: "test-1"
+            }
         }
-    }]
+    ]
 };
 
-describe('modelproxy cache------', function () {
-    var proxy, defEngine;
-    var data = { "username": "nick", "password": "111111" };
+describe("modelproxy cache------", function() {
+    let proxy, defEngine;
+    const fetch1 = (ctx, next) => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                return resolve(Date.now());
+            }, 100);
+        });
+    };
 
-    before(function () {
+    before(function() {
         defEngine = new modelProxy.DefaultEngine();
         proxy = new modelProxy.ModelProxy();
         proxy.addEngines({
@@ -44,19 +53,13 @@ describe('modelproxy cache------', function () {
         });
     });
 
-    describe("测试cache", function () {
+    describe("测试cache", function() {
         it("正常cache", async () => {
             const article = proxy.getNs("test").get("article");
-            const fetch1 = (ctx, next) => {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        return resolve(Date.now());
-                    }, 100);
-                });
-            }
 
             defEngine.use(async (ctx, next) => {
-                ctx.result = await modelProxy.cacheDec(fetch1, ctx, "/test/cache")();
+                ctx.result = await modelProxy.cacheDec(fetch1, "/test/cache", ctx.executeInfo.settings)();
+
                 next();
             });
 
@@ -92,6 +95,19 @@ describe('modelproxy cache------', function () {
             expect(dd1.result).not.eq(dd2.result);
             expect(dd.result).not.eq(dd3.result);
             expect(dd3.result).not.eq(dd4.result);
+        });
+
+        it("cache 方法测试", async () => {
+            const localStorage = new modelProxy.BaseFactory();
+            const cacheFunc = modelProxy.cacheDecFunc(localStorage);
+
+            const res1 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true, expire: 10 })();
+            const localRes1 = localStorage.getItem("/test/cache1");
+            const res2 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true })();
+
+            expect(res1).not.eq(res2);
+            expect(localRes1).to.be.a("string");
+            expect(JSON.parse(localRes1).data).to.eq(res1);
         });
     });
 });

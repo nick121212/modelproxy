@@ -8,11 +8,10 @@ import { Compose } from "./compose";
 import { ModelProxyMissingError } from "./errors";
 import { BaseFactory } from "./base.factory";
 
-export type NormalExecuteInfo = { ns?: string, key?: string, options?: IExecute, otherOptions?: any[] };
+export type NormalExecuteInfo = { ns?: string; key?: string; options?: IExecute; otherOptions?: any[] };
 
 export class ModelProxy extends Compose<any> {
     private nsFactory: BaseFactory<InterfaceFactory> = new BaseFactory<InterfaceFactory>();
-    // tslint:disable-next-line:member-ordering
     public forEach = this.nsFactory.forEach.bind(this.nsFactory);
 
     constructor(private defaultExecuteInfo?: IExecute) {
@@ -24,7 +23,7 @@ export class ModelProxy extends Compose<any> {
      * @param   { { [id: string]: IEngine; } } engines   引擎对象
      * @return  {ModelProxy}
      */
-    public addEngines(engines: { [id: string]: IEngine; }): ModelProxy {
+    public addEngines(engines: { [id: string]: IEngine }): ModelProxy {
         for (let key in engines) {
             if (engines.hasOwnProperty(key)) {
                 engineFactory.add(key, engines[key], true);
@@ -40,21 +39,25 @@ export class ModelProxy extends Compose<any> {
      * @return {ModelProxy}                                        当前实例
     */
     public loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon = {}): ModelProxy {
-        let nsFactory = this.nsFactory.get(config.key as string);
+        let nsFactory = this.nsFactory.getItem(config.key as string);
 
         if (!nsFactory) {
-            nsFactory = new InterfaceFactory(Object.assign({
-                state: config.state,
-                states: config.states,
-                version: config.version
-            }, overrideInterfaceConfig));
+            nsFactory = new InterfaceFactory(
+                Object.assign(
+                    {
+                        state: config.state,
+                        states: config.states,
+                        version: config.version
+                    },
+                    overrideInterfaceConfig
+                )
+            );
             // this.nsFactory.add(config.key as string,
             //     this.initInterfaces(new InterfaceFactory(), config, overrideInterfaceConfig));
             // return this;
         }
 
-        this.nsFactory.add(config.key as string, this.initInterfaces(nsFactory, config,
-            Object.assign({}, nsFactory.overrideInterfaceConfig || {}, overrideInterfaceConfig)));
+        this.nsFactory.add(config.key as string, this.initInterfaces(nsFactory, config, Object.assign({}, nsFactory.overrideInterfaceConfig || {}, overrideInterfaceConfig)));
 
         return this;
     }
@@ -68,7 +71,7 @@ export class ModelProxy extends Compose<any> {
      */
     public async execute(ns: string, key: string, options: IExecute = {}, ...otherOptions: any[]) {
         const interfaces = this.getNs(ns),
-            instance = interfaces.get(key);
+            instance = interfaces.getItem(key);
 
         if (!instance) {
             throw new ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
@@ -99,11 +102,13 @@ export class ModelProxy extends Compose<any> {
 
         // 处理所有的key
         Object.keys(inters).forEach((key: string) => {
-            maps.push(inters[key]().then((data: any) => {
-                return {
-                    [key]: data
-                };
-            }));
+            maps.push(
+                inters[key]().then((data: any) => {
+                    return {
+                        [key]: data
+                    };
+                })
+            );
         });
 
         // 返回promise
@@ -139,7 +144,7 @@ export class ModelProxy extends Compose<any> {
      * @return { boolean }
      */
     public hasNs(ns: string): boolean {
-        return !!this.nsFactory.get(ns);
+        return !!this.nsFactory.getItem(ns);
     }
 
     /**
@@ -152,7 +157,7 @@ export class ModelProxy extends Compose<any> {
             throw new ModelProxyMissingError(`没有找到${ns}空间;`);
         }
 
-        return this.nsFactory.use(ns);
+        return this.nsFactory.getItem(ns);
     }
 
     /**
@@ -171,14 +176,14 @@ export class ModelProxy extends Compose<any> {
         const interfaces = this.getNs(ns),
             idKeys: IInterfaceModel[] = [],
             lastKey: string = keys.pop() as string,
-            lastInterface = interfaces.get(lastKey);
+            lastInterface = interfaces.getItem(lastKey);
 
         if (!lastInterface) {
             return null;
         }
 
         keys.forEach((k: string) => {
-            let instance = interfaces.get(k);
+            let instance = interfaces.getItem(k);
 
             if (!instance) {
                 throw new ModelProxyMissingError(`${k}不存在于空间${ns}！`);
@@ -195,17 +200,19 @@ export class ModelProxy extends Compose<any> {
             let paths: string[] = [];
 
             idKeys.forEach((k: IInterfaceModel, idx: number) => {
-                paths.push(k.replacePath({
-                    instance: {
-                        path: k.path + "/:" + k.key
-                    },
-                    params: {
-                        [k.key as string]: ids[idx]
-                    }
-                }));
+                paths.push(
+                    k.replacePath({
+                        instance: {
+                            path: k.path + "/:" + k.key
+                        },
+                        params: {
+                            [k.key as string]: ids[idx]
+                        }
+                    })
+                );
             });
 
-            lastInterface.path = paths.concat([lastInterface.path as string]).join("");
+            lastInterface.path = paths.concat([ lastInterface.path as string ]).join("");
 
             return lastInterface;
         };
@@ -216,17 +223,21 @@ export class ModelProxy extends Compose<any> {
      * @param   {IProxyConfig}      config  配置信息
      * @return  {InterfaceFactory}
      */
-    private initInterfaces(ifFactory: InterfaceFactory, config: IProxyConfig,
-        overrideInterfaceConfig: IInterfaceModelCommon = {}): InterfaceFactory {
+    private initInterfaces(ifFactory: InterfaceFactory, config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon = {}): InterfaceFactory {
         config.interfaces.forEach((i: IInterfaceModelCommon) => {
-            const interModel: IInterfaceModel = Object.assign({}, {
-                defaultExecuteInfo: this.defaultExecuteInfo,
-                engine: config.engine,
-                mockDir: config.mockDir,
-                ns: config.key,
-                state: config.state,
-                states: config.states,
-            }, i, overrideInterfaceConfig || {}) as IInterfaceModel;
+            const interModel: IInterfaceModel = Object.assign(
+                {},
+                {
+                    defaultExecuteInfo: this.defaultExecuteInfo,
+                    engine: config.engine,
+                    mockDir: config.mockDir,
+                    ns: config.key,
+                    state: config.state,
+                    states: config.states
+                },
+                i,
+                overrideInterfaceConfig || {}
+            ) as IInterfaceModel;
 
             ifFactory.add(i.key as string, interModel, true);
         });

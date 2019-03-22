@@ -7,7 +7,7 @@ export class BaseError implements Error {
 
     constructor(message?: string) {
         this.message = message ? message : "";
-        this.stack = (new Error()).stack;
+        this.stack = new Error().stack;
     }
 }
 
