@@ -91,32 +91,40 @@ const userInfo = await proxy.execute("test", "userInfo", {
 
 ## 3. API
 
-- [ModelProxy](#ModelProxy)
-  - [constructor](#constructor)
-  - [loadConfig](#loadConfig)
-  - [addEngines](#addEngines)
-  - [execute](#execute)
-  - [executeAll](#executeAll)
-  - [race](#race)
-  - [getNs](#getNs)
-  - [mixin](#mixin)
-- [Cache](@Cache)
-- [Engines](#Engines)
-  - [proxy](#proxy)
-  - [validate](#validate)
-- [InterfaceFactory](#InterfaceFactory)
-  - [get](#get)
-  - [getOne](#getOne)
-  - [post](#post)
-  - [delete](#delete)
-  - [put](#put)
-  - [getPath](#getPath)
-- [Compose](#Compose)
-  - [use](#use)
-  - [clear](#clear)
-  - [compose](#compose)
-  - [callback](#callback)
-  - [errorHandle](#errorHandle)
+- [modelproxy](#modelproxy)
+  - [1. 解决了什么问题](#1-%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98)
+  - [2. 安装和依赖](#2-%E5%AE%89%E8%A3%85%E5%92%8C%E4%BE%9D%E8%B5%96)
+  - [3. API](#3-api)
+  - [4. ModelProxy](#4-modelproxy)
+    - [constructor](#constructor)
+    - [loadConfig](#loadconfig)
+    - [addEngines](#addengines)
+    - [execute](#execute)
+    - [executeAll](#executeall)
+    - [race](#race)
+    - [getNs](#getns)
+    - [mixin](#mixin)
+  - [Cache](#cache)
+  - [5. InterfaceFactory](#5-interfacefactory)
+    - [get](#get)
+    - [getOne](#getone)
+    - [post](#post)
+    - [delete](#delete)
+    - [put](#put)
+    - [getPath](#getpath)
+  - [6. Engines](#6-engines)
+    - [proxy](#proxy)
+    - [validate](#validate)
+  - [7. compose类](#7-compose%E7%B1%BB)
+    - [use](#use)
+    - [clear](#clear)
+    - [compose](#compose)
+    - [callback](#callback)
+    - [errorHandle](#errorhandle)
+    - [merge](#merge)
+  - [8. DEMO](#8-demo)
+  - [9. ChangeList](#9-changelist)
+  - [10. License](#10-license)
 
 ## 4. ModelProxy
 
@@ -323,11 +331,17 @@ export class WxAppEngine extends BaseEngine {
 
 缓存设置;
 
-- cacheDec: (func:()=>Promise<any>,ctx,fullPath)=>Promise<any>;
+- cacheDec: (func:()=>Promise<any>,key,settings)=> () => Promise<any>;
 - settings: 
   - cache:  是否需要缓存
   - reload: 强制失效缓存
   - expire: 缓存过期时间（单位毫秒）
+
+```js
+ cacheDec(()=>{
+     return Promise.resolve(123);
+ },"testKey",{cache: true,reload:true,expire:10})
+```
 
 ## 5. InterfaceFactory
 
