@@ -16,9 +16,9 @@ export declare class ModelProxy extends Compose<any> {
     forEach: any;
     constructor(defaultExecuteInfo?: IExecute | undefined);
     addEngines(engines: {
-        [id: string]: IEngine;
+        [id: string]: IEngine<any>;
     }): ModelProxy;
-    loadConfig(config: IProxyConfig, overrideInterfaceConfig?: IInterfaceModelCommon): ModelProxy;
+    loadConfig(config: IProxyConfig, overrideInterfaceConfig?: IInterfaceModelCommon<any>): ModelProxy;
     execute(ns: string, key: string, options?: IExecute, ...otherOptions: any[]): Promise<any>;
     executeAll(inters: {
         [key: string]: () => Promise<any>;
@@ -26,6 +26,6 @@ export declare class ModelProxy extends Compose<any> {
     race(inters: Array<NormalExecuteInfo | Promise<any>>): Promise<any>;
     hasNs(ns: string): boolean;
     getNs(ns: string): InterfaceFactory;
-    mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null;
+    mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel<any>) | null;
     private initInterfaces(ifFactory, config, overrideInterfaceConfig?);
 }

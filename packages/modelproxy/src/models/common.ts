@@ -8,13 +8,17 @@ export interface ICommon {
      */
     title?: string;
     /**
+     * 描述
+     */
+    desc?: string;
+    /**
      * 当前配置引擎
      */
     engine?: string;
     /**
      * 环境列表配置
      */
-    states?: { [id: string]: string; };
+    states?: { [id: string]: string };
     /**
      * 当前环境
      */

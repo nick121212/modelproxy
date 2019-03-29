@@ -5,7 +5,7 @@ const modelproxy_1 = require("modelproxy");
 const fetch = require("isomorphic-fetch");
 const URLSearchParams = require("url-search-params");
 const defaultHeaders = {
-    "Accept": "application/json",
+    Accept: "application/json",
     "Content-Type": "application/json"
 };
 class FetchEngine extends modelproxy_1.DefaultEngine {
@@ -56,7 +56,7 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
                 body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null,
                 credentials: "same-origin",
                 headers: headers,
-                method: instance.method,
+                method: instance.method
             }, fetchOptions));
             // 发送请求
             ctx.result = yield Promise.race([
@@ -65,7 +65,7 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
                     err.name = "timeout";
                     throw err;
                 }),
-                modelproxy_1.cacheDec(fetchFunc, ctx, fullPath)
+                fetchFunc()
             ]);
             yield next();
         });

@@ -1,13 +1,11 @@
 import { BaseFactory } from "../libs/base.factory";
 import { isString } from "util";
 
-export const promiseFactory = new BaseFactory<{ cacheIn: number; data: Promise<any>; expire?: number }>();
-
-// let local: Storage = null;
-// local.
-// localStorage.setItem
-// localStorage.getItem
-// localStorage.clear;
+export interface CacheData {
+    cacheIn: number;
+    data: Promise<any>;
+    expire?: number;
+}
 
 export interface CacheSetting {
     cache?: boolean;
@@ -16,6 +14,14 @@ export interface CacheSetting {
     local?: boolean;
 }
 
+export const promiseFactory = new BaseFactory<CacheData>();
+
+/**
+ * 从缓存中获取数据
+ * @param {Storage} storage 缓存对象
+ * @param {String}  key     Key值
+ * @returns {null|}
+ */
 const getDataFromStorage = (storage?: Storage, key: string = "") => {
     if (!storage) {
         return null;
@@ -34,8 +40,9 @@ const getDataFromStorage = (storage?: Storage, key: string = "") => {
     }
 
     if (isString(data)) {
-        return JSON.parse(data);
+        return Promise.resolve(JSON.parse(data));
     }
+
     return data;
 };
 
@@ -70,6 +77,7 @@ export const cacheDec = <T extends Function>(func: T, key: string, settings: Cac
             }
         }
 
+        // 先从local中获取，如果没有再从内存中获取
         let promiseInCache = local ? getDataFromStorage(storage, key) : null;
 
         if (!promiseInCache) {
@@ -95,6 +103,11 @@ export const cacheDec = <T extends Function>(func: T, key: string, settings: Cac
     };
 };
 
+/**
+ * 使用缓存方法
+ * @param {Storage} storage 缓存对象
+ * @returns {Function}
+ */
 export const cacheDecFunc = (storage?: Storage) => {
     return <T extends Function>(func: T, key: string, settings: CacheSetting) => {
         const cachedFunc = cacheDec<T>(func, key, settings, storage);

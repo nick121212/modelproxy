@@ -6,7 +6,7 @@ export interface IExecute {
     /**
      * 当前执行的接口详情
      */
-    instance?: IInterfaceModelCommon;
+    instance?: IInterfaceModelCommon<any>;
     /**
      * 接口数据
      */

@@ -4,8 +4,8 @@ import { BaseFactory } from "./base.factory";
 import { engineFactory } from "./engine.factory";
 import { IExecute } from "../models/execute";
 
-export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
-    constructor(public readonly overrideInterfaceConfig: IInterfaceModelCommon) {
+export class InterfaceFactory extends BaseFactory<IInterfaceModel<any>> {
+    constructor(public readonly overrideInterfaceConfig: IInterfaceModelCommon<any>) {
         super();
     }
 
@@ -16,7 +16,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
     * @param   {boolean} override    是否覆盖
     * @return  {void}
     */
-    public add(name: string, instance: IInterfaceModel, override = false): void {
+    public add(name: string, instance: IInterfaceModel<any>, override = false): void {
         super.add(
             name,
             Object.assign(instance, {
@@ -40,9 +40,9 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
      * @param   {any[]}           otherOptions 其他的设置项
      * @return  {Promise<any>}
      */
-    public async execute(instance: IInterfaceModel, options: IExecute, ...otherOptions: any[]): Promise<any> {
-        let engine: IEngine;
-        let instanceMerge: IInterfaceModel;
+    public async execute(instance: IInterfaceModel<any>, options: IExecute, ...otherOptions: any[]): Promise<any> {
+        let engine: IEngine<any>;
+        let instanceMerge: IInterfaceModel<any>;
         let { instance: extraInstance = {} } = options;
 
         // 合并instance的数据
@@ -77,7 +77,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
      * @param   {any[]}                  otherOptions 其他的设置项
      * @return  {Promise<any>}
      */
-    public async custom(instance: IInterfaceModel, type: string, id?: string | number | null, options: IExecute = {}, ...otherOptions: any[]) {
+    public async custom(instance: IInterfaceModel<any>, type: string, id?: string | number | null, options: IExecute = {}, ...otherOptions: any[]) {
         let { instance: extraInstance = {}, params = {} } = options;
 
         extraInstance.method = type;
@@ -97,7 +97,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
     * @param   {IInterfaceModelCommon} extendInstance 需要合并的实例
     * @return {IInterfaceModel}
     */
-    private mergeInstance(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon = {}): IInterfaceModel {
+    private mergeInstance(instance: IInterfaceModel<any>, extendInstance: IInterfaceModelCommon<any> = {}): IInterfaceModel<any> {
         return Object.assign({}, instance, extendInstance);
     }
 
@@ -108,15 +108,15 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
      * @param   {string}                method         具体的方法
      * @return  {string}
      */
-    private executeEngineMethod(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon = {}, method: string, options: IExecute = {}) {
-        let engine: IEngine, methodFunc: any, instanceMerge: IInterfaceModel;
+    private executeEngineMethod(instance: IInterfaceModel<any>, extendInstance: IInterfaceModelCommon<any> = {}, method: string, options: IExecute = {}) {
+        let engine: IEngine<any>, methodFunc: any, instanceMerge: IInterfaceModel<any>;
 
         instanceMerge = this.mergeInstance(instance, extendInstance);
         engine = engineFactory.getItem("default");
         methodFunc = (engine as any)[method];
 
         if (methodFunc) {
-            return methodFunc.call(engine, instanceMerge, options);
+            return methodFunc.call(engineFactory.getItem("default"), instanceMerge, options);
         }
 
         return "";
@@ -128,8 +128,8 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
      * @param  {IInterfaceModelCommon} extendInstance 需要合并的实例
      * @return {string}
      */
-    private getPath(instance: IInterfaceModel, extendInstance: IInterfaceModelCommon = {}): string {
-        let engine: IEngine, instanceMerge: IInterfaceModel;
+    private getPath(instance: IInterfaceModel<any>, extendInstance: IInterfaceModelCommon<any> = {}): string {
+        let instanceMerge: IInterfaceModel<any>;
 
         instanceMerge = this.mergeInstance(instance, extendInstance);
 
@@ -141,7 +141,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
      * @param   {IExecute}        extendInstance 需要合并的实例
      * @return {string}
      */
-    private getFullPath(instance: IInterfaceModel, options: IExecute = {}): string {
+    private getFullPath(instance: IInterfaceModel<any>, options: IExecute = {}): string {
         return this.executeEngineMethod(instance, options.instance, "getFullPath", options);
     }
     /**
@@ -150,8 +150,8 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel> {
     * @param   {IExecute}        extendInstance 需要合并的实例
     * @return  {string}
     */
-    private replacePath(instance: IInterfaceModel, options: IExecute = {}) {
-        let engine: IEngine, instanceMerge: IInterfaceModel;
+    private replacePath(instance: IInterfaceModel<any>, options: IExecute = {}) {
+        let engine: IEngine<any>, instanceMerge: IInterfaceModel<any>;
 
         instanceMerge = this.mergeInstance(instance, options.instance);
         engine = engineFactory.getItem("default");

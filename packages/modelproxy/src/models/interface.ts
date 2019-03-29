@@ -5,7 +5,7 @@ import { IExecute } from "./execute";
 /**
  * 接口模型
  */
-export interface IInterfaceModelCommon extends ICommon {
+export interface IInterfaceModelCommon<T> extends ICommon {
     /**
      * 命名空间名
      */
@@ -21,10 +21,11 @@ export interface IInterfaceModelCommon extends ICommon {
     /**
      * 接口配置
      */
-    config?: Object;
+    config?: T;
+
 }
 
-export interface IInterfaceModel extends IInterfaceModelCommon {
+export interface IInterfaceModel<T> extends IInterfaceModelCommon<T> {
     /**
      * 默认的执行参数
      */
@@ -36,7 +37,7 @@ export interface IInterfaceModel extends IInterfaceModelCommon {
     /**
      * 获取接口的执行路径
      */
-    getPath(extendInterface?: IInterfaceModelCommon): string;
+    getPath(extendInterface?: IInterfaceModelCommon<T>): string;
     /**
      * 获取接口的执行路径
      */

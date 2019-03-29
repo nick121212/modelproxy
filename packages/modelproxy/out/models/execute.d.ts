@@ -2,7 +2,7 @@ import { IInterfaceModelCommon } from "./interface";
 import { Compose } from "../libs/compose";
 import { IProxyCtx } from "./proxyctx";
 export interface IExecute {
-    instance?: IInterfaceModelCommon;
+    instance?: IInterfaceModelCommon<any>;
     data?: any;
     params?: any;
     settings?: any;

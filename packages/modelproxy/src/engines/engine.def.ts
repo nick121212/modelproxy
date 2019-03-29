@@ -8,7 +8,7 @@ import { Compose } from "../libs/compose";
  * 默认的engine
  * 返回接口的实例
  */
-export class DefaultEngine<T extends IProxyCtx> extends BaseEngine<T> {
+export class DefaultEngine<T extends IProxyCtx, T1> extends BaseEngine<T, T1> {
     /**
    * 调用接口，这里触发一次中间件方法
    * @param   {IInterfaceModel}  instance     接口的实例
@@ -16,7 +16,7 @@ export class DefaultEngine<T extends IProxyCtx> extends BaseEngine<T> {
    * @param   {any[]}            otherOptions 额外的接口参数
    * @return  {Promise<any>}
    */
-    public async doProxy(instance: IInterfaceModel, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
+    public async doProxy(instance: IInterfaceModel<any>, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
         const c = new Compose<IProxyCtx>();
         const { before, after, error, beforeProxy, afterProxy } = executeInfo;
 
@@ -77,7 +77,7 @@ export class DefaultEngine<T extends IProxyCtx> extends BaseEngine<T> {
    * @param   {any[]}            otherOptions 额外的接口参数
    * @return  {Promise<any>}
    */
-    public async proxy(instance: IInterfaceModel, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
+    public async proxy(instance: IInterfaceModel<any>, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
         return this.doProxy(instance, executeInfo, ...otherOptions);
     }
 }

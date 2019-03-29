@@ -4,12 +4,11 @@ import * as fetch from "isomorphic-fetch";
 import * as URLSearchParams from "url-search-params";
 
 const defaultHeaders = {
-    "Accept": "application/json",
+    Accept: "application/json",
     "Content-Type": "application/json"
 };
 
-export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
-
+export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T, any> {
     /**
      * 初始化
      */
@@ -27,7 +26,8 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
         let formData = new URLSearchParams(),
             bodyParams = new URLSearchParams(),
             { executeInfo = {}, instance = {} } = ctx,
-            body, headers: any = { },
+            body,
+            headers: any = {},
             { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
             fullPath = this.getFullPath(instance as any, executeInfo);
 
@@ -64,12 +64,20 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
         }
 
         // 调用解耦请求
-        const fetchFunc: () => Promise<any> = fetch.bind(fetch, fullPath, Object.assign({}, {
-            body: ["GET", "OPTIONS", "HEAD"].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
-            credentials: "same-origin",
-            headers: headers,
-            method: instance.method as any,
-        }, fetchOptions));
+        const fetchFunc: () => Promise<any> = fetch.bind(
+            fetch,
+            fullPath,
+            Object.assign(
+                {},
+                {
+                    body: [ "GET", "OPTIONS", "HEAD" ].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
+                    credentials: "same-origin",
+                    headers: headers,
+                    method: instance.method as any
+                },
+                fetchOptions
+            )
+        );
 
         // 发送请求
         ctx.result = await Promise.race([
@@ -80,7 +88,7 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T> {
 
                 throw err;
             }),
-            cacheDec(fetchFunc, ctx, fullPath)
+            fetchFunc()
         ]);
 
         await next();

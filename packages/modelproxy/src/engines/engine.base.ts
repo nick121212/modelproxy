@@ -8,7 +8,7 @@ import { IProxyCtx } from "../models/proxyctx";
 import { IInterfaceModel } from "../models/interface";
 import { ModelProxyMissingError } from "../libs/errors";
 
-export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngine {
+export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IEngine<T1> {
     // protected beforeMiddlewares: MiddleFunc<IProxyCtx>[] = [];
     // protected afterMiddlewares: MiddleFunc<IProxyCtx>[] = [];
 
@@ -18,7 +18,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @param   {IExecute}         options      参数
      * @return  {Promise<boolean>}              返回数据是否合法
      */
-    public async validate(_instance: IInterfaceModel, _options: IExecute): Promise<boolean> {
+    public async validate(_instance: IInterfaceModel<any>, _options: IExecute): Promise<boolean> {
         // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
         // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 
@@ -45,7 +45,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @param   {any[]}            otherOptions 其他的设置项
      * @return  {Promise<any>}                  接口的返回值
      */
-    public async proxy(instance: IInterfaceModel, options: IExecute, ...otherOptions: any[]): Promise<any> {
+    public async proxy(instance: IInterfaceModel<any>, options: IExecute, ...otherOptions: any[]): Promise<any> {
         instance.getPath(options.instance);
 
         return {};
@@ -56,7 +56,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @param   {IInterfaceModel}  instance     接口实例
      * @return  {String}                        返回当前的域名
      */
-    public getStatePath(instance: IInterfaceModel): string {
+    public getStatePath(instance: IInterfaceModel<any>): string {
         if (instance.states && instance.state) {
             return instance.states[instance.state] || "";
         }
@@ -70,7 +70,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @param   {IExecute}        options      参数
      * @return  {string}                       返回替换过后的路径
      */
-    public replacePath(instance: IInterfaceModel, { params = [], data = {} }: IExecute): string {
+    public replacePath(instance: IInterfaceModel<any>, { params = [], data = {} }: IExecute): string {
         const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string) || "/"),
             paths: Array<string> = [];
 
@@ -99,7 +99,7 @@ export class BaseEngine<T extends IProxyCtx> extends Compose<T> implements IEngi
      * @param   {IExecute}         options      参数
      * @return  {string}                        返回路径
      */
-    public getFullPath(instance: IInterfaceModel, options: IExecute): string {
+    public getFullPath(instance: IInterfaceModel<any>, options: IExecute): string {
         const url = [ this.getStatePath(instance), this.replacePath(instance, options) ],
             searchParams: URLSearchParams = new URLSearchParams();
 

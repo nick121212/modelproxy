@@ -23,7 +23,7 @@ export class ModelProxy extends Compose<any> {
      * @param   { { [id: string]: IEngine; } } engines   引擎对象
      * @return  {ModelProxy}
      */
-    public addEngines(engines: { [id: string]: IEngine }): ModelProxy {
+    public addEngines(engines: { [id: string]: IEngine<any> }): ModelProxy {
         for (let key in engines) {
             if (engines.hasOwnProperty(key)) {
                 engineFactory.add(key, engines[key], true);
@@ -38,7 +38,7 @@ export class ModelProxy extends Compose<any> {
      * @param  {overrideInterfaceConfig} overrideInterfaceConfig   覆盖的参数
      * @return {ModelProxy}                                        当前实例
     */
-    public loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon = {}): ModelProxy {
+    public loadConfig(config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon<any> = {}): ModelProxy {
         let nsFactory = this.nsFactory.getItem(config.key as string);
 
         if (!nsFactory) {
@@ -168,13 +168,13 @@ export class ModelProxy extends Compose<any> {
      * @example
      *     proxy.mixin("test","users","articles")(1000).get(10) => GET /users/1000/articles/10
      */
-    public mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel) | null {
+    public mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel<any>) | null {
         if (!keys.length) {
             throw new ModelProxyMissingError(`必须制定至少一个Key！`);
         }
 
         const interfaces = this.getNs(ns),
-            idKeys: IInterfaceModel[] = [],
+            idKeys: IInterfaceModel<any>[] = [],
             lastKey: string = keys.pop() as string,
             lastInterface = interfaces.getItem(lastKey);
 
@@ -199,7 +199,7 @@ export class ModelProxy extends Compose<any> {
 
             let paths: string[] = [];
 
-            idKeys.forEach((k: IInterfaceModel, idx: number) => {
+            idKeys.forEach((k: IInterfaceModel<any>, idx: number) => {
                 paths.push(
                     k.replacePath({
                         instance: {
@@ -223,9 +223,9 @@ export class ModelProxy extends Compose<any> {
      * @param   {IProxyConfig}      config  配置信息
      * @return  {InterfaceFactory}
      */
-    private initInterfaces(ifFactory: InterfaceFactory, config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon = {}): InterfaceFactory {
-        config.interfaces.forEach((i: IInterfaceModelCommon) => {
-            const interModel: IInterfaceModel = Object.assign(
+    private initInterfaces(ifFactory: InterfaceFactory, config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon<any> = {}): InterfaceFactory {
+        config.interfaces.forEach((i: IInterfaceModelCommon<any>) => {
+            const interModel: IInterfaceModel<any> = Object.assign(
                 {},
                 {
                     defaultExecuteInfo: this.defaultExecuteInfo,
@@ -237,7 +237,7 @@ export class ModelProxy extends Compose<any> {
                 },
                 i,
                 overrideInterfaceConfig || {}
-            ) as IInterfaceModel;
+            ) as IInterfaceModel<any>;
 
             ifFactory.add(i.key as string, interModel, true);
         });

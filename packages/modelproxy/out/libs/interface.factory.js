@@ -93,13 +93,13 @@ var InterfaceFactory = (function (_super) {
         engine = engine_factory_1.engineFactory.getItem("default");
         methodFunc = engine[method];
         if (methodFunc) {
-            return methodFunc.call(engine, instanceMerge, options);
+            return methodFunc.call(engine_factory_1.engineFactory.getItem("default"), instanceMerge, options);
         }
         return "";
     };
     InterfaceFactory.prototype.getPath = function (instance, extendInstance) {
         if (extendInstance === void 0) { extendInstance = {}; }
-        var engine, instanceMerge;
+        var instanceMerge;
         instanceMerge = this.mergeInstance(instance, extendInstance);
         return this.executeEngineMethod(instance, extendInstance, "getStatePath") + instanceMerge.path;
     };

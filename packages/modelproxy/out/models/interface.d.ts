@@ -1,16 +1,16 @@
 import { MethodType } from "./method";
 import { ICommon } from "./common";
 import { IExecute } from "./execute";
-export interface IInterfaceModelCommon extends ICommon {
+export interface IInterfaceModelCommon<T> extends ICommon {
     ns?: string;
     method?: MethodType | string;
     path?: string;
-    config?: Object;
+    config?: T;
 }
-export interface IInterfaceModel extends IInterfaceModelCommon {
+export interface IInterfaceModel<T> extends IInterfaceModelCommon<T> {
     defaultExecuteInfo?: IExecute;
     execute(options: IExecute, ...otherOptions: any[]): Promise<any>;
-    getPath(extendInterface?: IInterfaceModelCommon): string;
+    getPath(extendInterface?: IInterfaceModelCommon<T>): string;
     getFullPath(options?: IExecute): string;
     replacePath(options?: IExecute): string;
     get(options?: IExecute, ...otherOptions: any[]): Promise<any>;

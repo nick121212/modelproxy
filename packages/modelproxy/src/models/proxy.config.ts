@@ -6,5 +6,5 @@ import { ICommon } from "./common";
  */
 export interface IProxyConfig extends ICommon {
     // 接口的配置数组
-    interfaces: Array<IInterfaceModelCommon>;
+    interfaces: Array<IInterfaceModelCommon<any>>;
 }

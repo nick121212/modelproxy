@@ -17,7 +17,7 @@ var getDataFromStorage = function (storage, key) {
         return null;
     }
     if (util_1.isString(data)) {
-        return JSON.parse(data);
+        return Promise.resolve(JSON.parse(data));
     }
     return data;
 };
