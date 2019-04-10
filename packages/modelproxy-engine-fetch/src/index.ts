@@ -1,5 +1,5 @@
-import { DefaultEngine, cacheDec, BaseError } from "modelproxy";
-import { IProxyCtx } from "modelproxy/out/models/proxyctx";
+import {DefaultEngine} from "modelproxy";
+import {IProxyCtx} from "modelproxy/out/models/proxyctx";
 import * as fetch from "isomorphic-fetch";
 import * as URLSearchParams from "url-search-params";
 
@@ -8,7 +8,7 @@ const defaultHeaders = {
     "Content-Type": "application/json"
 };
 
-export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T, any> {
+export class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T, any, any, any> {
     /**
      * 初始化
      */
@@ -25,10 +25,10 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T, any> {
     public async fetch(ctx: T, next: (s?: string) => Promise<any>) {
         let formData = new URLSearchParams(),
             bodyParams = new URLSearchParams(),
-            { executeInfo = {}, instance = {} } = ctx,
+            {executeInfo = {}, instance = {}} = ctx,
             body,
             headers: any = {},
-            { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
+            {timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {}} = executeInfo.settings || {},
             fullPath = this.getFullPath(instance as any, executeInfo);
 
         if (typeof FormData !== "undefined") {
@@ -70,7 +70,7 @@ export class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T, any> {
             Object.assign(
                 {},
                 {
-                    body: [ "GET", "OPTIONS", "HEAD" ].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
+                    body: ["GET", "OPTIONS", "HEAD"].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
                     credentials: "same-origin",
                     headers: headers,
                     method: instance.method as any

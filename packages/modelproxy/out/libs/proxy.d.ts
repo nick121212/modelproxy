@@ -7,25 +7,25 @@ import { Compose } from "./compose";
 export declare type NormalExecuteInfo = {
     ns?: string;
     key?: string;
-    options?: IExecute;
+    options?: IExecute<any, any>;
     otherOptions?: any[];
 };
 export declare class ModelProxy extends Compose<any> {
     private defaultExecuteInfo;
     private nsFactory;
     forEach: any;
-    constructor(defaultExecuteInfo?: IExecute | undefined);
+    constructor(defaultExecuteInfo?: IExecute<any, any> | undefined);
     addEngines(engines: {
         [id: string]: IEngine<any>;
     }): ModelProxy;
     loadConfig(config: IProxyConfig, overrideInterfaceConfig?: IInterfaceModelCommon<any>): ModelProxy;
-    execute(ns: string, key: string, options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    execute<D, P>(ns: string, key: string, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
     executeAll(inters: {
         [key: string]: () => Promise<any>;
     }): Promise<any>;
     race(inters: Array<NormalExecuteInfo | Promise<any>>): Promise<any>;
     hasNs(ns: string): boolean;
     getNs(ns: string): InterfaceFactory;
-    mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel<any>) | null;
+    mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel<any, any, any>) | null;
     private initInterfaces(ifFactory, config, overrideInterfaceConfig?);
 }

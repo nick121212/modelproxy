@@ -1,14 +1,14 @@
-import { IInterfaceModel } from "../models/interface";
-import { BaseEngine } from "./engine.base";
-import { IExecute } from "../models/execute";
-import { IProxyCtx } from "../models/proxyctx";
-import { Compose } from "../libs/compose";
+import {IInterfaceModel} from "../models/interface";
+import {BaseEngine} from "./engine.base";
+import {IExecute} from "../models/execute";
+import {IProxyCtx} from "../models/proxyctx";
+import {Compose} from "../libs/compose";
 
 /**
  * 默认的engine
  * 返回接口的实例
  */
-export class DefaultEngine<T extends IProxyCtx, T1> extends BaseEngine<T, T1> {
+export class DefaultEngine<T extends IProxyCtx<D, P>, D, P, C> extends BaseEngine<T, D, P, C> {
     /**
    * 调用接口，这里触发一次中间件方法
    * @param   {IInterfaceModel}  instance     接口的实例
@@ -16,9 +16,9 @@ export class DefaultEngine<T extends IProxyCtx, T1> extends BaseEngine<T, T1> {
    * @param   {any[]}            otherOptions 额外的接口参数
    * @return  {Promise<any>}
    */
-    public async doProxy(instance: IInterfaceModel<any>, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
-        const c = new Compose<IProxyCtx>();
-        const { before, after, error, beforeProxy, afterProxy } = executeInfo;
+    public async doProxy(instance: IInterfaceModel<D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
+        const c = new Compose<IProxyCtx<D, P>>();
+        const {before, after, error, beforeProxy, afterProxy} = executeInfo;
 
         // 判斷是否需要在前面加入compose
         if (before) {
@@ -77,7 +77,7 @@ export class DefaultEngine<T extends IProxyCtx, T1> extends BaseEngine<T, T1> {
    * @param   {any[]}            otherOptions 额外的接口参数
    * @return  {Promise<any>}
    */
-    public async proxy(instance: IInterfaceModel<any>, executeInfo: IExecute, ...otherOptions: any[]): Promise<any> {
+    public async proxy(instance: IInterfaceModel<D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
         return this.doProxy(instance, executeInfo, ...otherOptions);
     }
 }

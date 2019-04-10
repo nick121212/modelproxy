@@ -1,15 +1,15 @@
 import { IInterfaceModelCommon } from "./interface";
 import { Compose } from "../libs/compose";
 import { IProxyCtx } from "./proxyctx";
-export interface IExecute {
+export interface IExecute<D, P> {
     instance?: IInterfaceModelCommon<any>;
-    data?: any;
-    params?: any;
+    data?: D;
+    params?: P;
     settings?: any;
     query?: boolean;
-    before?: Compose<IProxyCtx>;
-    after?: Compose<IProxyCtx>;
-    error?: Compose<IProxyCtx>;
-    beforeProxy?: (ctx: IProxyCtx) => void;
-    afterProxy?: (ctx: IProxyCtx) => void;
+    before?: Compose<IProxyCtx<D, P>>;
+    after?: Compose<IProxyCtx<D, P>>;
+    error?: Compose<IProxyCtx<D, P>>;
+    beforeProxy?: (ctx: IProxyCtx<D, P>) => void;
+    afterProxy?: (ctx: IProxyCtx<D, P>) => void;
 }

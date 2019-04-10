@@ -1,14 +1,14 @@
 import * as pathToRegexp from "path-to-regexp";
 import * as URLSearchParams from "url-search-params";
 
-import { IEngine } from "../models/engine";
-import { IExecute } from "../models/execute";
-import { Compose } from "../libs/compose";
-import { IProxyCtx } from "../models/proxyctx";
-import { IInterfaceModel } from "../models/interface";
-import { ModelProxyMissingError } from "../libs/errors";
+import {IEngine} from "../models/engine";
+import {IExecute} from "../models/execute";
+import {Compose} from "../libs/compose";
+import {IProxyCtx} from "../models/proxyctx";
+import {IInterfaceModel} from "../models/interface";
+import {ModelProxyMissingError} from "../libs/errors";
 
-export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IEngine<T1> {
+export class BaseEngine<T extends IProxyCtx<D, P>, D, P extends {[key: string]: any}, C> extends Compose<T> implements IEngine<C> {
     // protected beforeMiddlewares: MiddleFunc<IProxyCtx>[] = [];
     // protected afterMiddlewares: MiddleFunc<IProxyCtx>[] = [];
 
@@ -18,7 +18,7 @@ export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IE
      * @param   {IExecute}         options      参数
      * @return  {Promise<boolean>}              返回数据是否合法
      */
-    public async validate(_instance: IInterfaceModel<any>, _options: IExecute): Promise<boolean> {
+    public async validate(_instance: IInterfaceModel<D, P, C>, _options: IExecute<D, P>): Promise<boolean> {
         // instance.dataSchema && this.validateTv4(options.data || {}, instance.dataSchema);
         // instance.paramsSchema && this.validateTv4(options.params || {}, instance.paramsSchema);
 
@@ -45,7 +45,7 @@ export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IE
      * @param   {any[]}            otherOptions 其他的设置项
      * @return  {Promise<any>}                  接口的返回值
      */
-    public async proxy(instance: IInterfaceModel<any>, options: IExecute, ...otherOptions: any[]): Promise<any> {
+    public async proxy(instance: IInterfaceModel<D, P, C>, options: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
         instance.getPath(options.instance);
 
         return {};
@@ -56,7 +56,7 @@ export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IE
      * @param   {IInterfaceModel}  instance     接口实例
      * @return  {String}                        返回当前的域名
      */
-    public getStatePath(instance: IInterfaceModel<any>): string {
+    public getStatePath(instance: IInterfaceModel<D, P, C>): string {
         if (instance.states && instance.state) {
             return instance.states[instance.state] || "";
         }
@@ -70,22 +70,24 @@ export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IE
      * @param   {IExecute}        options      参数
      * @return  {string}                       返回替换过后的路径
      */
-    public replacePath(instance: IInterfaceModel<any>, { params = [], data = {} }: IExecute): string {
+    public replacePath(instance: IInterfaceModel<D, P, C>, {params = {} as any}: IExecute<D, P>): string {
         const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string) || "/"),
             paths: Array<string> = [];
 
         // 处理path中的变量
         // 遍历所有的tokens
         tokens.forEach((token: pathToRegexp.Key | string) => {
-            let { name } = token as pathToRegexp.Key;
+            let {name} = token as pathToRegexp.Key;
 
             if (!name) {
                 paths.push(token as string);
             } else {
-                if (!params[name] && !data[name]) {
+                // if (!params[name] && !data[name]) {
+                if (!params[name]) {
                     throw new ModelProxyMissingError(`缺少[${name}]字段！`);
                 }
-                paths.push(`/${params[name] || data[name]}`);
+                // paths.push(`/${params[name] || data[name]}`);
+                paths.push(`/${params[name]}`);
                 delete params[name];
             }
         });
@@ -99,13 +101,14 @@ export class BaseEngine<T extends IProxyCtx,T1> extends Compose<T> implements IE
      * @param   {IExecute}         options      参数
      * @return  {string}                        返回路径
      */
-    public getFullPath(instance: IInterfaceModel<any>, options: IExecute): string {
-        const url = [ this.getStatePath(instance), this.replacePath(instance, options) ],
+    public getFullPath(instance: IInterfaceModel<D, P, C>, options: IExecute<D, P>): string {
+        const url = [this.getStatePath(instance), this.replacePath(instance, options)],
             searchParams: URLSearchParams = new URLSearchParams();
+        const {params} = options;
 
-        if (options.params) {
-            Object.keys(options.params).forEach((key) => {
-                searchParams.append(key, options.params[key]);
+        if (params) {
+            Object.keys(params).forEach((key) => {
+                searchParams.append(key, params[key]);
             });
 
             let qs = searchParams.toString();

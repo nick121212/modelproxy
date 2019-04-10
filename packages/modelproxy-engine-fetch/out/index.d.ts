@@ -1,6 +1,6 @@
 import { DefaultEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
-export declare class FetchEngine<T extends IProxyCtx> extends DefaultEngine<T, any> {
+export declare class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T, any, any, any> {
     /**
      * 初始化
      */

@@ -25,45 +25,45 @@ export interface IInterfaceModelCommon<T> extends ICommon {
 
 }
 
-export interface IInterfaceModel<T> extends IInterfaceModelCommon<T> {
+export interface IInterfaceModel<D,P,C> extends IInterfaceModelCommon<C> {
     /**
      * 默认的执行参数
      */
-    defaultExecuteInfo?: IExecute;
+    defaultExecuteInfo?: IExecute<D,P>;
     /**
      * 执行接口
      */
-    execute(options: IExecute, ...otherOptions: any[]): Promise<any>;
+    execute(options: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
     /**
      * 获取接口的执行路径
      */
-    getPath(extendInterface?: IInterfaceModelCommon<T>): string;
+    getPath(extendInterface?: IInterfaceModelCommon<C>): string;
     /**
      * 获取接口的执行路径
      */
-    getFullPath(options?: IExecute): string;
+    getFullPath(options?: IExecute<D,P>): string;
     /**
      * 替换路径
      */
-    replacePath(options?: IExecute): string;
+    replacePath(options?: IExecute<D,P>): string;
     /**
      * 执行接口，修改method为get
      */
-    get(options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    get(options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
     /**
      * 执行接口，修改method为get
      */
-    getOne(id?: string | number | null, options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    getOne(id?: string | number | null, options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
     /**
      * 执行接口，修改method为post
      */
-    post(options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    post(options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
     /**
      * 执行接口，修改method为delete
      */
-    delete(id?: string | number | null, options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    delete(id?: string | number | null, options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
     /**
      * 执行接口，修改method为put
      */
-    put(id?: string | number | null, options?: IExecute, ...otherOptions: any[]): Promise<any>;
+    put(id?: string | number | null, options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
 }

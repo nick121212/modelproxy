@@ -47,7 +47,7 @@ var BaseEngine = (function (_super) {
         return "";
     };
     BaseEngine.prototype.replacePath = function (instance, _a) {
-        var _b = _a.params, params = _b === void 0 ? [] : _b, _c = _a.data, data = _c === void 0 ? {} : _c;
+        var _b = _a.params, params = _b === void 0 ? {} : _b;
         var tokens = pathToRegexp.parse(instance.path || "/"), paths = [];
         tokens.forEach(function (token) {
             var name = token.name;
@@ -55,10 +55,10 @@ var BaseEngine = (function (_super) {
                 paths.push(token);
             }
             else {
-                if (!params[name] && !data[name]) {
+                if (!params[name]) {
                     throw new errors_1.ModelProxyMissingError("\u7F3A\u5C11[" + name + "]\u5B57\u6BB5\uFF01");
                 }
-                paths.push("/" + (params[name] || data[name]));
+                paths.push("/" + params[name]);
                 delete params[name];
             }
         });
@@ -66,9 +66,10 @@ var BaseEngine = (function (_super) {
     };
     BaseEngine.prototype.getFullPath = function (instance, options) {
         var url = [this.getStatePath(instance), this.replacePath(instance, options)], searchParams = new URLSearchParams();
-        if (options.params) {
-            Object.keys(options.params).forEach(function (key) {
-                searchParams.append(key, options.params[key]);
+        var params = options.params;
+        if (params) {
+            Object.keys(params).forEach(function (key) {
+                searchParams.append(key, params[key]);
             });
             var qs = searchParams.toString();
             if (qs) {

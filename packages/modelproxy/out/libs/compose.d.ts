@@ -1,11 +1,11 @@
 import { IProxyCtx } from "../models/proxyctx";
-export interface MiddleFunc<T extends IProxyCtx> {
+export interface MiddleFunc<T extends IProxyCtx<any, any>> {
     (ctx: T, next: (symbol?: string) => Promise<void>): void;
 }
-export interface MiddleRtnFunc<T extends IProxyCtx> {
+export interface MiddleRtnFunc<T extends IProxyCtx<any, any>> {
     (ctx?: T): void;
 }
-export declare class Compose<T extends IProxyCtx> {
+export declare class Compose<T extends IProxyCtx<any, any>> {
     private middlewares;
     constructor(...wares: MiddleFunc<T>[]);
     use(func: MiddleFunc<T>): void;

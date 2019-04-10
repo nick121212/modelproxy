@@ -1,20 +1,20 @@
-import { IExecute } from "../models/execute";
-import { IEngine } from "../models/engine";
-import { IInterfaceModel, IInterfaceModelCommon } from "../models/interface";
-import { IProxyConfig } from "../models/proxy.config";
-import { InterfaceFactory } from "./interface.factory";
-import { engineFactory } from "./engine.factory";
-import { Compose } from "./compose";
-import { ModelProxyMissingError } from "./errors";
-import { BaseFactory } from "./base.factory";
+import {IExecute} from "../models/execute";
+import {IEngine} from "../models/engine";
+import {IInterfaceModel, IInterfaceModelCommon} from "../models/interface";
+import {IProxyConfig} from "../models/proxy.config";
+import {InterfaceFactory} from "./interface.factory";
+import {engineFactory} from "./engine.factory";
+import {Compose} from "./compose";
+import {ModelProxyMissingError} from "./errors";
+import {BaseFactory} from "./base.factory";
 
-export type NormalExecuteInfo = { ns?: string; key?: string; options?: IExecute; otherOptions?: any[] };
+export type NormalExecuteInfo = {ns?: string; key?: string; options?: IExecute<any, any>; otherOptions?: any[]};
 
 export class ModelProxy extends Compose<any> {
     private nsFactory: BaseFactory<InterfaceFactory> = new BaseFactory<InterfaceFactory>();
     public forEach = this.nsFactory.forEach.bind(this.nsFactory);
 
-    constructor(private defaultExecuteInfo?: IExecute) {
+    constructor(private defaultExecuteInfo?: IExecute<any, any>) {
         super();
     }
 
@@ -23,7 +23,7 @@ export class ModelProxy extends Compose<any> {
      * @param   { { [id: string]: IEngine; } } engines   引擎对象
      * @return  {ModelProxy}
      */
-    public addEngines(engines: { [id: string]: IEngine<any> }): ModelProxy {
+    public addEngines(engines: {[id: string]: IEngine<any>}): ModelProxy {
         for (let key in engines) {
             if (engines.hasOwnProperty(key)) {
                 engineFactory.add(key, engines[key], true);
@@ -69,7 +69,7 @@ export class ModelProxy extends Compose<any> {
      * @param   {IExecute}  options  调用接口所需的参数
      * @return  {Promise<any>}
      */
-    public async execute(ns: string, key: string, options: IExecute = {}, ...otherOptions: any[]) {
+    public async execute<D, P>(ns: string, key: string, options: IExecute<D, P> = {}, ...otherOptions: any[]) {
         const interfaces = this.getNs(ns),
             instance = interfaces.getItem(key);
 
@@ -90,7 +90,7 @@ export class ModelProxy extends Compose<any> {
      *      b: proxy.execute.bind(proxy, nsB, keyB, {})
      *  });
      */
-    public async executeAll(inters: { [key: string]: () => Promise<any> }): Promise<any> {
+    public async executeAll(inters: {[key: string]: () => Promise<any>}): Promise<any> {
         const maps: Promise<any>[] = [];
 
         // 如果没有配置inters，则直接返回null
@@ -130,7 +130,7 @@ export class ModelProxy extends Compose<any> {
                 return inter;
             }
 
-            const { ns = "", key = "", options = {}, otherOptions = [] } = inter as NormalExecuteInfo;
+            const {ns = "", key = "", options = {}, otherOptions = []} = inter as NormalExecuteInfo;
 
             return this.execute(ns, key, options, ...otherOptions);
         });
@@ -168,13 +168,13 @@ export class ModelProxy extends Compose<any> {
      * @example
      *     proxy.mixin("test","users","articles")(1000).get(10) => GET /users/1000/articles/10
      */
-    public mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel<any>) | null {
+    public mixin(ns: string, ...keys: string[]): ((...ids: any[]) => IInterfaceModel<any, any, any>) | null {
         if (!keys.length) {
             throw new ModelProxyMissingError(`必须制定至少一个Key！`);
         }
 
         const interfaces = this.getNs(ns),
-            idKeys: IInterfaceModel<any>[] = [],
+            idKeys: IInterfaceModel<any, any, any>[] = [],
             lastKey: string = keys.pop() as string,
             lastInterface = interfaces.getItem(lastKey);
 
@@ -199,7 +199,7 @@ export class ModelProxy extends Compose<any> {
 
             let paths: string[] = [];
 
-            idKeys.forEach((k: IInterfaceModel<any>, idx: number) => {
+            idKeys.forEach((k: IInterfaceModel<any, any, any>, idx: number) => {
                 paths.push(
                     k.replacePath({
                         instance: {
@@ -212,7 +212,7 @@ export class ModelProxy extends Compose<any> {
                 );
             });
 
-            lastInterface.path = paths.concat([ lastInterface.path as string ]).join("");
+            lastInterface.path = paths.concat([lastInterface.path as string]).join("");
 
             return lastInterface;
         };
@@ -225,7 +225,7 @@ export class ModelProxy extends Compose<any> {
      */
     private initInterfaces(ifFactory: InterfaceFactory, config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon<any> = {}): InterfaceFactory {
         config.interfaces.forEach((i: IInterfaceModelCommon<any>) => {
-            const interModel: IInterfaceModel<any> = Object.assign(
+            const interModel: IInterfaceModel<any, any, any> = Object.assign(
                 {},
                 {
                     defaultExecuteInfo: this.defaultExecuteInfo,
@@ -237,7 +237,7 @@ export class ModelProxy extends Compose<any> {
                 },
                 i,
                 overrideInterfaceConfig || {}
-            ) as IInterfaceModel<any>;
+            ) as IInterfaceModel<any, any, any>;
 
             ifFactory.add(i.key as string, interModel, true);
         });

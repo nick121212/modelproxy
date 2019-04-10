@@ -1,21 +1,21 @@
-import { IProxyCtx } from "../models/proxyctx";
+import {IProxyCtx} from "../models/proxyctx";
 
-export interface MiddleFunc<T extends IProxyCtx> {
+export interface MiddleFunc<T extends IProxyCtx<any, any>> {
     (ctx: T, next: (symbol?: string) => Promise<void>): void;
 }
 
-export interface MiddleRtnFunc<T extends IProxyCtx> {
+export interface MiddleRtnFunc<T extends IProxyCtx<any, any>> {
     (ctx?: T): void;
 }
 
 /**
  * koa中间件方法
  */
-export class Compose<T extends IProxyCtx> {
+export class Compose<T extends IProxyCtx<any, any>> {
     private middlewares: Array<MiddleFunc<T>>;
 
     constructor(...wares: MiddleFunc<T>[]) {
-        this.middlewares = [ ...wares ];
+        this.middlewares = [...wares];
     }
 
     /**
@@ -43,7 +43,7 @@ export class Compose<T extends IProxyCtx> {
      * @return {Function}
      */
     public compose(): (context: T, next: MiddleFunc<T>) => Promise<any> {
-        const { middlewares } = this;
+        const {middlewares} = this;
 
         if (!Array.isArray(middlewares)) {
             throw new TypeError("Middleware stack must be an array!");

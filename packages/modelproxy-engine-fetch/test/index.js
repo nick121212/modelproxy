@@ -29,7 +29,7 @@ var config = {
     }]
 };
 
-describe('modelproxy cache------', function () {
+describe('modelproxy fetch engine------', function () {
     var proxy;
 
     before(function () {
@@ -61,7 +61,8 @@ describe('modelproxy cache------', function () {
                     q: "batman"
                 },
                 settings: {
-                    cache: true
+                    cache: true,
+                    timeout:10000
                 }
             });
             const dd1 = await proxy.execute("tvmaze", "singlesearch.shows", {
@@ -69,14 +70,13 @@ describe('modelproxy cache------', function () {
                     q: "batman"
                 },
                 settings: {
-                    cache: true
+                    cache: true,
+                    timeout:10000
                 }
             });
 
             expect(dd.result.id).not.to.be.null;
             expect(dd1.result.id).not.to.be.null;
-            // expect(dd1.fromCache).eq(true);
-            // expect(dd.fromCache).eq(undefined);
         });
     });
 });
