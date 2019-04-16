@@ -33,12 +33,10 @@ describe('modelproxy fetch engine------', function () {
     var proxy;
 
     before(function () {
-        proxy = new modelProxy.ModelProxy();
-
         var engine = new eng.FetchEngine();
 
+        proxy = new modelProxy.ModelProxy();
         engine.init();
-
         engine.use(async (ctx, next) => {
             ctx.result = ctx.result.clone();
             ctx.result = await ctx.result.json();

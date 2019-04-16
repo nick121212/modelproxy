@@ -40,7 +40,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel<any, any, any>
      * @param   {any[]}           otherOptions 其他的设置项
      * @return  {Promise<any>}
      */
-    public async execute<D, P>(instance: IInterfaceModel<D, P, any>, options: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
+    public async execute<D, P>(instance: IInterfaceModel<D, P, any>, options: IExecute<D, P>, ...otherOptions: any[]): Promise<D> {
         let engine: IEngine<any>;
         let instanceMerge: IInterfaceModel<D, P, any>;
         let {instance: extraInstance = {}} = options;
@@ -77,7 +77,7 @@ export class InterfaceFactory extends BaseFactory<IInterfaceModel<any, any, any>
      * @param   {any[]}                  otherOptions 其他的设置项
      * @return  {Promise<any>}
      */
-    public async custom<D, P extends {[key: string]: any}>(instance: IInterfaceModel<D, P, any>, type: string, id?: string | number | null, options: IExecute<D, P> = {}, ...otherOptions: any[]): Promise<any> {
+    public async custom<D, P extends {[key: string]: any}>(instance: IInterfaceModel<D, P, any>, type: string, id?: string | number | null, options: IExecute<D, P> = {}, ...otherOptions: any[]): Promise<D> {
         let {instance: extraInstance = {}, params = {} as any} = options;
 
         extraInstance.method = type;
