@@ -1,16 +1,14 @@
 import { IInterfaceModel, IInterfaceModelCommon } from "../models/interface";
 import { BaseFactory } from "./base.factory";
 import { IExecute } from "../models/execute";
-export declare class InterfaceFactory extends BaseFactory<IInterfaceModel<any, any, any>> {
-    readonly overrideInterfaceConfig: IInterfaceModelCommon<any>;
-    constructor(overrideInterfaceConfig: IInterfaceModelCommon<any>);
-    add<D, P extends {
-        [key: string]: any;
-    }>(name: string, instance: IInterfaceModel<D, P, any>, override?: boolean): void;
-    execute<D, P>(instance: IInterfaceModel<D, P, any>, options: IExecute<D, P>, ...otherOptions: any[]): Promise<D>;
-    custom<D, P extends {
-        [key: string]: any;
-    }>(instance: IInterfaceModel<D, P, any>, type: string, id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<D>;
+export declare class InterfaceFactory<R, D, P extends {
+    [key: string]: any;
+}, C> extends BaseFactory<IInterfaceModel<R, D, P, C>> {
+    readonly overrideInterfaceConfig: IInterfaceModelCommon<C>;
+    constructor(overrideInterfaceConfig: IInterfaceModelCommon<C>);
+    add(name: string, instance: IInterfaceModel<R, D, P, C>, override?: boolean): void;
+    execute(instance: IInterfaceModel<R, D, P, C>, options: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
+    custom(instance: IInterfaceModel<R, D, P, C>, type: string, id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     private mergeInstance(instance, extendInstance?);
     private executeEngineMethod(instance, extendInstance, method, options?);
     private getPath(instance, extendInstance?);

@@ -1,6 +1,6 @@
-import { MethodType } from "./method";
-import { ICommon } from "./common";
-import { IExecute } from "./execute";
+import {MethodType} from "./method";
+import {ICommon} from "./common";
+import {IExecute} from "./execute";
 
 /**
  * 接口模型
@@ -25,15 +25,15 @@ export interface IInterfaceModelCommon<T> extends ICommon {
 
 }
 
-export interface IInterfaceModel<D,P,C> extends IInterfaceModelCommon<C> {
+export interface IInterfaceModel<R, D, P, C> extends IInterfaceModelCommon<C> {
     /**
      * 默认的执行参数
      */
-    defaultExecuteInfo?: IExecute<D,P>;
+    defaultExecuteInfo?: IExecute<D, P>;
     /**
      * 执行接口
      */
-    execute(options: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
+    execute(options: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     /**
      * 获取接口的执行路径
      */
@@ -41,29 +41,29 @@ export interface IInterfaceModel<D,P,C> extends IInterfaceModelCommon<C> {
     /**
      * 获取接口的执行路径
      */
-    getFullPath(options?: IExecute<D,P>): string;
+    getFullPath(options?: IExecute<D, P>): string;
     /**
      * 替换路径
      */
-    replacePath(options?: IExecute<D,P>): string;
+    replacePath(options?: IExecute<D, P>): string;
     /**
      * 执行接口，修改method为get
      */
-    get(options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
+    get(options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     /**
      * 执行接口，修改method为get
      */
-    getOne(id?: string | number | null, options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
+    getOne(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     /**
      * 执行接口，修改method为post
      */
-    post(options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
+    post(options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     /**
      * 执行接口，修改method为delete
      */
-    delete(id?: string | number | null, options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
+    delete(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     /**
      * 执行接口，修改method为put
      */
-    put(id?: string | number | null, options?: IExecute<D,P>, ...otherOptions: any[]): Promise<any>;
+    put(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
 }

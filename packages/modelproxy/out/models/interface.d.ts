@@ -7,15 +7,15 @@ export interface IInterfaceModelCommon<T> extends ICommon {
     path?: string;
     config?: T;
 }
-export interface IInterfaceModel<D, P, C> extends IInterfaceModelCommon<C> {
+export interface IInterfaceModel<R, D, P, C> extends IInterfaceModelCommon<C> {
     defaultExecuteInfo?: IExecute<D, P>;
-    execute(options: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
+    execute(options: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
     getPath(extendInterface?: IInterfaceModelCommon<C>): string;
     getFullPath(options?: IExecute<D, P>): string;
     replacePath(options?: IExecute<D, P>): string;
-    get(options?: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
-    getOne(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
-    post(options?: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
-    delete(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
-    put(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<any>;
+    get(options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
+    getOne(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
+    post(options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
+    delete(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
+    put(id?: string | number | null, options?: IExecute<D, P>, ...otherOptions: any[]): Promise<R>;
 }

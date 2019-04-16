@@ -16,7 +16,7 @@ export class DefaultEngine<T extends IProxyCtx<D, P>, D, P, C> extends BaseEngin
    * @param   {any[]}            otherOptions 额外的接口参数
    * @return  {Promise<any>}
    */
-    public async doProxy(instance: IInterfaceModel<D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
+    public async doProxy<R>(instance: IInterfaceModel<R, D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
         const c = new Compose<IProxyCtx<D, P>>();
         const {before, after, error, beforeProxy, afterProxy} = executeInfo;
 
@@ -77,7 +77,7 @@ export class DefaultEngine<T extends IProxyCtx<D, P>, D, P, C> extends BaseEngin
    * @param   {any[]}            otherOptions 额外的接口参数
    * @return  {Promise<any>}
    */
-    public async proxy(instance: IInterfaceModel<D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
+    public async proxy<R>(instance: IInterfaceModel<R, D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
         return this.doProxy(instance, executeInfo, ...otherOptions);
     }
 }

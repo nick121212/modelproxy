@@ -65,19 +65,15 @@ var InterfaceFactory = (function (_super) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             var _a, extraInstance, _b, params;
             return tslib_1.__generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _a = options.instance, extraInstance = _a === void 0 ? {} : _a, _b = options.params, params = _b === void 0 ? {} : _b;
-                        extraInstance.method = type;
-                        if (id) {
-                            extraInstance.path = (extraInstance.path || instance.path) + "/:__id__";
-                            params.__id__ = id;
-                        }
-                        options.instance = extraInstance;
-                        options.params = params;
-                        return [4, this.execute.apply(this, [instance, options].concat(otherOptions))];
-                    case 1: return [2, _c.sent()];
+                _a = options.instance, extraInstance = _a === void 0 ? {} : _a, _b = options.params, params = _b === void 0 ? {} : _b;
+                extraInstance.method = type;
+                if (id) {
+                    extraInstance.path = (extraInstance.path || instance.path) + "/:__id__";
+                    params.__id__ = id;
                 }
+                options.instance = extraInstance;
+                options.params = params;
+                return [2, this.execute.apply(this, [instance, options].concat(otherOptions))];
             });
         });
     };
