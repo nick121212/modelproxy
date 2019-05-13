@@ -1,7 +1,15 @@
-import {DefaultEngine} from "modelproxy";
-import {IProxyCtx} from "modelproxy/out/models/proxyctx";
-import * as fetch from "isomorphic-fetch";
-import * as URLSearchParams from "url-search-params";
+import { DefaultEngine } from "modelproxy";
+import { IProxyCtx } from "modelproxy/out/models/proxyctx";
+
+import { globalObj } from "./util";
+
+if (!globalObj.fetch) {
+    globalObj.fetch = require("isomorphic-fetch");
+}
+
+if (!globalObj.URLSearchParams) {
+    globalObj.URLSearchParams = require("url-search-params");
+}
 
 const defaultHeaders = {
     Accept: "application/json",
@@ -23,12 +31,12 @@ export class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T,
      * @return {Promise<any>}
      */
     public async fetch(ctx: T, next: (s?: string) => Promise<any>) {
-        let formData = new URLSearchParams(),
+        let formData: any = new URLSearchParams(),
             bodyParams = new URLSearchParams(),
-            {executeInfo = {}, instance = {}} = ctx,
+            { executeInfo = {}, instance = {} } = ctx,
             body,
             headers: any = {},
-            {timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {}} = executeInfo.settings || {},
+            { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
             fullPath = this.getFullPath(instance as any, executeInfo);
 
         if (typeof FormData !== "undefined") {
@@ -70,7 +78,7 @@ export class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T,
             Object.assign(
                 {},
                 {
-                    body: ["GET", "OPTIONS", "HEAD"].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
+                    body: [ "GET", "OPTIONS", "HEAD" ].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
                     credentials: "same-origin",
                     headers: headers,
                     method: instance.method as any
