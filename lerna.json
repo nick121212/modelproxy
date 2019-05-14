@@ -2,7 +2,8 @@
   "lerna": "2.4.0",
   "packages": [
     "packages/modelproxy",
-    "packages/modelproxy-engine-fetch"
+    "packages/modelproxy-engine-fetch",
+    "packages/modelproxy-engine-base"
   ],
-  "version": "3.0.18"
+  "version": "3.0.19"
 }

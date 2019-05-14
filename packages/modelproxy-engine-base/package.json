@@ -1,7 +1,7 @@
 {
-  "name": "modelproxy-engine-fetch",
+  "name": "modelproxy-engine-wx",
   "version": "3.0.19",
-  "description": "modelproxy中fetch的engine",
+  "description": "modelproxy中微信小程序的engine",
   "main": "out/index.js",
   "scripts": {
     "test": "mocha -t 10000 test/**/*.js",
@@ -11,15 +11,7 @@
   "types": "./out/index.d.ts",
   "author": "Nick",
   "license": "MIT",
-  "dependencies": {
-    "isomorphic-fetch": "^2.2.1",
-    "path-to-regexp": "^1.7.0",
-    "url-search-params": "^1.0.2"
-  },
   "devDependencies": {
-    "@types/isomorphic-fetch": "0.0.34",
-    "@types/node": "^12.0.0",
-    "@types/url-search-params": "^0.10.2",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "bluebird": "^3.5.0",
@@ -29,7 +21,7 @@
     "modelproxy": "^3.0.19",
     "ts-loader": "^4.4.1",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^2.1.5",
+    "typescript": "^2.9.0",
     "uglifyjs-webpack-plugin": "^1.2.6",
     "webpack": "^4.12.0"
   }
