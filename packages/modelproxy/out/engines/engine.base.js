@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var pathToRegexp = require("path-to-regexp");
-var URLSearchParams = require("url-search-params");
 var compose_1 = require("../libs/compose");
 var errors_1 = require("../libs/errors");
+var util_1 = require("../util");
+var URLSearchParams = util_1.globalObj.URLSearchParams;
 var BaseEngine = (function (_super) {
     tslib_1.__extends(BaseEngine, _super);
     function BaseEngine() {

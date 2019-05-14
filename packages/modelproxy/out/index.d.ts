@@ -6,3 +6,4 @@ export { BaseEngine } from "./engines/engine.base";
 export { DefaultEngine } from "./engines/engine.def";
 export { BaseFactory } from "./libs/base.factory";
 export { cacheDec, promiseFactory, cacheDecFunc } from "./funcs/cache";
+export * from "./util";

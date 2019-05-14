@@ -1,15 +1,11 @@
-import { DefaultEngine } from "modelproxy";
+import { DefaultEngine, globalObj } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
-
-import { globalObj } from "./util";
 
 if (!globalObj.fetch) {
     globalObj.fetch = require("isomorphic-fetch");
 }
 
-if (!globalObj.URLSearchParams) {
-    globalObj.URLSearchParams = require("url-search-params");
-}
+const { URLSearchParams } = globalObj;
 
 const defaultHeaders = {
     Accept: "application/json",

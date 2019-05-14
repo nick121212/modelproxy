@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var proxy_1 = require("./libs/proxy");
 exports.ModelProxy = proxy_1.ModelProxy;
 var compose_1 = require("./libs/compose");
@@ -19,3 +20,4 @@ var cache_1 = require("./funcs/cache");
 exports.cacheDec = cache_1.cacheDec;
 exports.promiseFactory = cache_1.promiseFactory;
 exports.cacheDecFunc = cache_1.cacheDecFunc;
+tslib_1.__exportStar(require("./util"), exports);

@@ -2,13 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const modelproxy_1 = require("modelproxy");
-const util_1 = require("./util");
-if (!util_1.globalObj.fetch) {
-    util_1.globalObj.fetch = require("isomorphic-fetch");
+if (!modelproxy_1.globalObj.fetch) {
+    modelproxy_1.globalObj.fetch = require("isomorphic-fetch");
 }
-if (!util_1.globalObj.URLSearchParams) {
-    util_1.globalObj.URLSearchParams = require("url-search-params");
-}
+const { URLSearchParams } = modelproxy_1.globalObj;
 const defaultHeaders = {
     Accept: "application/json",
     "Content-Type": "application/json"

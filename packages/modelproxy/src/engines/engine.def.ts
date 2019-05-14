@@ -1,8 +1,8 @@
-import {IInterfaceModel} from "../models/interface";
-import {BaseEngine} from "./engine.base";
-import {IExecute} from "../models/execute";
-import {IProxyCtx} from "../models/proxyctx";
-import {Compose} from "../libs/compose";
+import { IInterfaceModel } from "../models/interface";
+import { BaseEngine } from "./engine.base";
+import { IExecute } from "../models/execute";
+import { IProxyCtx } from "../models/proxyctx";
+import { Compose } from "../libs/compose";
 
 /**
  * 默认的engine
@@ -18,7 +18,7 @@ export class DefaultEngine<T extends IProxyCtx<D, P>, D, P, C> extends BaseEngin
    */
     public async doProxy<R>(instance: IInterfaceModel<R, D, P, C>, executeInfo: IExecute<D, P>, ...otherOptions: any[]): Promise<any> {
         const c = new Compose<IProxyCtx<D, P>>();
-        const {before, after, error, beforeProxy, afterProxy} = executeInfo;
+        const { before, after, error, beforeProxy, afterProxy } = executeInfo;
 
         // 判斷是否需要在前面加入compose
         if (before) {

@@ -1,14 +1,16 @@
 import * as pathToRegexp from "path-to-regexp";
-import * as URLSearchParams from "url-search-params";
 
-import {IEngine} from "../models/engine";
-import {IExecute} from "../models/execute";
-import {Compose} from "../libs/compose";
-import {IProxyCtx} from "../models/proxyctx";
-import {IInterfaceModel} from "../models/interface";
-import {ModelProxyMissingError} from "../libs/errors";
+import { IEngine } from "../models/engine";
+import { IExecute } from "../models/execute";
+import { Compose } from "../libs/compose";
+import { IProxyCtx } from "../models/proxyctx";
+import { IInterfaceModel } from "../models/interface";
+import { ModelProxyMissingError } from "../libs/errors";
+import { globalObj } from "../util";
 
-export class BaseEngine<T extends IProxyCtx<D, P>, D, P extends {[key: string]: any}, C> extends Compose<T> implements IEngine<C> {
+const { URLSearchParams } = globalObj;
+
+export class BaseEngine<T extends IProxyCtx<D, P>, D, P extends { [key: string]: any }, C> extends Compose<T> implements IEngine<C> {
     // protected beforeMiddlewares: MiddleFunc<IProxyCtx>[] = [];
     // protected afterMiddlewares: MiddleFunc<IProxyCtx>[] = [];
 
@@ -70,14 +72,14 @@ export class BaseEngine<T extends IProxyCtx<D, P>, D, P extends {[key: string]: 
      * @param   {IExecute}        options      参数
      * @return  {string}                       返回替换过后的路径
      */
-    public replacePath(instance: IInterfaceModel<any, D, P, C>, {params = {} as any}: IExecute<D, P>): string {
+    public replacePath(instance: IInterfaceModel<any, D, P, C>, { params = {} as any }: IExecute<D, P>): string {
         const tokens: Array<pathToRegexp.Key | string> = pathToRegexp.parse((instance.path as string) || "/"),
             paths: Array<string> = [];
 
         // 处理path中的变量
         // 遍历所有的tokens
         tokens.forEach((token: pathToRegexp.Key | string) => {
-            let {name} = token as pathToRegexp.Key;
+            let { name } = token as pathToRegexp.Key;
 
             if (!name) {
                 paths.push(token as string);
@@ -102,9 +104,9 @@ export class BaseEngine<T extends IProxyCtx<D, P>, D, P extends {[key: string]: 
      * @return  {string}                        返回路径
      */
     public getFullPath(instance: IInterfaceModel<any, D, P, C>, options: IExecute<D, P>): string {
-        const url = [this.getStatePath(instance), this.replacePath(instance, options)],
+        const url = [ this.getStatePath(instance), this.replacePath(instance, options) ],
             searchParams: URLSearchParams = new URLSearchParams();
-        const {params} = options;
+        const { params } = options;
 
         if (params) {
             Object.keys(params).forEach((key) => {
