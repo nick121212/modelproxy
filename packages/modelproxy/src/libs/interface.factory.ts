@@ -1,10 +1,10 @@
-import {IEngine} from "../models/engine";
-import {IInterfaceModel, IInterfaceModelCommon} from "../models/interface";
-import {BaseFactory} from "./base.factory";
-import {engineFactory} from "./engine.factory";
-import {IExecute} from "../models/execute";
+import { IEngine } from "../models/engine";
+import { IInterfaceModel, IInterfaceModelCommon } from "../models/interface";
+import { BaseFactory } from "./base.factory";
+import { engineFactory } from "./engine.factory";
+import { IExecute } from "../models/execute";
 
-export class InterfaceFactory<R, D, P extends {[key: string]: any}, C> extends BaseFactory<IInterfaceModel<R, D, P, C>> {
+export class InterfaceFactory<R, D, P extends { [key: string]: any }, C> extends BaseFactory<IInterfaceModel<R, D, P, C>> {
     constructor(public readonly overrideInterfaceConfig: IInterfaceModelCommon<C>) {
         super();
     }
@@ -22,7 +22,7 @@ export class InterfaceFactory<R, D, P extends {[key: string]: any}, C> extends B
             Object.assign(instance, {
                 delete: this.custom.bind(this, instance as any, "DELETE"),
                 execute: this.execute.bind(this, instance as any),
-                get: this.custom.bind(this, instance as any as any, "GET", null),
+                get: this.custom.bind(this, (instance as any) as any, "GET", null),
                 getFullPath: this.getFullPath.bind(this, instance),
                 getOne: this.custom.bind(this, instance as any, "GET"),
                 getPath: this.getPath.bind(this, instance),
@@ -43,12 +43,12 @@ export class InterfaceFactory<R, D, P extends {[key: string]: any}, C> extends B
     public async execute(instance: IInterfaceModel<R, D, P, C>, options: IExecute<D, P>, ...otherOptions: any[]): Promise<R> {
         let engine: IEngine<any>;
         let instanceMerge: IInterfaceModel<R, D, P, C>;
-        let {instance: extraInstance = {}} = options;
+        let { instance: extraInstance = {} } = options;
 
         // 合并instance的数据
         instanceMerge = this.mergeInstance(instance, extraInstance);
 
-        const {engine: engineName, defaultExecuteInfo = {}} = instanceMerge;
+        const { engine: engineName, defaultExecuteInfo = {} } = instanceMerge;
 
         // 判断engine是否存在
         if (!engineFactory.has(engineName || "")) {
@@ -78,7 +78,7 @@ export class InterfaceFactory<R, D, P extends {[key: string]: any}, C> extends B
      * @return  {Promise<any>}
      */
     public async custom(instance: IInterfaceModel<R, D, P, C>, type: string, id?: string | number | null, options: IExecute<D, P> = {}, ...otherOptions: any[]): Promise<R> {
-        let {instance: extraInstance = {}, params = {} as any} = options;
+        let { instance: extraInstance = {}, params = {} as any } = options;
 
         extraInstance.method = type;
         if (id) {

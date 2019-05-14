@@ -1,5 +1,11 @@
-// import * as tv4 from "tv4";
+import { IProxyCtx } from "../models/proxyctx";
 
+/**
+ * 基础错误类
+ * @export
+ * @class BaseError
+ * @implements {Error}
+ */
 export class BaseError implements Error {
     public name = "";
     public message: string;
@@ -19,5 +25,19 @@ export class ModelProxyMissingError extends BaseError {
         super(message);
         // Object.setPrototypeOf(this, ModelProxyMissingError.prototype);
         this.name = "ModelProxy.MissingError";
+    }
+}
+
+/**
+ * MPError
+ * @export
+ * @class MPError
+ * @extends {Error}
+ */
+export class MPError extends BaseError {
+    constructor(message: string, public code: string, public errData?: IProxyCtx<any, any>) {
+        super(message);
+
+        this.name = "MPError";
     }
 }

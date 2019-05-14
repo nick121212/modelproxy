@@ -1,6 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const modelproxy_1 = require("modelproxy");
 if (!modelproxy_1.globalObj.fetch) {
     modelproxy_1.globalObj.fetch = require("isomorphic-fetch");
@@ -12,30 +19,24 @@ const defaultHeaders = {
 };
 class FetchEngine extends modelproxy_1.DefaultEngine {
     /**
-     * 初始化
-     */
-    init() {
-        this.use(this.fetch.bind(this));
-    }
-    /**
      * 发起请求
      * @param  {IProxyCtx}                     ctx  上下文
      * @param  {(s?: string) => Promise<any>}  next 下一个中间件
      * @return {Promise<any>}
      */
     fetch(ctx, next) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let formData = new URLSearchParams(), bodyParams = new URLSearchParams(), { executeInfo = {}, instance = {} } = ctx, body, headers = {}, { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {}, fullPath = this.getFullPath(instance, executeInfo);
+        return __awaiter(this, void 0, void 0, function* () {
+            let formData = new URLSearchParams(), bodyParams = new URLSearchParams(), { executeInfo = {}, instance = {} } = ctx, body, headers = {}, { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {}, url = this.getFullPath(instance, executeInfo);
             if (typeof FormData !== "undefined") {
                 formData = new FormData();
             }
-            // 根据type来设置不同的header
+            // 根据type来设置不同的headers
             switch (type) {
                 case "params":
                     headers = Object.assign({}, defaultHeaders, headers);
                     body = bodyParams;
                     break;
-                case "formdata":
+                case "formData":
                     body = formData;
                     break;
                 default:
@@ -53,21 +54,12 @@ class FetchEngine extends modelproxy_1.DefaultEngine {
                     bodyParams.append(key, data);
                 }
             }
-            // 调用解耦请求
-            const fetchFunc = fetch.bind(fetch, fullPath, Object.assign({}, {
-                body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null,
-                credentials: "same-origin",
-                headers: headers,
-                method: instance.method
-            }, fetchOptions));
             // 发送请求
             ctx.result = yield Promise.race([
                 this.delay(timeout || 5000).then(() => {
-                    const err = new Error(`接口请求超时！(${timeout})`);
-                    err.name = "timeout";
-                    throw err;
+                    throw new modelproxy_1.MPError(`接口请求超时！(${timeout})`, "9999", ctx);
                 }),
-                fetchFunc()
+                fetch(url, Object.assign({ body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null, credentials: "same-origin", headers: headers, method: instance.method }, fetchOptions))
             ]);
             yield next();
         });

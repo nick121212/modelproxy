@@ -1,4 +1,4 @@
-import { DefaultEngine, globalObj } from "modelproxy";
+import { DefaultEngine, globalObj, MPError } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 
 if (!globalObj.fetch) {
@@ -14,13 +14,6 @@ const defaultHeaders = {
 
 export class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T, any, any, any> {
     /**
-     * 初始化
-     */
-    public init(): void {
-        this.use(this.fetch.bind(this));
-    }
-
-    /**
      * 发起请求
      * @param  {IProxyCtx}                     ctx  上下文
      * @param  {(s?: string) => Promise<any>}  next 下一个中间件
@@ -33,19 +26,19 @@ export class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T,
             body,
             headers: any = {},
             { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
-            fullPath = this.getFullPath(instance as any, executeInfo);
+            url = this.getFullPath(instance as any, executeInfo);
 
         if (typeof FormData !== "undefined") {
             formData = new FormData();
         }
 
-        // 根据type来设置不同的header
+        // 根据type来设置不同的headers
         switch (type) {
             case "params":
                 headers = Object.assign({}, defaultHeaders, headers);
                 body = bodyParams;
                 break;
-            case "formdata":
+            case "formData":
                 body = formData;
                 break;
             default:
@@ -67,32 +60,18 @@ export class FetchEngine<T extends IProxyCtx<any, any>> extends DefaultEngine<T,
             }
         }
 
-        // 调用解耦请求
-        const fetchFunc: () => Promise<any> = fetch.bind(
-            fetch,
-            fullPath,
-            Object.assign(
-                {},
-                {
-                    body: [ "GET", "OPTIONS", "HEAD" ].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
-                    credentials: "same-origin",
-                    headers: headers,
-                    method: instance.method as any
-                },
-                fetchOptions
-            )
-        );
-
         // 发送请求
         ctx.result = await Promise.race([
             this.delay(timeout || 5000).then(() => {
-                const err = new Error(`接口请求超时！(${timeout})`);
-
-                err.name = "timeout";
-
-                throw err;
+                throw new MPError(`接口请求超时！(${timeout})`, "9999", ctx);
             }),
-            fetchFunc()
+            fetch(url, {
+                body: [ "GET", "OPTIONS", "HEAD" ].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
+                credentials: "same-origin",
+                headers: headers,
+                method: instance.method as any,
+                ...fetchOptions
+            })
         ]);
 
         await next();
