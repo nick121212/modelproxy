@@ -1,7 +1,7 @@
 {
-  "name": "modelproxy-engine-wx",
-  "version": "3.0.19",
-  "description": "modelproxy中微信小程序的engine",
+  "name": "modelproxy-engine-base",
+  "version": "3.0.20",
+  "description": "modelproxy的通用engine",
   "main": "out/index.js",
   "scripts": {
     "test": "mocha -t 10000 test/**/*.js",
