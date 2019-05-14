@@ -1,6 +1,6 @@
 {
   "name": "modelproxy",
-  "version": "3.0.16",
+  "version": "3.0.17",
   "description": "接口配置建模框架",
   "main": "out/index.js",
   "scripts": {
