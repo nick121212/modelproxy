@@ -224,7 +224,6 @@ export class ModelProxy extends Compose<any> {
      * @return  {InterfaceFactory}
      */
     private initInterfaces(ifFactory: InterfaceFactory<any, any, any, any>, config: IProxyConfig, overrideInterfaceConfig: IInterfaceModelCommon<any> = {}): InterfaceFactory<any, any, any, any> {
-        // this.defaultExecuteInfo
         const { defaultExecuteInfo } = this;
 
         config.interfaces.forEach((i: IInterfaceModelCommon<any>) => {

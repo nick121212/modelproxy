@@ -68,7 +68,6 @@ export class InterfaceFactory<R, D, P extends { [key: string]: any }, C> extends
         // 调用engine.proxy方法
         return engine.proxy(instanceMerge, Object.assign({}, defaultExecuteInfo, options), ...otherOptions);
     }
-
     /**
      * 处理请求
      * @param   {IInterfaceModel}        instance     接口的具体实例
@@ -110,11 +109,11 @@ export class InterfaceFactory<R, D, P extends { [key: string]: any }, C> extends
      * @return  {string}
      */
     private executeEngineMethod(instance: IInterfaceModel<R, D, P, C>, extendInstance: IInterfaceModelCommon<C> = {}, method: string, options: IExecute<D, P> = {}) {
-        let engine: IEngine<any>, methodFunc: any, instanceMerge: IInterfaceModel<R, D, P, C>;
+        // let engine: IEngine<any>, methodFunc: any, instanceMerge: IInterfaceModel<R, D, P, C>;
 
-        instanceMerge = this.mergeInstance(instance, extendInstance);
-        engine = engineFactory.getItem("default");
-        methodFunc = (engine as any)[method];
+        let instanceMerge = this.mergeInstance(instance, extendInstance);
+        let engine = engineFactory.getItem("default");
+        let methodFunc = (engine as any)[method];
 
         if (methodFunc) {
             return methodFunc.call(engineFactory.getItem("default"), instanceMerge, options);
@@ -122,7 +121,6 @@ export class InterfaceFactory<R, D, P extends { [key: string]: any }, C> extends
 
         return "";
     }
-
     /**
      * 获取接口的路径
      * @param  {IInterfaceModel}       instance       实例名称
