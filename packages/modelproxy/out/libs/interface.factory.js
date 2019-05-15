@@ -82,7 +82,7 @@ var InterfaceFactory = (function (_super) {
                         instanceMerge = this.mergeInstance(instance, extraInstance);
                         engineName = instanceMerge.engine, _b = instanceMerge.defaultExecuteInfo, defaultExecuteInfo = _b === void 0 ? {} : _b;
                         if (!engine_factory_1.engineFactory.has(engineName || "")) {
-                            throw new Error("\u6CA1\u6709\u53D1\u73B0engine[" + engineName + "]");
+                            throw new Error("engine [" + engineName + "] can't be found.");
                         }
                         engine = engine_factory_1.engineFactory.getItem(engineName || "default");
                         _c.label = 1;

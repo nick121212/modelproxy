@@ -5,7 +5,7 @@ import { engineFactory } from "./engine.factory";
 import { IExecute } from "../models/execute";
 
 export class InterfaceFactory<R, D, P extends { [key: string]: any }, C> extends BaseFactory<IInterfaceModel<R, D, P, C>> {
-    constructor(public readonly overrideInterfaceConfig: IInterfaceModelCommon<C>) {
+    constructor(public readonly overrideInterfaceConfig?: IInterfaceModelCommon<C>) {
         super();
     }
 
@@ -52,8 +52,9 @@ export class InterfaceFactory<R, D, P extends { [key: string]: any }, C> extends
 
         // 判断engine是否存在
         if (!engineFactory.has(engineName || "")) {
-            throw new Error(`没有发现engine[${engineName}]`);
+            throw new Error(`engine [${engineName}] can't be found.`);
         }
+
         // 获取engine
         engine = engineFactory.getItem(engineName || "default");
 

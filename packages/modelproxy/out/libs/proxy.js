@@ -192,17 +192,17 @@ var ModelProxy = (function (_super) {
         };
     };
     ModelProxy.prototype.initInterfaces = function (ifFactory, config, overrideInterfaceConfig) {
-        var _this = this;
         if (overrideInterfaceConfig === void 0) { overrideInterfaceConfig = {}; }
+        var defaultExecuteInfo = this.defaultExecuteInfo;
         config.interfaces.forEach(function (i) {
             var interModel = Object.assign({}, {
-                defaultExecuteInfo: _this.defaultExecuteInfo,
+                defaultExecuteInfo: defaultExecuteInfo,
                 engine: config.engine,
                 mockDir: config.mockDir,
                 ns: config.key,
                 state: config.state,
                 states: config.states
-            }, i, overrideInterfaceConfig || {});
+            }, i, defaultExecuteInfo ? defaultExecuteInfo.instance || {} : {}, overrideInterfaceConfig || {});
             ifFactory.add(i.key, interModel, true);
         });
         return ifFactory;
