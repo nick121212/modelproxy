@@ -13,8 +13,10 @@ export interface CacheSetting {
     local?: boolean;
 }
 
+/**
+ * 缓存promise对象
+ */
 export const promiseFactory = new BaseFactory<CacheData>();
-
 /**
  * 从缓存中获取数据
  * @param {Storage} storage 缓存对象
@@ -50,7 +52,6 @@ const getDataFromStorage = (storage?: Storage, key: string = "") => {
 
     return Promise.resolve(data);
 };
-
 /**
  * 根据Key清除缓存
  * @param   {String}  key      唯一键值
@@ -64,7 +65,6 @@ export const removeCacheFromKey = (key: string, storage?: Storage): void => {
         storage.removeItem(key);
     }
 };
-
 /**
  * 根据正则来删除缓存
  * @param   {RegExp}  regexp   正则表达式
@@ -88,7 +88,6 @@ export const removeCacheFromRegexp = (regexp: RegExp, storage?: Storage): void =
         }
     });
 };
-
 /**
  * 对方法做缓存，方法必须返回Promise
  * 返回 {() => Promise<any>}
