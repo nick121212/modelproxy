@@ -22,5 +22,6 @@ exports.BaseFactory = base_factory_1.BaseFactory;
 var cache_1 = require("./funcs/cache");
 exports.cacheDec = cache_1.cacheDec;
 exports.promiseFactory = cache_1.promiseFactory;
-exports.cacheDecFunc = cache_1.cacheDecFunc;
+exports.removeCacheFromKey = cache_1.removeCacheFromKey;
+exports.removeCacheFromRegexp = cache_1.removeCacheFromRegexp;
 __export(require("./util"));

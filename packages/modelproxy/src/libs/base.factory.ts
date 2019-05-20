@@ -1,4 +1,4 @@
-import { ModelProxyMissingError } from "./errors";
+// import { ModelProxyMissingError } from "./errors";
 
 /**
  * 实例的工厂类
@@ -16,7 +16,7 @@ export class BaseFactory<T> implements Storage {
      */
     public add(name: string, instance: T, override = false): void {
         if (override && this.instances.hasOwnProperty(name)) {
-            return console.error(`已经存在name=【${name}】的engine！`);
+            return console.error(`已经存在name=【${name}】的实例！`);
         }
         this.instances[name] = instance;
         this.length++;
@@ -74,7 +74,7 @@ export class BaseFactory<T> implements Storage {
      * @param   {Function} fn  需要还行的方法
      * @return  {Void}
      */
-    public forEach(fn: Function): void {
+    public forEach(fn: (key: string, instance: T) => void): void {
         if (!fn || fn.constructor !== Function) {
             return;
         }

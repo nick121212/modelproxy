@@ -128,10 +128,9 @@ var InterfaceFactory = (function (_super) {
     InterfaceFactory.prototype.executeEngineMethod = function (instance, extendInstance, method, options) {
         if (extendInstance === void 0) { extendInstance = {}; }
         if (options === void 0) { options = {}; }
-        var engine, methodFunc, instanceMerge;
-        instanceMerge = this.mergeInstance(instance, extendInstance);
-        engine = engine_factory_1.engineFactory.getItem("default");
-        methodFunc = engine[method];
+        var instanceMerge = this.mergeInstance(instance, extendInstance);
+        var engine = engine_factory_1.engineFactory.getItem("default");
+        var methodFunc = engine[method];
         if (methodFunc) {
             return methodFunc.call(engine_factory_1.engineFactory.getItem("default"), instanceMerge, options);
         }

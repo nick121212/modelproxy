@@ -35,7 +35,7 @@ describe("modelproxy cache------", function() {
     const fetch1 = (ctx, next) => {
         return new Promise((resolve) => {
             setTimeout(() => {
-                return resolve(Date.now());
+                return resolve(Date.now().toString());
             }, 100);
         });
     };
@@ -97,15 +97,21 @@ describe("modelproxy cache------", function() {
 
         it("cache 方法测试", async () => {
             const localStorage = new modelProxy.BaseFactory();
-            const cacheFunc = modelProxy.cacheDecFunc(localStorage);
+            const cacheFunc = modelProxy.cacheDec;
 
-            const res1 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true, expire: 10 })();
+            const res1 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true, expire: 10 }, localStorage)();
             const localRes1 = localStorage.getItem("/test/cache1");
-            const res2 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true })();
 
-            expect(res1).not.eq(res2);
+            await fetch1();
+
+            const res2 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true }, localStorage)();
+            modelProxy.removeCacheFromKey("/test/cache1", localStorage);
+            const res3 = await cacheFunc(fetch1, "/test/cache1", { local: true, cache: true }, localStorage)();
+
+            expect(res1).to.not.eq(res2);
             expect(localRes1).to.be.a("string");
             expect(JSON.parse(localRes1).data).to.eq(res1);
+            expect(res3).to.not.eq(res1);
         });
     });
 });

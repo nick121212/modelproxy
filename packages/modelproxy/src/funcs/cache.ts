@@ -1,5 +1,4 @@
 import { BaseFactory } from "../libs/base.factory";
-import { isString } from "util";
 
 export interface CacheData {
     cacheIn: number;
@@ -27,7 +26,17 @@ const getDataFromStorage = (storage?: Storage, key: string = "") => {
         return null;
     }
 
-    const { expire = 0, cacheIn = 0, data = null } = storage.getItem(key) || ({} as any);
+    let dataFromStorage = storage.getItem(key);
+
+    if (typeof dataFromStorage === "string") {
+        try {
+            dataFromStorage = JSON.parse(dataFromStorage);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    const { expire = 0, cacheIn = 0, data = null } = dataFromStorage || ({} as any);
 
     if (expire && cacheIn && cacheIn + expire < Date.now()) {
         storage.removeItem(key);
@@ -39,11 +48,45 @@ const getDataFromStorage = (storage?: Storage, key: string = "") => {
         return null;
     }
 
-    if (isString(data)) {
-        return Promise.resolve(JSON.parse(data));
-    }
+    return Promise.resolve(data);
+};
 
-    return data;
+/**
+ * 根据Key清除缓存
+ * @param   {String}  key      唯一键值
+ * @param   {Storage} storage  缓存类
+ * @returns {void}
+ */
+export const removeCacheFromKey = (key: string, storage?: Storage): void => {
+    promiseFactory.removeItem(key);
+
+    if (storage) {
+        storage.removeItem(key);
+    }
+};
+
+/**
+ * 根据正则来删除缓存
+ * @param   {RegExp}  regexp   正则表达式
+ * @param   {Storage} storage  缓存类
+ * @returns {void}
+ */
+export const removeCacheFromRegexp = (regexp: RegExp, storage?: Storage): void => {
+    const removeKeys: string[] = [];
+
+    promiseFactory.forEach((key: string) => {
+        if (regexp.test(key)) {
+            removeKeys.push(key);
+        }
+    });
+
+    removeKeys.forEach((key: string) => {
+        promiseFactory.removeItem(key);
+
+        if (storage) {
+            storage.removeItem(key);
+        }
+    });
 };
 
 /**
@@ -62,7 +105,7 @@ const getDataFromStorage = (storage?: Storage, key: string = "") => {
 export const cacheDec = <T extends Function>(func: T, key: string, settings: CacheSetting, storage?: Storage): ((...args: any[]) => Promise<any>) => {
     const { cache = false, reload = false, expire = undefined, local = true } = settings || {};
 
-    return function(...args: any[]): Promise<any> {
+    function CacheFunc<D>(...args: any[]): Promise<D> {
         // 如果不缓存直接调用方法
         if (!cache) {
             return func(...args);
@@ -93,40 +136,24 @@ export const cacheDec = <T extends Function>(func: T, key: string, settings: Cac
         const promise = func(...args).catch((e: Error) => {
             promiseFactory.removeItem(key);
 
+            if (storage) {
+                storage.removeItem(key);
+            }
+
             throw e;
         });
 
-        // 添加缓存
+        // 添加缓存, 为了并发多次请求的情况下，故添加内存的promise缓存
         promiseFactory.add(key, { data: promise, expire, cacheIn: Date.now() });
 
-        return promise;
-    };
-};
-
-/**
- * 使用缓存方法
- * @param {Storage} storage 缓存对象
- * @returns {Function}
- */
-export const cacheDecFunc = (storage?: Storage) => {
-    return <T extends Function>(func: T, key: string, settings: CacheSetting) => {
-        const cachedFunc = cacheDec<T>(func, key, settings, storage);
-
-        if (!storage) {
-            return cachedFunc;
+        if (storage) {
+            promise.then((d: any) => {
+                storage.setItem(key, JSON.stringify({ data: d, expire, cacheIn: Date.now() }));
+            });
         }
 
-        return function(...args: any[]) {
-            const { cache = false, expire = undefined, local = true } = settings || {};
-            const promise = cachedFunc(...args);
+        return promise;
+    }
 
-            if (local && cache) {
-                promise.then((data: any) => {
-                    storage.setItem(key, JSON.stringify({ data, expire, cacheIn: Date.now() }));
-                });
-            }
-
-            return promise;
-        };
-    };
+    return CacheFunc;
 };

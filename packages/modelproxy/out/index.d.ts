@@ -5,5 +5,5 @@ export { BaseError, ModelProxyMissingError, MPError } from "./libs/errors";
 export { BaseEngine } from "./engines/engine.base";
 export { DefaultEngine } from "./engines/engine.def";
 export { BaseFactory } from "./libs/base.factory";
-export { cacheDec, promiseFactory, cacheDecFunc } from "./funcs/cache";
+export { cacheDec, promiseFactory, removeCacheFromKey, removeCacheFromRegexp } from "./funcs/cache";
 export * from "./util";

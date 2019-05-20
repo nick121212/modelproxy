@@ -10,24 +10,18 @@ var config = {
     engine: "json",
     mockDir: "/mocks/",
     states: {
-        prod: "http://api.tvmaze.com",
-        test: "http://api.tvmaze.com",
-        dev: "/tvmaze",
-        stag: "http://api.tvmaze.com"
+        prod: "http://www.baidu.com",
+        test: "http://www.baidu.com",
+        dev: "http://www.baidu.com",
+        stag: "http://www.baidu.com"
     },
     state: "stag",
     interfaces: [
         {
-            key: "search.shows",
-            title: "搜索所有的电影数据",
-            method: "GET",
-            path: "/search/shows"
-        },
-        {
             key: "singlesearch.shows",
             title: "搜索单步电影数据",
             method: "GET",
-            path: "/singlesearch/shows"
+            path: "/"
         }
     ]
 };
@@ -41,8 +35,12 @@ describe("modelproxy fetch engine------", function() {
         proxy = new modelProxy.ModelProxy();
         engine.use(engine.fetch.bind(engine));
         engine.use(async (ctx, next) => {
+            // console.log(ctx.result);
+            
             ctx.result = ctx.result.clone();
-            ctx.result = await ctx.result.json();
+            // ctx.result = await ctx.result.text();
+
+            // console.log(ctx.result);
 
             await next();
         });
@@ -55,29 +53,33 @@ describe("modelproxy fetch engine------", function() {
         });
     });
 
-    describe("测试cache", function(done) {
-        it("接口的返回值不为空", async () => {
-            const dd = await proxy.execute("tvmaze", "singlesearch.shows", {
-                params: {
-                    q: "batman"
-                },
-                settings: {
-                    cache: true,
-                    timeout: 10000
-                }
-            });
-            const dd1 = await proxy.execute("tvmaze", "singlesearch.shows", {
-                params: {
-                    q: "batman"
-                },
-                settings: {
-                    cache: true,
-                    timeout: 10000
-                }
-            });
+    describe(
+        "测试cache",
+        function(done) {
+            it("接口的返回值不为空", async () => {
+                const dd = await proxy.execute("tvmaze", "singlesearch.shows", {
+                    params: {
+                        q: "batman"
+                    },
+                    settings: {
+                        cache: true,
+                        timeout: 20000
+                    }
+                });
+                const dd1 = await proxy.execute("tvmaze", "singlesearch.shows", {
+                    params: {
+                        q: "batman"
+                    },
+                    settings: {
+                        cache: true,
+                        timeout: 20000
+                    }
+                });
 
-            expect(dd.result.id).not.to.be.null;
-            expect(dd1.result.id).not.to.be.null;
-        });
-    });
+                expect(dd.result.id).not.to.be.null;
+                expect(dd1.result.id).not.to.be.null;
+            });
+        },
+        2000
+    );
 });
