@@ -15,7 +15,7 @@ export class BaseFactory<T> implements Storage {
      * @return  {void}
      */
     public add(name: string, instance: T, override = false): void {
-        if (override && this.instances.hasOwnProperty(name)) {
+        if (!override && this.instances.hasOwnProperty(name)) {
             return console.error(`已经存在name=【${name}】的实例！`);
         }
         this.instances[name] = instance;
