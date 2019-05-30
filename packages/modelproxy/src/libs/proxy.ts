@@ -70,12 +70,7 @@ export class ModelProxy extends Compose<any> {
      * @return  {Promise<any>}
      */
     public async execute<D, P>(ns: string, key: string, options: IExecute<D, P> = {}, ...otherOptions: any[]) {
-        const interfaces = this.getNs(ns),
-            instance = interfaces.getItem(key);
-
-        if (!instance) {
-            throw new ModelProxyMissingError(`没有发现/${ns}/${key}的接口方法！`);
-        }
+        const instance = this.getInterface(ns, key);
 
         return instance.execute(options, ...otherOptions);
     }
@@ -158,6 +153,24 @@ export class ModelProxy extends Compose<any> {
         }
 
         return this.nsFactory.getItem(ns);
+    }
+
+    /**
+     * 获取接口对象
+     * @param   {string}   ns    命名空间
+     * @param   {string[]} keys  需要合并的接口的key
+     * @returns {IInterfaceModel<any, any, any, any>}
+     * @memberof ModelProxy
+     */
+    public getInterface(ns: string, key: string): IInterfaceModel<any, any, any, any> {
+        const nsFactory = this.getNs(ns);
+        const inter = nsFactory.get(key);
+
+        if (!inter) {
+            throw new ModelProxyMissingError(`没有找到${ns}空间下的${key}接口;`);
+        }
+
+        return inter;
     }
 
     /**

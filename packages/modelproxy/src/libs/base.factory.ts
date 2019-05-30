@@ -57,7 +57,7 @@ export class BaseFactory<T> implements Storage {
      * @param   {string} name 实例标志
      * @return  {T|null} 实例
      */
-    private get(name: string): T | null {
+    public get(name: string): T | null {
         if (this.instances.hasOwnProperty(name)) {
             return this.instances[name];
         }

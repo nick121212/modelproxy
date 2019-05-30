@@ -78,8 +78,8 @@ exports.cacheDec = function (func, key, settings, storage) {
         });
         exports.promiseFactory.add(key, { data: promise, expire: expire, cacheIn: Date.now() });
         if (storage) {
-            promise.then(function (data) {
-                storage.setItem(key, JSON.stringify({ data: data, expire: expire, cacheIn: Date.now() }));
+            promise.then(function (d) {
+                storage.setItem(key, JSON.stringify({ data: d, expire: expire, cacheIn: Date.now() }));
             });
         }
         return promise;

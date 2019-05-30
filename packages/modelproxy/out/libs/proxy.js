@@ -87,12 +87,9 @@ var ModelProxy = (function (_super) {
             otherOptions[_i - 3] = arguments[_i];
         }
         return __awaiter(this, void 0, void 0, function () {
-            var interfaces, instance;
+            var instance;
             return __generator(this, function (_a) {
-                interfaces = this.getNs(ns), instance = interfaces.getItem(key);
-                if (!instance) {
-                    throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u53D1\u73B0/" + ns + "/" + key + "\u7684\u63A5\u53E3\u65B9\u6CD5\uFF01");
-                }
+                instance = this.getInterface(ns, key);
                 return [2, instance.execute.apply(instance, [options].concat(otherOptions))];
             });
         });
@@ -147,6 +144,14 @@ var ModelProxy = (function (_super) {
             throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4;");
         }
         return this.nsFactory.getItem(ns);
+    };
+    ModelProxy.prototype.getInterface = function (ns, key) {
+        var nsFactory = this.getNs(ns);
+        var inter = nsFactory.get(key);
+        if (!inter) {
+            throw new errors_1.ModelProxyMissingError("\u6CA1\u6709\u627E\u5230" + ns + "\u7A7A\u95F4\u4E0B\u7684" + key + "\u63A5\u53E3;");
+        }
+        return inter;
     };
     ModelProxy.prototype.mixin = function (ns) {
         var keys = [];

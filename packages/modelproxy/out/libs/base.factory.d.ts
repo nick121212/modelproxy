@@ -8,7 +8,7 @@ export declare class BaseFactory<T> implements Storage {
     private remove(name);
     removeItem(name: string): void;
     has(name: string): boolean;
-    private get(name);
+    get(name: string): T | null;
     getItem(name: string): any;
     forEach(fn: (key: string, instance: T) => void): void;
     clear(): void;
