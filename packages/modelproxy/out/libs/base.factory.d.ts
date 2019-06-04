@@ -3,6 +3,7 @@ export declare class BaseFactory<T> implements Storage {
         [id: string]: T;
     };
     length: number;
+    [key: string]: any;
     add(name: string, instance: T, override?: boolean): void;
     setItem(key: string, value: string): void;
     private remove(name);

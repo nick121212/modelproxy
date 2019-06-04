@@ -7,6 +7,8 @@ export class BaseFactory<T> implements Storage {
     protected instances: { [id: string]: T } = {};
     public length: number = 0;
 
+    [key: string]: any;
+
     /**
      * 添加一个实例
      * @param   {string}  name         实例的名称

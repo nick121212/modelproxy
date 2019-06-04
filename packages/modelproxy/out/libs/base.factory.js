@@ -7,7 +7,7 @@ var BaseFactory = (function () {
     }
     BaseFactory.prototype.add = function (name, instance, override) {
         if (override === void 0) { override = false; }
-        if (override && this.instances.hasOwnProperty(name)) {
+        if (!override && this.instances.hasOwnProperty(name)) {
             return console.error("\u5DF2\u7ECF\u5B58\u5728name=\u3010" + name + "\u3011\u7684\u5B9E\u4F8B\uFF01");
         }
         this.instances[name] = instance;
